@@ -5,15 +5,11 @@
 ---
 
 ## 📑 인용/참고 규칙
-- 본문 인용 표기: `[참고: ref-id]` 형태를 사용합니다. 예) `[참고: cot-wei2022]`
+- 본문에는 인용 표기를 넣지 않습니다.
+- 각 문서 말미에 "참고 사항" 섹션을 만들고 ref-id를 나열합니다.
 - ref-id는 아래 목록의 항목 헤더에 병기합니다. 예) `### cot-wei2022`
 - 웹 문서는 가능한 공식/원문 링크를 사용합니다.
 - 동일 항목을 여러 장에서 인용할 수 있도록 ref-id는 짧고 일관되게 유지합니다.
-
-본문 예시:
-```
-단계적 사고 유도를 위해 CoT를 고려한다. [참고: cot-wei2022]
-```
 
 ---
 
@@ -51,6 +47,11 @@ AI 인스트럭션(지침) 설계와 관련해 직접적으로 유용한 논문,
 - **Super-Natural Instructions**  
   [Wang et al., 2022](https://arxiv.org/abs/2204.07705)  
   → 대규모 인스트럭션 기반 데이터셋  
+
+### instructgpt-ouyang2022
+- **Training language models to follow instructions with human feedback (InstructGPT)**  
+  [Ouyang et al., 2022](https://arxiv.org/abs/2203.02155)  
+  → 인간 피드백으로 지시 따르기 성능을 향상시키는 방법
 
 ---
 
