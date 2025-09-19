@@ -53,11 +53,9 @@
 
 
 ## 참고 사항
+- book/resources/references.md
 - gpt3-brown2020
 - flan-mishra2021
 - sni-wang2022
 - instructgpt-ouyang2022
 - cot-wei2022
-
-## 참고 링크
-- book/resources/references.md
