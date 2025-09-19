@@ -3,9 +3,7 @@
 ---
 
 ## 🎯 목적
-- 최소 도구 스택을 선정한다.  
-- 프레임워크/평가 도구 사용 기준을 정한다.  
-- 도입/마이그레이션 계획을 수립한다.  
+도구 활용으로 생산성과 효율을 극대화한다.
 
 ---
 
@@ -15,7 +13,6 @@
 ---
 
 ## 📚 목차
-- [8.1 프롬프트 관리](./8-1-prompt-tools.md)
-- [8.2 RAG/Agent 프레임워크](./8-2-rag-agent.md)
-- [8.3 평가/추적 도구](./8-3-eval-tracking.md)
-
+- [8.1 Prompt 관리 도구 (Notion, Obsidian, GitHub)](./8-1-prompt-tools.md)
+- [8.2 RAG/Agent 프레임워크 (LangChain, LlamaIndex)](./8-2-rag-agent.md)
+- [8.3 성능 평가 및 추적 도구 (PromptLayer, W&B 등)](./8-3-eval-tracking.md)

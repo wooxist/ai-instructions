@@ -3,22 +3,19 @@
 ---
 
 ## 🎯 목적
-- 목적에 맞는 질문 유형을 선택한다.  
-- 정보 품질을 높이는 질문을 설계한다.  
-- 비교/탐색/맥락 질문을 균형 있게 구성한다.  
+질문 유형을 구분해 상황에 맞는 질문을 활용한다.
 
 ---
 
 ## 📌 요약
-질문은 모델의 사고 범위를 결정합니다. 목적에 맞는 질문 유형을 선택해 정보 품질을 높입니다.
+AI를 잘 활용하기 위해서는 질문 설계 능력이 중요하다.
 
 ---
 
 ## 📚 목차
-- [4.1 폐쇄형 질문](./4-1-closed.md)
-- [4.2 개방형 질문](./4-2-open.md)
-- [4.3 탐색형 질문](./4-3-exploratory.md)
-- [4.4 비교형 질문](./4-4-comparative.md)
-- [4.5 맥락 의존형 질문](./4-5-context-dependent.md)
-- [4.6 메타 질문](./4-6-meta.md)
-
+- [4.1 폐쇄형 질문 (Closed-ended)](./4-1-closed.md)
+- [4.2 개방형 질문 (Open-ended)](./4-2-open.md)
+- [4.3 탐색형 질문 (Exploratory)](./4-3-exploratory.md)
+- [4.4 비교형 질문 (Comparative)](./4-4-comparative.md)
+- [4.5 맥락 의존형 질문 (Context-dependent)](./4-5-context-dependent.md)
+- [4.6 메타 질문 (Meta-questions)](./4-6-meta.md)
