@@ -8,12 +8,12 @@
 ---
 
 ## 📌 요약
-인스트럭션은 단순한 요청이 아니라, AI의 성능을 일관되게 이끌어내는 설계된 지시다.
+인스트럭션은 매번 비슷한 품질의 결과가 나오도록 돕는 지시문입니다. 한 번 쓰고 끝나는 말이 아니라, 필요할 때마다 고치고 다시 쓰는 ‘살아있는 매뉴얼’입니다.
 
 ---
 
 ## 📚 목차
-- [1.1 프롬프트와 인스트럭션: 정의와 관계](./1-1-prompt-instruction-definition-relationship.md)
+- [1.1 프롬프트와 인스트럭션: 의미와 구성](./1-1-prompt-instruction-definition-relationship.md)
 - [1.2 인스트럭션 설계의 필요성](./1-2-why-instruction-design.md)
 - [1.3 실제 활용 사례](./1-3-real-world-examples.md)
 - [1.4 인스트럭션의 지속 발전성 (차별점: 살아있는 매뉴얼)](./1-4-living-manual.md)
