@@ -19,11 +19,18 @@ ai-instruction-guide/
 ├── README.md                # 프로젝트 개요
 └── book/                    # 모든 원고와 자료 관리
     ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기
-    ├── 02-meta-principles.md # 2장: 인스트럭션 설계 원칙
-    ├── ...                  # 3-12장 (각 장별 독립 파일)
-    ├── index.md             # 전체 목차 및 개요
-    ├── instruction-sets/    # 실행 가능한 인스트럭션 세트
-    └── resources/           # 참고 자료 및 노트
+    ├── 02-good-instructions.md # 2장: 좋은 지시(명령)의 원칙
+    ├── 03-questions.md      # 3장: 질문 설계하기
+    ├── 04-context.md        # 4장: 기본 정보 채워넣기
+    ├── 05-meta-principles.md # 5장: 인스트럭션 설계에 필요한 사전 지식
+    ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의
+    ├── 07-practical.md      # 7장: 실무 활용하기
+    ├── 08-tools.md          # 8장: 도움이 되는 도구
+    ├── 09-performance.md    # 9장: 퍼포먼스에 영향을 미치는 요인
+    ├── 10-productivity.md   # 10장: 생산성 측정 & 명령어 검증
+    ├── 11-evolution.md      # 11장: 환경 변화와 인스트럭션의 진화
+    ├── 12-mcp-future.md     # 12장: MCP와 인스트럭션의 미래
+    └── index.md             # 전체 목차 및 개요
 ```
 
 ## 💬 토론 및 문의
