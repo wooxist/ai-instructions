@@ -18,83 +18,79 @@
 
 ---
 
-## 📚 목차
+## 📚 목차 (대분류/재배치 반영)
 
-### 1장. 인스트럭션 이해하기 — [바로가기](book/chapters/01-introduction/index.md)
-- 1.1 프롬프트와 인스트럭션: 의미와 구성  
-- 1.2 인스트럭션 설계의 필요성  
-- 1.3 실제 활용 사례  
-- 1.4 인스트럭션의 지속 발전성 (살아있는 매뉴얼)  
+### 개념/기초 (what)
+- 1장. 인스트럭션 이해하기 — [바로가기](book/01-foundations/01-introduction/index.md)
+  - 1.1 프롬프트와 인스트럭션: 의미와 구성  
+  - 1.2 인스트럭션 설계의 필요성  
+  - 1.3 실제 활용 사례  
+  - 1.4 인스트럭션의 지속 발전성 (살아있는 매뉴얼)  
+- 3장. 좋은 지시(명령)의 원칙 — [바로가기](book/01-foundations/03-good-instructions/index.md)
+  - 3.1 명확성 (Clear)  
+  - 3.2 구체성 (Specific)  
+  - 3.3 단계성 (Step-wise)  
+  - 3.4 제약 조건과 한계 설정  
+  - 3.5 실패하는 지시의 특징  
+- 5장. 기본 정보 채워넣기 — [바로가기](book/01-foundations/05-context/index.md)
+  - 5.1 컨텍스트(Context) 제공하기  
+  - 5.2 출력 형식 지정 (표, JSON, Markdown 등)  
+  - 5.3 Few-shot / Zero-shot 예시 활용  
+- 4장. 질문 설계하기 — [바로가기](book/01-foundations/04-questions/index.md)
+  - 4.1 폐쇄형 질문 (Closed-ended)  
+  - 4.2 개방형 질문 (Open-ended)  
+  - 4.3 탐색형 질문 (Exploratory)  
+  - 4.4 비교형 질문 (Comparative)  
+  - 4.5 맥락 의존형 질문 (Context-dependent)  
+  - 4.6 메타 질문 (Meta-questions)  
+- 6장. Agent 설계와 Persona 정의 — [바로가기](book/01-foundations/06-agent-persona/index.md)
+  - 6.1 Persona 기반 설계의 필요성  
+  - 6.2 역할(Role) 구체화 방법  
+  - 6.3 경계 지점 설정하기 (Boundary Conditions)  
+  - 6.4 멀티에이전트 협업 설계  
 
-### 2장. 인스트럭션 라이프 사이클 — [바로가기](book/chapters/02-lifecycle/index.md)
-- 2.1 목적 정의  
-- 2.2 초안 작성  
-- 2.3 테스트 실행  
-- 2.4 평가  
-- 2.5 수정 & 최적화  
-- 2.6 재사용 & 축적  
-- 2.7 피드백 루프  
+### 작업 흐름/수명주기 (how)
+- 2장. 인스트럭션 라이프 사이클 — [바로가기](book/02-lifecycle/02-lifecycle/index.md)
+  - 2.1 목적 정의  
+  - 2.2 초안 작성  
+  - 2.3 테스트 실행  
+  - 2.4 평가  
+  - 2.5 수정 & 최적화  
+  - 2.6 재사용 & 축적  
+  - 2.7 피드백 루프  
 
-### 3장. 좋은 지시(명령)의 원칙 — [바로가기](book/chapters/03-good-instructions/index.md)
-- 3.1 명확성 (Clear)  
-- 3.2 구체성 (Specific)  
-- 3.3 단계성 (Step-wise)  
-- 3.4 제약 조건과 한계 설정  
-- 3.5 실패하는 지시의 특징  
+### 실무/운영 (practice)
+- 7장. 실무 활용하기 — [바로가기](book/03-practice/07-practical/index.md)
+  - 7.1 조직형 실무 사례 (분업형 환경)  
+  - 7.2 개인형 실무 사례 (1인 개발자/스타트업)  
+  - 7.3 실습: 조직 vs 개인 시나리오 비교  
+- 8장. 도움이 되는 도구 — [바로가기](book/03-practice/08-tools/index.md)
+  - 8.1 Prompt 관리 도구 (Notion, Obsidian, GitHub)  
+  - 8.2 RAG/Agent 프레임워크 (LangChain, LlamaIndex)  
+  - 8.3 성능 평가 및 추적 도구 (PromptLayer, W&B 등)  
+- 9장. 퍼포먼스에 영향을 미치는 요인 — [바로가기](book/03-practice/09-performance/index.md)
+  - 9.1 인스트럭션 품질 (명확성, 구체성, 길이)  
+  - 9.2 AI 설정 (버전, Temperature, Top-p 등)  
+  - 9.3 컨텍스트 크기와 데이터 최신성  
+  - 9.4 사용자 피드백 루프  
+- 10장. 생산성 측정 & 명령어 검증 — [바로가기](book/03-practice/10-productivity/index.md)
+  - 10.1 성능 지표 (정확도, 간결성, 재현율, 만족도)  
+  - 10.2 A/B 테스트 및 비교 실험  
+  - 10.3 검증과 개선 사이클  
+  - 10.4 정형화된 업무 vs 비정형적 업무의 인스트럭션 설계  
 
-### 4장. 질문 설계하기 — [바로가기](book/chapters/04-questions/index.md)
-- 4.1 폐쇄형 질문 (Closed-ended)  
-- 4.2 개방형 질문 (Open-ended)  
-- 4.3 탐색형 질문 (Exploratory)  
-- 4.4 비교형 질문 (Comparative)  
-- 4.5 맥락 의존형 질문 (Context-dependent)  
-- 4.6 메타 질문 (Meta-questions)  
-
-### 5장. 기본 정보 채워넣기 — [바로가기](book/chapters/05-context/index.md)
-- 5.1 컨텍스트(Context) 제공하기  
-- 5.2 출력 형식 지정 (표, JSON, Markdown 등)  
-- 5.3 Few-shot / Zero-shot 예시 활용  
-
-### 6장. Agent 설계와 Persona 정의 — [바로가기](book/chapters/06-agent-persona/index.md)
-- 6.1 Persona 기반 설계의 필요성  
-- 6.2 역할(Role) 구체화 방법  
-- 6.3 경계 지점 설정하기 (Boundary Conditions)  
-- 6.4 멀티에이전트 협업 설계  
-
-### 7장. 실무 활용하기 — [바로가기](book/chapters/07-practical/index.md)
-- 7.1 조직형 실무 사례 (분업형 환경)  
-- 7.2 개인형 실무 사례 (1인 개발자/스타트업)  
-- 7.3 실습: 조직 vs 개인 시나리오 비교  
-
-### 8장. 도움이 되는 도구 — [바로가기](book/chapters/08-tools/index.md)
-- 8.1 Prompt 관리 도구 (Notion, Obsidian, GitHub)  
-- 8.2 RAG/Agent 프레임워크 (LangChain, LlamaIndex)  
-- 8.3 성능 평가 및 추적 도구 (PromptLayer, W&B 등)  
-
-### 9장. 퍼포먼스에 영향을 미치는 요인 — [바로가기](book/chapters/09-performance/index.md)
-- 9.1 인스트럭션 품질 (명확성, 구체성, 길이)  
-- 9.2 AI 설정 (버전, Temperature, Top-p 등)  
-- 9.3 컨텍스트 크기와 데이터 최신성  
-- 9.4 사용자 피드백 루프  
-
-### 10장. 생산성 측정 & 명령어 검증 — [바로가기](book/chapters/10-productivity/index.md)
-- 10.1 성능 지표 (정확도, 간결성, 재현율, 만족도)  
-- 10.2 A/B 테스트 및 비교 실험  
-- 10.3 검증과 개선 사이클  
-- 10.4 정형화된 업무 vs 비정형적 업무의 인스트럭션 설계  
-
-### 11장. 환경 변화와 인스트럭션의 진화 — [바로가기](book/chapters/11-evolution/index.md)
-- 11.1 1인 → 조직 확장: 팀 단위 인스트럭션 표준화  
-- 11.2 조직 → 업무 통합: 멀티직무 인스트럭션 설계  
-- 11.3 경계 조건 재설정  
-- 11.4 개인 지시 → 팀 자산으로 발전  
-
-### 12장. MCP(Model Context Protocol)와 인스트럭션의 미래 — [바로가기](book/chapters/12-mcp-future/index.md)
-- 12.1 MCP란 무엇인가  
-- 12.2 멀티에이전트·도구 연결에서의 필요성  
-- 12.3 인스트럭션 전달·관리에서 MCP의 역할  
-- 12.4 실무 적용 시나리오  
-- 12.5 향후 전망  
+### 진화/미래 (governance & future)
+- 11장. 환경 변화와 인스트럭션의 진화 — [바로가기](book/04-future/11-evolution/index.md)
+  - 11.1 1인 → 조직 확장: 팀 단위 인스트럭션 표준화  
+  - 11.2 조직 → 업무 통합: 멀티직무 인스트럭션 설계  
+  - 11.3 경계 조건 재설정  
+  - 11.4 개인 지시 → 팀 자산으로 발전  
+- 12장. MCP(Model Context Protocol)와 인스트럭션의 미래 — [바로가기](book/04-future/12-mcp-future/index.md)
+  - 12.1 MCP란 무엇인가  
+  - 12.2 멀티에이전트·도구 연결에서의 필요성  
+  - 12.3 인스트럭션 전달·관리에서 MCP의 역할  
+  - 12.4 실무 적용 시나리오  
+  - 12.5 향후 전망  
 
 ### 자료/세트 바로가기
 - 인스트럭션 세트: [book/instruction-sets/](book/instruction-sets/) — [summary.md](book/instruction-sets/summary.md), [qa.md](book/instruction-sets/qa.md), [agent.md](book/instruction-sets/agent.md)
