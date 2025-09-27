@@ -15,28 +15,10 @@
 ## 2장. 인스트럭션 설계에 필요한 사전 지식
 **목적:** 좋은 지침을 만들기 위해 알아야 할 메타 원칙 15가지를 학습한다.
 
-### 2.1 구조적/조직적 원칙 (Framework & Organization)
-- 2.1.1 SSOT (Single Source of Truth)
-- 2.1.2 SoC (Separation of Concerns)
-- 2.1.3 MECE (Mutually Exclusive, Collectively Exhaustive)
-- 2.1.4 Convention over Configuration
-- 2.1.5 Scalability Principle
-
-### 2.2 실행/작동 방식 원칙 (Execution & Process)
-- 2.2.1 Iterative Refinement
-- 2.2.2 Auto-Planning & Review
-- 2.2.3 Self-Feedback Loop
-- 2.2.4 Output-Driven
-- 2.2.5 Intent Clarification Loop
-
-### 2.3 검토/검증 원칙 (Validation & Review)
-- 2.3.1 Critical Review
-- 2.3.2 Error Handling
-- 2.3.3 Transparency & Traceability
-
-### 2.4 책임/가치 원칙 (Governance & Ethics)
-- 2.4.1 Ethical Boundaries
-- 2.4.2 Human-in-the-Loop
+- 2.1 구조적/조직적 원칙 (Framework & Organization)
+- 2.2 실행/작동 방식 원칙 (Execution & Process)
+- 2.3 검토/검증 원칙 (Validation & Review)
+- 2.4 책임/가치 원칙 (Governance & Ethics)
 
 ## 3장. 좋은 지시(명령)의 원칙
 **목적:** 명령문 자체의 품질을 높이는 법을 배운다.
