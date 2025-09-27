@@ -18,83 +18,48 @@
 
 ---
 
-## 📚 목차 (대분류/재배치 반영)
+## 📚 목차
 
-### 개념/기초 (what)
-- 1장. 인스트럭션 이해하기 — [바로가기](book/01-foundations/01-introduction/index.md)
-  - 1.1 프롬프트와 인스트럭션: 의미와 구성  
-  - 1.2 인스트럭션 설계의 필요성  
-  - 1.3 실제 활용 사례  
-  - 1.4 인스트럭션의 지속 발전성 (살아있는 매뉴얼)  
-- 3장. 좋은 지시(명령)의 원칙 — [바로가기](book/01-foundations/03-good-instructions/index.md)
-  - 3.1 명확성 (Clear)  
-  - 3.2 구체성 (Specific)  
-  - 3.3 단계성 (Step-wise)  
-  - 3.4 제약 조건과 한계 설정  
-  - 3.5 실패하는 지시의 특징  
-- 5장. 기본 정보 채워넣기 — [바로가기](book/01-foundations/05-context/index.md)
-  - 5.1 컨텍스트(Context) 제공하기  
-  - 5.2 출력 형식 지정 (표, JSON, Markdown 등)  
-  - 5.3 Few-shot / Zero-shot 예시 활용  
-- 4장. 질문 설계하기 — [바로가기](book/01-foundations/04-questions/index.md)
-  - 4.1 폐쇄형 질문 (Closed-ended)  
-  - 4.2 개방형 질문 (Open-ended)  
-  - 4.3 탐색형 질문 (Exploratory)  
-  - 4.4 비교형 질문 (Comparative)  
-  - 4.5 맥락 의존형 질문 (Context-dependent)  
-  - 4.6 메타 질문 (Meta-questions)  
-- 6장. Agent 설계와 Persona 정의 — [바로가기](book/01-foundations/06-agent-persona/index.md)
-  - 6.1 Persona 기반 설계의 필요성  
-  - 6.2 역할(Role) 구체화 방법  
-  - 6.3 경계 지점 설정하기 (Boundary Conditions)  
-  - 6.4 멀티에이전트 협업 설계  
+- **1장. 프롬프트와 인스트럭션 이해하기** — [바로가기](book/01-introduction.md)  
+  *목적: 프롬프트와 인스트럭션이 무엇인지, 그리고 왜 중요한지 기본 개념을 익힌다.*
 
-### 작업 흐름/수명주기 (how)
-- 2장. 인스트럭션 라이프 사이클 — [바로가기](book/02-lifecycle/02-lifecycle/index.md)
-  - 2.1 목적 정의  
-  - 2.2 초안 작성  
-  - 2.3 테스트 실행  
-  - 2.4 평가  
-  - 2.5 수정 & 최적화  
-  - 2.6 재사용 & 축적  
-  - 2.7 피드백 루프  
+- **2장. 인스트럭션 설계에 필요한 사전 지식** — [바로가기](book/02-meta-principles.md)  
+  *목적: 좋은 지침을 만들기 위해 알아야 할 메타 원칙 15가지를 학습한다.*
 
-### 실무/운영 (practice)
-- 7장. 실무 활용하기 — [바로가기](book/03-practice/07-practical/index.md)
-  - 7.1 조직형 실무 사례 (분업형 환경)  
-  - 7.2 개인형 실무 사례 (1인 개발자/스타트업)  
-  - 7.3 실습: 조직 vs 개인 시나리오 비교  
-- 8장. 도움이 되는 도구 — [바로가기](book/03-practice/08-tools/index.md)
-  - 8.1 Prompt 관리 도구 (Notion, Obsidian, GitHub)  
-  - 8.2 RAG/Agent 프레임워크 (LangChain, LlamaIndex)  
-  - 8.3 성능 평가 및 추적 도구 (PromptLayer, W&B 등)  
-- 9장. 퍼포먼스에 영향을 미치는 요인 — [바로가기](book/03-practice/09-performance/index.md)
-  - 9.1 인스트럭션 품질 (명확성, 구체성, 길이)  
-  - 9.2 AI 설정 (버전, Temperature, Top-p 등)  
-  - 9.3 컨텍스트 크기와 데이터 최신성  
-  - 9.4 사용자 피드백 루프  
-- 10장. 생산성 측정 & 명령어 검증 — [바로가기](book/03-practice/10-productivity/index.md)
-  - 10.1 성능 지표 (정확도, 간결성, 재현율, 만족도)  
-  - 10.2 A/B 테스트 및 비교 실험  
-  - 10.3 검증과 개선 사이클  
-  - 10.4 정형화된 업무 vs 비정형적 업무의 인스트럭션 설계  
+- **3장. 좋은 지시(명령)의 원칙** — [바로가기](book/03-good-instructions.md)  
+  *목적: 명령문 자체의 품질을 높이는 법을 배운다.*
 
-### 진화/미래 (governance & future)
-- 11장. 환경 변화와 인스트럭션의 진화 — [바로가기](book/04-future/11-evolution/index.md)
-  - 11.1 1인 → 조직 확장: 팀 단위 인스트럭션 표준화  
-  - 11.2 조직 → 업무 통합: 멀티직무 인스트럭션 설계  
-  - 11.3 경계 조건 재설정  
-  - 11.4 개인 지시 → 팀 자산으로 발전  
-- 12장. MCP(Model Context Protocol)와 인스트럭션의 미래 — [바로가기](book/04-future/12-mcp-future/index.md)
-  - 12.1 MCP란 무엇인가  
-  - 12.2 멀티에이전트·도구 연결에서의 필요성  
-  - 12.3 인스트럭션 전달·관리에서 MCP의 역할  
-  - 12.4 실무 적용 시나리오  
-  - 12.5 향후 전망  
+- **4장. 질문 설계하기** — [바로가기](book/04-questions.md)  
+  *목적: AI의 답변을 원하는 방향으로 이끌기 위해 질문을 잘 만드는 방법을 배운다.*
+
+- **5장. 기본 정보 채워넣기** — [바로가기](book/05-context.md)  
+  *목적: AI가 혼동하지 않도록 필수 정보를 제공하는 법을 익힌다.*
+
+- **6장. Agent 설계와 Persona 정의** — [바로가기](book/06-agent-persona.md)  
+  *목적: AI에게 특정 역할과 성격을 부여하여 전문성을 강화한다.*
+
+- **7장. 실무 활용하기** — [바로가기](book/07-practical.md)  
+  *목적: 개인과 조직 상황에서 AI 인스트럭션을 실제로 적용하는 방법을 배운다.*
+
+- **8장. 도움이 되는 도구** — [바로가기](book/08-tools.md)  
+  *목적: 인스트럭션 관리와 실무 지원에 활용할 수 있는 툴들을 소개한다.*
+
+- **9장. 퍼포먼스에 영향을 미치는 요인** — [바로가기](book/09-performance.md)  
+  *목적: 인스트럭션의 성능에 영향을 주는 요소들을 이해한다.*
+
+- **10장. 생산성 측정 & 명령어 검증** — [바로가기](book/10-productivity.md)  
+  *목적: 지침의 성능을 검증하고 개선하는 방법을 배운다.*
+
+- **11장. 환경 변화와 인스트럭션의 진화** — [바로가기](book/11-evolution.md)  
+  *목적: 조직 규모와 업무 방식의 변화에 맞춰 지침을 발전시키는 방법을 다룬다.*
+
+- **12장. MCP(Model Context Protocol)와 인스트럭션의 미래** — [바로가기](book/12-mcp-future.md)  
+  *목적: 인스트럭션 관리와 연결의 미래 기술을 이해한다.*
 
 ### 자료/세트 바로가기
-- 인스트럭션 세트: [book/instruction-sets/](book/instruction-sets/) — [summary.md](book/instruction-sets/summary.md), [qa.md](book/instruction-sets/qa.md), [agent.md](book/instruction-sets/agent.md)
-- 참고 자료: [book/resources/](book/resources/) — [references.md](book/resources/references.md), [notes.md](book/resources/notes.md)
+- **전체 목차 및 개요** — [바로가기](book/index.md)
+- **인스트럭션 세트** — [summary.md](book/instruction-sets/summary.md), [qa.md](book/instruction-sets/qa.md), [agent.md](book/instruction-sets/agent.md)
+- **참고 자료** — [references.md](book/resources/references.md), [notes.md](book/resources/notes.md)
 
 ---
 
@@ -105,31 +70,19 @@ ai-instruction-guide/
 ├── README.md                        # 프로젝트 개요 + 목차
 │
 └── book/                            # 모든 원고와 자료 관리
-    ├── chapters/                    # 각 장별 원고
-    │   ├── 01-introduction/
-    │   │   └── index.md             # 1장: 인스트럭션 이해하기
-    │   ├── 02-lifecycle/
-    │   │   └── index.md             # 2장: 인스트럭션 라이프 사이클
-    │   ├── 03-good-instructions/
-    │   │   └── index.md             # 3장: 좋은 지시(명령)의 원칙
-    │   ├── 04-questions/
-    │   │   └── index.md             # 4장: 질문 설계하기
-    │   ├── 05-context/
-    │   │   └── index.md             # 5장: 기본 정보 채워넣기
-    │   ├── 06-agent-persona/
-    │   │   └── index.md             # 6장: Agent 설계와 Persona 정의
-    │   ├── 07-practical/
-    │   │   └── index.md             # 7장: 실무 활용하기
-    │   ├── 08-tools/
-    │   │   └── index.md             # 8장: 도움이 되는 도구
-    │   ├── 09-performance/
-    │   │   └── index.md             # 9장: 퍼포먼스 요인
-    │   ├── 10-productivity/
-    │   │   └── index.md             # 10장: 생산성 측정 & 검증
-    │   ├── 11-evolution/
-    │   │   └── index.md             # 11장: 환경 변화와 인스트럭션 진화
-    │   └── 12-mcp-future/
-    │       └── index.md             # 12장: MCP와 미래
+    ├── 01-introduction.md           # 1장: 프롬프트와 인스트럭션 이해하기
+    ├── 02-meta-principles.md        # 2장: 인스트럭션 설계에 필요한 사전 지식
+    ├── 03-good-instructions.md      # 3장: 좋은 지시(명령)의 원칙
+    ├── 04-questions.md              # 4장: 질문 설계하기
+    ├── 05-context.md                # 5장: 기본 정보 채워넣기
+    ├── 06-agent-persona.md          # 6장: Agent 설계와 Persona 정의
+    ├── 07-practical.md              # 7장: 실무 활용하기
+    ├── 08-tools.md                  # 8장: 도움이 되는 도구
+    ├── 09-performance.md            # 9장: 퍼포먼스에 영향을 미치는 요인
+    ├── 10-productivity.md           # 10장: 생산성 측정 & 명령어 검증
+    ├── 11-evolution.md              # 11장: 환경 변화와 인스트럭션 진화
+    ├── 12-mcp-future.md             # 12장: MCP와 인스트럭션의 미래
+    ├── index.md                     # 전체 목차 및 개요
     │
     ├── instruction-sets/            # 실행 가능한 인스트럭션 세트
     │   ├── summary.md               # 요약 인스트럭션
