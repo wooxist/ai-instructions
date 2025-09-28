@@ -1,4 +1,5 @@
 # 8장. 도움이 되는 도구
+**상태:** draft-outline
 **목적:** 인스트럭션 관리와 실무 지원에 활용할 수 있는 툴들을 소개한다.
 
 ## 8.1 Prompt 관리 도구 (Notion, Obsidian, GitHub)

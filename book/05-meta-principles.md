@@ -1,4 +1,5 @@
 # 5장. 인스트럭션 설계에 필요한 사전 지식
+
 **목적:** 좋은 지침을 만들기 위해 알아야 할 메타 원칙 15가지를 학습한다.
 
 ## 5.1 구조적/조직적 원칙 (Framework & Organization)
@@ -53,3 +54,21 @@ AI가 스스로 TODO 리스트를 세우고 검토한다.
 
 ### 5.4.2 Human-in-the-Loop
 최종 결정과 책임은 사람이 맡는다.
+
+---
+
+## 참고 자료
+
+- Fowler, M. (2002). Patterns of enterprise application architecture. Addison-Wesley Professional.
+- Martin, R. C. (2009). Clean code: A handbook of agile software craftsmanship. Pearson Education.
+- Evans, E. (2004). Domain-driven design: Tackling complexity in the heart of software. Addison-Wesley Professional.
+- Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). Design patterns: Elements of reusable object-oriented software. Pearson Education.
+- Rasmusson, J. (2010). The agile samurai: How agile masters deliver great software. Pragmatic Bookshelf.
+- McKinsey & Company. (2018). The MECE Principle: A Guide to Clear Thinking.
+- Google. (2023). Machine Learning Glossary. https://developers.google.com/machine-learning/glossary
+- IEEE. (2023). Ethically Aligned Design: A Vision for Prioritizing Human Well-being with Autonomous and Intelligent Systems.
+
+---
+
+**상태:** v1-draft  
+**작성 시작일:** 2025-09-27

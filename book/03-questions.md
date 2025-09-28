@@ -1,4 +1,5 @@
 # 3장. 질문 설계하기
+
 **목적:** AI의 답변을 원하는 방향으로 이끌기 위해 질문을 잘 만드는 방법을 배운다.
 
 ## 3.1 폐쇄형 질문 (Closed-ended)
@@ -18,3 +19,18 @@
 
 ## 3.6 메타 질문 (Meta-questions)
 질문 자체를 점검하거나 성찰하는 질문.
+
+---
+
+## 참고 자료
+
+- Krosnick, J. A., & Presser, S. (2010). Question and questionnaire design. Handbook of survey research, 2(3), 263-314.
+- Strachan, L., et al. (2014). Using questions to promote learning. Cambridge University Press.
+- Socratic Questioning Techniques. (2018). The Foundation for Critical Thinking.
+- Roediger, H. L., & Butler, A. C. (2011). The critical role of retrieval practice in long-term retention. Trends in cognitive sciences, 15(1), 20-27.
+- Anthropic. (2023). Advanced Prompting Techniques. https://docs.anthropic.com/claude/docs/advanced-prompting
+
+---
+
+**상태:** v1-draft  
+**작성 시작일:** 2025-09-27
