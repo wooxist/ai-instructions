@@ -35,28 +35,30 @@ ai-instructions/
 └── book/                    # 모든 원고와 자료 관리
     │
     │── 1부: 인스트럭션의 기초와 설계 원칙
-    ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기
-    ├── 02-good-instructions.md # 2장: 좋은 지시(명령)의 원칙
-    ├── 03-questions.md      # 3장: 질문 설계하기
-    ├── 04-context.md        # 4장: 기본 정보 채워넣기
-    ├── 05-meta-principles.md # 5장: 인스트럭션 설계에 필요한 사전 지식
-    ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의
+    ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기 [v1-draft]
+    ├── 02-good-instructions.md # 2장: 좋은 지시(명령)의 원칙 [v1-draft]
+    ├── 03-questions.md      # 3장: 질문 설계하기 [v1-draft]
+    ├── 04-context.md        # 4장: 기본 정보 채워넣기 [v1-draft]
+    ├── 05-meta-principles.md # 5장: 인스트럭션 설계에 필요한 사전 지식 [v1-draft]
+    ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의 [v1-draft]
     │
     │── 2부: 인스트럭션의 실무 적용과 발전
-    ├── 07-practical.md      # 7장: 실무 활용하기
-    ├── 08-tools.md          # 8장: 도움이 되는 도구
-    ├── 09-performance.md    # 9장: 퍼포먼스에 영향을 미치는 요인
-    ├── 10-productivity.md   # 10장: 생산성 측정 & 명령어 검증
-    ├── 11-evolution.md      # 11장: 환경 변화와 인스트럭션의 진화
-    ├── 12-mcp-future.md     # 12장: MCP와 인스트럭션의 미래
+    ├── 07-practical.md      # 7장: 실무 활용하기 [v1-draft]
+    ├── 08-tools.md          # 8장: 도움이 되는 도구 [v1-draft]
+    ├── 09-performance.md    # 9장: 퍼포먼스에 영향을 미치는 요인 [v1-draft]
+    ├── 10-productivity.md   # 10장: 생산성 측정 & 명령어 검증 [v1-draft]
+    ├── 11-evolution.md      # 11장: 환경 변화와 인스트럭션의 진화 [v1-draft]
+    ├── 12-mcp-future.md     # 12장: MCP와 인스트럭션의 미래 [v1-draft]
     │
     └── index.md             # 전체 목차 및 개요
 ```
 
 ## 📝 개발 상태
 현재 이 가이드북은 개발 중인 상태입니다:
-- **v1-draft**: 초안 작성 단계 (2025-09-27 시작)
-- 모든 장은 현재 `v1-draft` 상태입니다
+- **현재 상태:** 전체 내용 작성 중 (v1-draft)
+- **작성 시작일:** 2025-09-27
+- 모든 장은 현재 초안 작성 단계 (v1-draft)입니다
+- 1장 "프롬프트와 인스트럭션 이해하기"는 내용 작성이 진행 중입니다
 
 ## 💡 주요 개념
 - **인스트럭션(Instruction)**: 체계화된 프롬프트로, 단순한 입력문을 넘어 일관성과 협업성을 갖춘 지시 체계
