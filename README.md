@@ -36,8 +36,8 @@ ai-instructions/
     │
     │── 1부: 인스트럭션의 기초와 설계 원칙
     ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기 [v1-draft]
-    ├── 02-good-instructions.md # 2장: 좋은 지시(명령)의 원칙 [v1-draft]
-    ├── 03-questions.md      # 3장: 질문 설계하기 [v1-draft]
+    ├── 02-questions.md      # 2장: 질문 설계하기 [v1-draft]
+    ├── 03-good-instructions.md # 3장: 좋은 지시(명령)의 원칙 [v1-draft]
     ├── 04-context.md        # 4장: 기본 정보 채워넣기 [v1-draft]
     ├── 05-meta-principles.md # 5장: 인스트럭션 설계에 필요한 사전 지식 [v1-draft]
     ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의 [v1-draft]
