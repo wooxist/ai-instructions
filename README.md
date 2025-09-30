@@ -12,16 +12,16 @@
 ## 📚 가이드북 구조
 가이드북은 크게 두 부분으로 나뉩니다:
 
-### 1부: 인스트럭션의 기초와 설계 원칙 (1-6장)
+### 1부: 인스트럭션의 기초와 설계 원칙 (1-5장)
 - 프롬프트와 인스트럭션의 기본 개념
 - 좋은 지시 명령의 원칙
 - 질문 설계 방법
 - 필수 정보 제공 방법
 - 메타 원칙과 사전 지식
-- Agent 설계와 Persona 정의
 
-### 2부: 인스트럭션의 실무 적용과 발전 (7-13장)
+### 2부: 인스트럭션의 실무 적용과 발전 (6-13장)
 - 조직 및 개인 환경에서의 실무 활용
+- Agent 설계와 Persona 정의
 - 인스트럭션 관리와 지원 도구
 - 성능에 영향을 미치는 요인
 - 생산성 측정 및 검증 방법
@@ -40,10 +40,10 @@ ai-instructions/
     ├── 03-good-instructions.md # 3장: 좋은 지시(명령)의 원칙 [v1-released]
     ├── 04-context.md        # 4장: 기본 정보 채워넣기 [v1-draft]
     ├── 05-meta-principles.md # 5장: 인스트럭션 설계에 필요한 사전 지식 [v1-draft]
-    ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의 [v1-draft]
     │
     │── 2부: 인스트럭션의 실무 적용과 발전
-    ├── 07-limits.md         # 7장: 인스트럭션의 제한과 대응 전략 [v1-draft]
+    ├── 06-limits.md         # 6장: 인스트럭션의 제한과 대응 전략 [v1-draft]
+    ├── 07-agent-persona.md  # 7장: Agent 설계와 Persona 정의 [v1-draft]
     ├── 08-practical.md      # 8장: 실무 활용하기 [v1-draft]
     ├── 09-tools.md          # 9장: 도움이 되는 도구 [v1-draft]
     ├── 10-performance.md    # 10장: 퍼포먼스에 영향을 미치는 요인 [v1-draft]
