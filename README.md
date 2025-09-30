@@ -42,17 +42,17 @@ ai-instructions/
     ├── 03-good-instructions.md # 3장: 좋은 인스트럭션 [v2-draft]
     ├── 04-context.md        # 4장: 기본 정보 채워넣기 [v1-draft]
     ├── 05-meta-principles.md # 5장: 인스트럭션 설계에 필요한 사전 지식 [v1-draft]
-    ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의 [v1-draft] (구 07-agent-persona.md)
-    ├── 07-workflow.md       # 7장: 워크플로우 설계 [v1-draft] (구 08-workflow.md)
+    ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의 [v1-draft]
+    ├── 07-workflow.md       # 7장: 워크플로우 설계 [v1-draft]
     │
     │── 2부: 인스트럭션의 실무 적용과 발전
-    ├── 08-limits.md         # 8장: 인스트럭션의 제한과 대응 전략 [v1-draft] (구 06-limits.md)
+    ├── 08-limits.md         # 8장: 인스트럭션의 제한과 대응 전략 [v1-draft]
     ├── 09-practical.md      # 9장: 실무 활용하기 [v1-draft] (구 08-practical.md)
-    ├── 10-tools.md          # 10장: 도움이 되는 도구 [v1-draft] (구 09-tools.md)
-    ├── 11-performance.md    # 11장: 퍼포먼스에 영향을 미치는 요인 [v1-draft] (구 10-performance.md)
-    ├── 12-productivity.md   # 12장: 생산성 측정 & 명령어 검증 [v1-draft] (구 11-productivity.md)
-    ├── 13-evolution.md      # 13장: 환경 변화와 인스트럭션의 진화 [v1-draft] (구 12-evolution.md)
-    ├── 14-mcp-future.md     # 14장: MCP와 인스트럭션의 미래 [v1-draft] (구 13-mcp-future.md)
+    ├── 10-tools.md          # 10장: 도움이 되는 도구 [v1-draft]
+    ├── 11-performance.md    # 11장: 퍼포먼스에 영향을 미치는 요인 [v1-draft]
+    ├── 12-productivity.md   # 12장: 생산성 측정 & 명령어 검증 [v1-draft]
+    ├── 13-evolution.md      # 13장: 환경 변화와 인스트럭션의 진화 [v1-draft]
+    ├── 14-mcp-future.md     # 14장: MCP와 인스트럭션의 미래 [v1-draft]
     │
     └── index.md             # 전체 목차 및 개요
 ```
