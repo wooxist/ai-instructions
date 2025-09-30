@@ -24,7 +24,7 @@
 - 2.5 맥락 의존형 질문 (Context-dependent)
 - 2.6 메타 질문 (Meta-questions)
 
-## [3장. 좋은 지시(명령)의 원칙](03-good-instructions.md) [출시: v1-released]
+## [3장. 좋은 인스트럭션](03-good-instructions.md) [작성 중: v2-draft]
 **목적:** 명령문 자체의 품질을 높이는 법을 배운다.
 
 - 인스트럭션이란? (개요)
