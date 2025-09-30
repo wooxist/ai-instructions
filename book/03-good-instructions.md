@@ -8,6 +8,8 @@
 
 인스트럭션(Instruction)은 체계화된 프롬프트로, 단순한 입력문을 넘어 일관성과 협업성을 갖춘 지시 체계를 의미합니다. 이는 AI가 특정 작업을 수행할 때 매 실행마다 참조하는 기초 지식과 행동 지침의 역할을 하며, 재사용 가능하고 표준화된 형태의 지시 방식입니다.
 
+참고로, 모델 학습 단계의 세부 주제(RLHF 등)는 본서의 범위를 벗어납니다. 관련 배경지식은 마지막 장에서 간단히 정리합니다.
+
 ### 사전 지식으로서의 인스트럭션
 
 - 행동 프레임워크: 어떤 상황에서 어떤 방식으로 행동해야 하는지 일관된 지침 제공
@@ -101,9 +103,11 @@
 - Norman, D. A. (2013). The design of everyday things: Revised and expanded edition. Basic Books.
 - Anthropic. (2023). Claude Prompt Design Guidelines. https://docs.anthropic.com/claude/docs/introduction-to-prompt-design
 - OpenAI. (2023). GPT Best Practices. https://platform.openai.com/docs/guides/gpt-best-practices
+ 
 
 ---
 
+ 
+
 **상태:** v1-draft  
 **작성 시작일:** 2025-09-27
-

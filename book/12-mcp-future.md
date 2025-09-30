@@ -19,6 +19,12 @@ MCP를 활용한 실제 사용 사례.
 ## 12.5 향후 전망
 인스트럭션과 MCP의 앞으로의 진화 방향.
 
+## 12.6 배경지식: 모델 학습과 RLHF
+본서의 범위는 인스트럭션 설계와 사용 단계에 초점을 둡니다. 모델 자체를 학습시키는 방법론(RLHF 등)은 상세히 다루지 않지만, 배경지식 차원에서 기억할 점은 다음과 같습니다:
+
+- RLHF(Reinforcement Learning from Human Feedback)는 사람의 피드백을 보상 신호로 활용해 모델이 지시를 더 잘 따르도록 조정하는 학습 방법입니다.
+- RLHF는 모델 학습 단계의 주제이며, 인스트럭션 설계는 사용 단계의 주제입니다. 두 축은 상호보완적이며, 좋은 인스트럭션은 RLHF 유무와 관계없이 성과를 높이는 데 기여합니다.
+
 ---
 
 ## 참고 자료
@@ -31,6 +37,7 @@ MCP를 활용한 실제 사용 사례.
 - The Future of AI Tools Interoperability. (2023). Stanford HAI Research Series.
 - Multi-Agent Framework Research. (2023). https://www.ai-agent-systems.org/frameworks/
 - Karpathy, A. (2023). The LLM OS: Operating System for LLMs. https://karpathy.github.io/2023/05/10/llm-os/
+- Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C., Mishkin, P., ... & Lowe, R. (2022). Training language models to follow instructions with human feedback. arXiv preprint arXiv:2203.02155.
 
 ---
 

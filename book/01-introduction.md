@@ -86,7 +86,7 @@
 **구조적 한계**:
 - **일회성 사용**: 유사한 작업을 반복할 때마다 비슷한 프롬프트를 다시 작성해야 합니다.
 - **최적화 어려움**: 최상의 결과를 얻기 위한 프롬프트 개선이 시행착오에 의존합니다.
-- **길이 제한**: AI 모델의 컨텍스트 창 제한으로 매우 긴 프롬프트는 사용하기 어렵습니다.
+- **길이 제한**: AI 모델의 컨텍스트 창[^2] 제한으로 매우 긴 프롬프트는 사용하기 어렵습니다.
 
 **인적 요소 관련 한계**:
 - **작성자 의존성**: 프롬프트 품질이 작성자의 경험과 기술에 크게 좌우됩니다.
@@ -129,14 +129,14 @@
 ## 참고 자료
 
 - Brown, T., et al. (2020). Language Models are Few-Shot Learners. arXiv preprint arXiv:2005.14165.
-- Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C., Mishkin, P., ... & Lowe, R. (2022). Training language models to follow instructions with human feedback. arXiv preprint arXiv:2203.02155.
-- Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., ... & Le, Q. (2022). Chain-of-thought prompting elicits reasoning in large language models. arXiv preprint arXiv:2201.11903.
+- Liu, J., et al. (2023). Lost in the Middle: How Language Models Use Long Contexts. arXiv preprint arXiv:2307.03172.
 - Prompt Engineering Guide. (2023). https://www.promptingguide.ai/
 - Anthropic. (2023). Claude Prompt Design. https://docs.anthropic.com/claude/docs/introduction-to-prompt-design
 
 ---
 
 [^1]: Few-shot learning(퓨샷 러닝)은 AI에게 몇 가지 예시만 제공하여 패턴을 인식시키고 유사한 형식으로 새로운 문제를 해결하게 하는 학습 방법입니다. 대규모 언어 모델이 적은 수의 예시만으로도 새로운 작업을 수행할 수 있는 능력을 활용합니다.
+[^2]: 컨텍스트 창(context window)은 모델이 한 번에 처리하고 기억할 수 있는 입력 토큰의 최대 길이를 의미합니다. 창을 초과하는 정보는 잘리거나 활용도가 크게 떨어질 수 있습니다.
 
 **상태:** v1-draft  
 **작성 시작일:** 2025-09-27

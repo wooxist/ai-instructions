@@ -69,6 +69,7 @@ AI가 스스로 TODO 리스트를 세우고 검토한다.
 - McKinsey & Company. (2018). The MECE Principle: A Guide to Clear Thinking.
 - Google. (2023). Machine Learning Glossary. https://developers.google.com/machine-learning/glossary
 - IEEE. (2023). Ethically Aligned Design: A Vision for Prioritizing Human Well-being with Autonomous and Intelligent Systems.
+ 
 
 ---
 
