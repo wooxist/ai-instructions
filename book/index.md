@@ -40,10 +40,10 @@
 ## [4장. 인스트럭션 설계의 메타 원칙](04-meta-principles.md) [작성 중: v1-draft]
 **목적:** 좋은 지침을 일관되게 만들고 유지·개선하기 위한 메타 원칙을 익힌다.
 
-- 5.1 구조적/조직적 원칙 (Framework & Organization)
-- 5.2 실행/작동 방식 원칙 (Execution & Process)
-- 5.3 검토/검증 원칙 (Validation & Review)
-- 5.4 책임/가치 원칙 (Governance & Ethics)
+- 4.1 구조적/조직적 원칙 (Framework & Organization)
+- 4.2 실행/작동 방식 원칙 (Execution & Process)
+- 4.3 검토/검증 원칙 (Validation & Review)
+- 4.4 책임/가치 원칙 (Governance & Ethics)
 
 ## [5장. 역할(Agent)과 제약(Constraint) 설계](05-agent-constraints.md) [작성 중: v1-draft]
 **목적:** AI에게 명확한 역할(페르소나)을 부여하고, 그 역할이 준수해야 할 기술적/운영적 제약을 함께 정의한다.
