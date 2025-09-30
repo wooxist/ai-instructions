@@ -20,7 +20,7 @@
 - 메타 원칙과 사전 지식
 - Agent 설계와 Persona 정의
 
-### 2부: 인스트럭션의 실무 적용과 발전 (7-12장)
+### 2부: 인스트럭션의 실무 적용과 발전 (7-13장)
 - 조직 및 개인 환경에서의 실무 활용
 - 인스트럭션 관리와 지원 도구
 - 성능에 영향을 미치는 요인
@@ -43,12 +43,13 @@ ai-instructions/
     ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의 [v1-draft]
     │
     │── 2부: 인스트럭션의 실무 적용과 발전
-    ├── 07-practical.md      # 7장: 실무 활용하기 [v1-draft]
-    ├── 08-tools.md          # 8장: 도움이 되는 도구 [v1-draft]
-    ├── 09-performance.md    # 9장: 퍼포먼스에 영향을 미치는 요인 [v1-draft]
-    ├── 10-productivity.md   # 10장: 생산성 측정 & 명령어 검증 [v1-draft]
-    ├── 11-evolution.md      # 11장: 환경 변화와 인스트럭션의 진화 [v1-draft]
-    ├── 12-mcp-future.md     # 12장: MCP와 인스트럭션의 미래 [v1-draft]
+    ├── 07-limits.md         # 7장: 인스트럭션의 제한과 대응 전략 [v1-draft]
+    ├── 08-practical.md      # 8장: 실무 활용하기 [v1-draft]
+    ├── 09-tools.md          # 9장: 도움이 되는 도구 [v1-draft]
+    ├── 10-performance.md    # 10장: 퍼포먼스에 영향을 미치는 요인 [v1-draft]
+    ├── 11-productivity.md   # 11장: 생산성 측정 & 명령어 검증 [v1-draft]
+    ├── 12-evolution.md      # 12장: 환경 변화와 인스트럭션의 진화 [v1-draft]
+    ├── 13-mcp-future.md     # 13장: MCP와 인스트럭션의 미래 [v1-draft]
     │
     └── index.md             # 전체 목차 및 개요
 ```
