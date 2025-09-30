@@ -41,9 +41,9 @@
 
 더 나아가, 개인정보나 저작권과 같은 **윤리적 경계(Ethical Boundaries)**를 인스트럭션에 명확히 설정하고, 중요한 의사결정에는 반드시 사람의 검토를 거치도록 하는 **Human-in-the-Loop[^12]** 장치를 마련해야 합니다. 이는 AI와의 협업에서 발생할 수 있는 리스크를 관리하고, 최종적인 책임은 인간에게 있음을 명확히 하는 중요한 원칙입니다.
 
----
+## 4.4 다음으로
 
-## 참고 자료
+지금까지 살펴본 메타 원칙들은 좋은 인스트럭션을 설계하기 위한 '지도'와 같습니다. 이제 이 지도를 바탕으로, [5장. 역할(Agent)과 제약(Constraint) 설계](05-agent-constraints.md)에서는 인스트럭션을 수행할 주체인 AI의 역할을 정의하고, 그 역할이 지켜야 할 규칙을 설정하는 구체적인 방법을 배우게 됩니다.
 
 ---
 
@@ -57,7 +57,6 @@
 - McKinsey & Company. (2018). The MECE Principle: A Guide to Clear Thinking.
 - Google. (2023). Machine Learning Glossary. https://developers.google.com/machine-learning/glossary
 - IEEE. (2023). Ethically Aligned Design: A Vision for Prioritizing Human Well-being with Autonomous and Intelligent Systems.
- 
 
 ---
 
@@ -74,5 +73,5 @@
 [^11]: Traceability: 결정·출처·근거·버전을 남겨 재현 가능성을 보장하는 특성.
 [^12]: Human-in-the-Loop: 중요한 의사결정 단계에 사람의 검토·승인을 포함시키는 운영 원칙.
 
-**상태:** v1-draft  
+**상태:** v1-released
 **작성 시작일:** 2025-09-27
