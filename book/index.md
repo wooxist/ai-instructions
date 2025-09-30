@@ -14,7 +14,7 @@
 - 1.2 프롬프트를 잘 사용하려면
 - 1.3 프롬프트의 한계 및 인스트럭션의 필요성
 
-## [2장. 질문 설계하기](02-questions.md) [작성 중: v1-draft]
+## [2장. 질문 설계하기](02-questions.md) [출시: v1-released]
 **목적:** AI의 답변을 원하는 방향으로 이끌기 위해 질문을 잘 만드는 방법을 배운다.
 
 - 2.1 폐쇄형 질문 (Closed-ended)
@@ -24,7 +24,7 @@
 - 2.5 맥락 의존형 질문 (Context-dependent)
 - 2.6 메타 질문 (Meta-questions)
 
-## [3장. 좋은 지시(명령)의 원칙](03-good-instructions.md) [작성 중: v1-draft]
+## [3장. 좋은 지시(명령)의 원칙](03-good-instructions.md) [출시: v1-released]
 **목적:** 명령문 자체의 품질을 높이는 법을 배운다.
 
 - 인스트럭션이란? (개요)

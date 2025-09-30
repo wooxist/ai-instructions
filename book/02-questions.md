@@ -213,6 +213,11 @@
 - Socratic Questioning Techniques. (2018). The Foundation for Critical Thinking.
 - Roediger, H. L., & Butler, A. C. (2011). The critical role of retrieval practice in long-term retention. Trends in cognitive sciences, 15(1), 20-27.
 - Anthropic. (2023). Advanced Prompting Techniques. https://docs.anthropic.com/claude/docs/advanced-prompting
+ - Tversky, A., & Kahneman, D. (1981). The framing of decisions and the psychology of choice. Science, 211(4481), 453–458.
+ - Grice, H. P. (1975). Logic and Conversation. In P. Cole & J. L. Morgan (Eds.), Syntax and Semantics, Vol. 3: Speech Acts. Academic Press.
+ - Fitzpatrick, R. (2013). The Mom Test: How to talk to customers & learn if your business is a good idea when everyone is lying to you. CreateSpace.
+ - Portigal, S. (2013). Interviewing Users: How to Uncover Compelling Insights. Rosenfeld Media.
+ - OpenAI. (2024). Prompt Engineering Best Practices. https://platform.openai.com/docs/guides/prompt-engineering
 
 ---
 
@@ -222,5 +227,5 @@
 [^4]: 브레인스토밍(brainstorming)은 판단을 미루고 짧은 시간에 다양한 아이디어를 발산하는 기법입니다.
 [^5]: 학습곡선(learning curve)은 어떤 도구나 기술을 익히는 난이도가 시간에 따라 낮아지는 경향을 뜻합니다.
 
-**상태:** v1-draft  
+**상태:** v1-released  
 **작성 시작일:** 2025-09-30
