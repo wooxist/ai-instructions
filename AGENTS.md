@@ -70,6 +70,7 @@ AGENTS.md — 저자 지침(Authors’ Guidelines)
   - [ ] 9) 파일 역할 분리 준수(AGENTS/book/README 역할)
 - 자동 검사(Automation)
   - [ ] 스타일 검사 통과: `python3 scripts/check_footnotes.py`
+  - [ ] 상태/버전 검사 통과: `python3 scripts/check_status.py`
 
 – v1-released 승격 체크리스트(요약)
 - [ ] 구성 완료: 상단 “이 장에서 배우는 것(3줄)”, 필요한 경우 “다음으로” 연결
