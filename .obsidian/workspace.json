@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "book/index.md",
+                "file": "book/01-introduction.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "index"
+              "title": "01-introduction"
             }
           }
         ]
@@ -171,25 +171,35 @@
   },
   "active": "2ba0525b422ccb81",
   "lastOpenFiles": [
+    "book/01-introduction-part2.md",
     "book/01-introduction.md",
-    "book/index.md",
-    "book/12-mcp-future.md",
-    "book/11-evolution.md",
-    "book/10-productivity.md",
-    "book/09-performance.md",
-    "book/08-tools.md",
-    "book/07-practical.md",
-    "book/06-agent-persona.md",
-    "book/05-meta-principles.md",
-    "book/04-context.md",
-    "book/03-questions.md",
     "book/02-good-instructions.md",
-    "무제.md",
-    "README.md",
-    "book/temp-benefit-section.md",
-    "book/temp-section1-1.md",
-    "GEMINI.md",
-    "CLAUDE.md",
-    "AGENTS.md"
+    "book/final/01-chapter-final/part7.md",
+    "book/final/01-chapter-final/part6.md",
+    "book/final/01-chapter-final/part5.md",
+    "book/final/01-chapter-final/part4.md",
+    "book/final/01-chapter-final/part3.md",
+    "book/final/01-chapter-final/part2.md",
+    "book/final/01-chapter-final/part1.md",
+    "book/final/01-chapter-final",
+    "book/final/chapter1-full/part-missing.md",
+    "book/final/chapter1-full/part6.md",
+    "book/final/chapter1-full/part5.md",
+    "book/final/chapter1-full/part4.md",
+    "book/final/chapter1-full/part3.md",
+    "book/final/chapter1-full/part2.md",
+    "book/final/chapter1-full/part1.md",
+    "book/final/chapter1-full",
+    "book/final/01-introduction-complete.md",
+    "book/final/01-introduction-part5.md",
+    "book/final/01-introduction-part4.md",
+    "book/final/01-introduction-part3.md",
+    "book/final/01-introduction-part2.md",
+    "book/final/01-introduction.md",
+    "book/final",
+    "book/temp/part3.md",
+    "book/temp/part2.md",
+    "book/temp/part1.md",
+    "book/temp"
   ]
 }
