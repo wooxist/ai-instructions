@@ -12,17 +12,16 @@
 ## 📚 가이드북 구조
 가이드북은 크게 두 부분으로 나뉩니다:
 
-### 1부: 인스트럭션의 기초와 설계 원칙 (1-8장)
+### 1부: 인스트럭션의 기초와 설계 원칙 (1-7장)
 - 프롬프트와 인스트럭션의 기본 개념
 - 좋은 인스트럭션
 - 질문 설계 방법
-- 필수 정보 제공 방법
-- 메타 원칙과 사전 지식
-- Agent 설계와 Persona 정의
-- 워크플로우 설계
-- 인스트럭션의 제한과 대응 전략
+- 인스트럭션 설계의 메타 원칙 (설계 철학)
+- 역할(Agent)과 제약(Constraint) 설계
+- 입력과 출력 설계 (결과물 중심 접근)
+- 처리 방법과 워크플로우 설계
 
-### 2부: 인스트럭션의 실무 적용과 발전 (9-14장)
+### 2부: 인스트럭션의 실무 적용과 발전 (8-13장)
 - 조직 및 개인 환경에서의 실무 활용
 - 인스트럭션 관리와 지원 도구
 - 성능에 영향을 미치는 요인
@@ -40,19 +39,18 @@ ai-instructions/
     ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기 [v1-released]
     ├── 02-questions.md      # 2장: 질문 설계하기 [v1-released]
     ├── 03-good-instructions.md # 3장: 좋은 인스트럭션 [v2-draft]
-    ├── 04-context.md        # 4장: 기본 정보 채워넣기 [v1-draft]
-    ├── 05-meta-principles.md # 5장: 인스트럭션 설계에 필요한 사전 지식 [v1-draft]
-    ├── 06-agent-persona.md  # 6장: Agent 설계와 Persona 정의 [v1-draft]
-    ├── 07-workflow.md       # 7장: 워크플로우 설계 [v1-draft]
-    ├── 08-limits.md         # 8장: 인스트럭션의 제한과 대응 전략 [v1-draft]
+    ├── 04-meta-principles.md # 4장: 인스트럭션 설계의 메타 원칙 [v1-draft]
+    ├── 05-agent-constraints.md # 5장: 역할(Agent)과 제약(Constraint) 설계 [v1-draft]
+    ├── 06-input-output.md   # 6장: 입력과 출력 설계 [v1-draft]
+    ├── 07-process-workflow.md # 7장: 처리 방법과 워크플로우 설계 [v1-draft]
     │
     │── 2부: 인스트럭션의 실무 적용과 발전
-    ├── 09-practical.md      # 9장: 실무 활용하기 [v1-draft]
-    ├── 10-tools.md          # 10장: 도움이 되는 도구 [v1-draft]
-    ├── 11-performance.md    # 11장: 퍼포먼스에 영향을 미치는 요인 [v1-draft]
-    ├── 12-productivity.md   # 12장: 생산성 측정 & 명령어 검증 [v1-draft]
-    ├── 13-evolution.md      # 13장: 환경 변화와 인스트럭션의 진화 [v1-draft]
-    ├── 14-mcp-future.md     # 14장: MCP와 인스트럭션의 미래 [v1-draft]
+    ├── 08-practical.md      # 8장: 실무 활용하기 [v1-draft]
+    ├── 09-tools.md          # 9장: 도움이 되는 도구 [v1-draft]
+    ├── 10-performance.md    # 10장: 퍼포먼스에 영향을 미치는 요인 [v1-draft]
+    ├── 11-productivity.md   # 11장: 생산성 측정 & 명령어 검증 [v1-draft]
+    ├── 12-evolution.md      # 12장: 환경 변화와 인스트럭션의 진화 [v1-draft]
+    ├── 13-mcp-future.md     # 13장: MCP와 인스트럭션의 미래 [v1-draft]
     │
     └── index.md             # 전체 목차 및 개요
 ```
