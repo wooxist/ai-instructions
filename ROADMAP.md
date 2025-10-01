@@ -8,7 +8,7 @@
 - [x] 3장: 좋은 인스트럭션 (v1-released)
 
 ### Part 2: 복잡한 인스트럭션 설계
-- [ ] 4장: 인스트럭션 설계의 메타 원칙 (v1-draft → v1-released)
+- [x] 4장: 인스트럭션 설계의 메타 원칙 (v1-released)
 - [ ] 5장: 역할(Agent)과 제약(Constraint) 설계 (v1-draft → v1-released)
 - [ ] 6장: 입력과 출력 설계 (v1-draft → v1-released)
 - [ ] 7장: 처리 방법과 워크플로우 설계 (v1-draft → v1-released)
