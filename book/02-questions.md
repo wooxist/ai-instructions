@@ -71,12 +71,11 @@
 
 ## 참고 자료
 
-- Krosnick, J. A., & Presser, S. (2010). Question and questionnaire design. Handbook of survey research, 2(3), 263-314.
-- Socratic Questioning Techniques. (2018). The Foundation for Critical Thinking.
 - Anthropic. (2023). Advanced Prompting Techniques. https://docs.anthropic.com/claude/docs/advanced-prompting
- - Tversky, A., & Kahneman, D. (1981). The framing of decisions and the psychology of choice. Science, 211(4481), 453–458.
- - Grice, H. P. (1975). Logic and Conversation. In P. Cole & J. L. Morgan (Eds.), Syntax and Semantics, Vol. 3: Speech Acts. Academic Press.
- - OpenAI. (2024). Prompt Engineering Best Practices. https://platform.openai.com/docs/guides/prompt-engineering
+- Grice, H. P. (1975). Logic and Conversation. In *Syntax and Semantics, Vol. 3: Speech Acts*.
+- Krosnick, J. A., & Presser, S. (2010). Question and questionnaire design. In *Handbook of survey research*.
+- OpenAI. (2024). Prompt Engineering Best Practices. https://platform.openai.com/docs/guides/prompt-engineering
+- Tversky, A., & Kahneman, D. (1981). The framing of decisions and the psychology of choice. *Science*.
 
 ---
 
