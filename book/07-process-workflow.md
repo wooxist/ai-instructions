@@ -61,6 +61,10 @@
 - **대체 경로 (Fallback):** 핵심 에이전트가 실패했을 때, 더 단순하지만 최소한의 기능은 수행하는 '대체 에이전트'를 실행하거나, 즉시 담당자에게 알림을 보내 수동 개입을 요청하는 경로를 마련합니다.
 - **모니터링 및 로깅:** 4장의 **투명성 및 추적 가능성(Transparency & Traceability)** 원칙에 따라, 모든 태스크의 시작과 끝, 입/출력 데이터, 성공/실패 상태를 로그로 기록해야 합니다. 이는 문제 발생 시 원인을 신속하게 진단하고 워크플로우를 개선하는 데 필수적입니다.
 
+## 실무 예제로 이어보기
+
+이 장에서 배운 개념들을 종합하여 실제 파일 기반 인스트럭션 시스템으로 구축하는 전체 과정은 [8장. 실무 활용하기](08-practical.md)에서 자세히 다룹니다.
+
 ## 참고 자료
 
 - Hohpe, G., & Woolf, B. (2003). *Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions*. Addison-Wesley Professional.
