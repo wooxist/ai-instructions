@@ -27,8 +27,3 @@
 - Nonaka, I., & Takeuchi, H. (1995). The knowledge-creating company: How Japanese companies create the dynamics of innovation. Oxford University Press.
 - McKinsey & Company. (2023). How to Navigate the Transition to AI-Powered Organizations. https://www.mckinsey.com/capabilities/quantumblack/our-insights/how-to-navigate-the-transition-to-ai-powered-organizations
 - Harvard Business Review. (2023). AI Governance in Organizations. https://hbr.org/2023/05/ai-governance-in-organizations
-
----
-
-**상태:** v1-draft  
-**작성 시작일:** 2025-09-27

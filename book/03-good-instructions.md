@@ -108,10 +108,3 @@
  - Strunk Jr., W., & White, E. B. (2000). The Elements of Style. Longman.
  - OpenAI. (2024). Prompt Engineering Best Practices. https://platform.openai.com/docs/guides/prompt-engineering
  
-
----
-
- 
-
-**상태:** v1-released
-**작성 시작일:** 2025-09-30

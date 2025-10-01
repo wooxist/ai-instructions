@@ -27,8 +27,3 @@
 - Nielsen, J. (2003). Usability 101: Introduction to Usability. Nielsen Norman Group.
 - International Organization for Standardization. (2018). ISO 9241-11:2018 Ergonomics of human-system interaction — Part 11: Usability: Definitions and concepts.
 - Microsoft Research. (2023). Human-AI Guidelines. https://www.microsoft.com/en-us/research/project/guidelines-for-human-ai-interaction/
-
----
-
-**상태:** v1-draft  
-**작성 시작일:** 2025-09-27

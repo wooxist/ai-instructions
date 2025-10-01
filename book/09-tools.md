@@ -25,8 +25,3 @@ Retrieval Augmented Generation과 Agent 구축을 위한 프레임워크.
 - Obsidian Documentation. (2023). https://help.obsidian.md/
 - GitHub Copilot Documentation. (2023). https://docs.github.com/en/copilot
 - Notion AI Documentation. (2023). https://www.notion.so/help/guides/notion-ai-overview
-
----
-
-**상태:** v1-draft  
-**작성 시작일:** 2025-09-27

@@ -23,8 +23,3 @@
 - McKinsey & Company. (2023). The State of AI in 2023: Generative AI's Breakout Year. https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-in-2023-generative-ais-breakout-year
 - Harvard Business Review. (2023). AI Tools in the Workplace: Best Practices for Integration. https://hbr.org/2023/07/ai-tools-in-the-workplace-best-practices-for-integration
 - Agile Alliance. (2023). AI Integration in Agile Teams. https://www.agilealliance.org/resources/experience-reports/ai-integration-in-agile-teams/
-
----
-
-**상태:** v1-draft  
-**작성 시작일:** 2025-09-27

@@ -27,8 +27,3 @@ AI 모델의 설정이 결과에 미치는 영향.
 - Kaplan, J., et al. (2020). Scaling laws for neural language models. arXiv preprint arXiv:2001.08361.
 - Nielsen, J. (1994). Usability engineering. Morgan Kaufmann.
 - Norman, D. A. (2013). The design of everyday things: Revised and expanded edition. Basic Books.
-
----
-
-**상태:** v1-draft  
-**작성 시작일:** 2025-09-27

@@ -38,8 +38,3 @@ MCP를 활용한 실제 사용 사례.
 - Multi-Agent Framework Research. (2023). https://www.ai-agent-systems.org/frameworks/
 - Karpathy, A. (2023). The LLM OS: Operating System for LLMs. https://karpathy.github.io/2023/05/10/llm-os/
 - Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C., Mishkin, P., ... & Lowe, R. (2022). Training language models to follow instructions with human feedback. arXiv preprint arXiv:2203.02155.
-
----
-
-**상태:** v1-draft  
-**작성 시작일:** 2025-09-27
