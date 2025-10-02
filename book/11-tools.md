@@ -87,17 +87,22 @@
 - **인간의 승인 (Human-in-the-Loop):** 되돌릴 수 없거나 중요한 작업을 수행하기 전에는, 반드시 인간 사용자의 최종 승인을 받도록 워크플로우를 설계해야 합니다.
 - **샌드박싱 (Sandboxing):** 코드를 실행할 때는 Docker 컨테이너와 같은 격리된 '샌드박스' 환경에서 실행하여, 시스템에 미치는 영향을 원천적으로 차단해야 합니다.
 
-## 11.5 미래: 표준화와 상호운용성을 향하여
+## 11.5 MCP: 상호운용성을 위한 표준 프로토콜
 
 현재의 에이전트와 도구 생태계는 매우 파편화되어 있습니다. OpenAI, Google, Anthropic 등 각 모델 제공사들은 저마다 다른 방식으로 도구를 정의하고 호출합니다. 이는 개발자들이 특정 플랫폼에 종속되게 만들고, 서로 다른 시스템의 에이전트들이 협력하는 것을 거의 불가능하게 만듭니다.
 
-이러한 문제를 해결하기 위한 미래의 비전으로, 우리는 **MCP(Model-Context Protocol)**라는 가상의 표준 프로토콜을 상상해 볼 수 있습니다. MCP는 인간, AI 모델, 도구가 서로의 역할, 기능, 맥락을 이해하고 소통하기 위한 '공용어(Lingua Franca)'입니다. 이는 마치 전 세계의 컴퓨터가 HTTP라는 프로토콜 위에서 소통하며 월드 와이드 웹을 이룬 것과 같습니다.
+이러한 문제를 해결하기 위한 노력으로, **MCP(Model-Context Protocol)**라는 표준 프로토콜이 등장했습니다. MCP는 인간, AI 모델, 도구가 서로의 역할, 기능, 맥락을 이해하고 소통하기 위한 '공용어(Lingua Franca)'를 지향합니다. 이는 마치 전 세계의 컴퓨터가 HTTP라는 프로토콜 위에서 소통하며 월드 와이드 웹을 이룬 것과 같습니다. 최근 일부 업체들이 MCP를 지원하는 서버를 출시하기 시작하면서, 이는 더 이상 가상의 개념이 아닌 현실적인 표준으로 자리잡아가고 있습니다.
 
-만약 MCP와 같은 표준이 정착된다면, 다음과 같은 미래가 가능해집니다.
+## 참고 자료
 
-- **에이전트 상호운용성:** 구글의 '캘린더 에이전트'와 마이크로소프트의 '아웃룩 에이전트'가 서로 대화하며 사용자의 일정을 조율하는 세상이 열립니다.
-- **에이전트 마켓플레이스:** 개발자들은 특정 기능에 특화된 MCP 호환 에이전트를 만들어 마켓플레이스에서 판매하거나 공유할 수 있게 됩니다.
-- **메타 에이전트의 실현:** 7장에서 논의한 '메타 에이전트'가 마켓플레이스에서 필요한 에이전트들을 동적으로 찾아, 스스로 팀을 구성하고 워크플로우를 설계하여 복잡한 문제를 해결하게 될 것입니다.
+- Anthropic. (2023). Claude Function Calling. https://docs.anthropic.com/claude/docs/function-calling
+- Hohpe, G., & Woolf, B. (2003). *Enterprise Integration Patterns*. Addison-Wesley Professional.
+- Langchain Documentation. (2023). https://docs.langchain.com/
+- LlamaIndex Documentation. (2023). https://www.llamaindex.ai/
+- OpenAI. (2023). Function Calling. https://platform.openai.com/docs/guides/function-calling
+- PromptLayer Documentation. (2023). https://promptlayer.com/docs
+- Weights & Biases Documentation. (2023). https://docs.wandb.ai/
+� 에이전트들을 동적으로 찾아, 스스로 팀을 구성하고 워크플로우를 설계하여 복잡한 문제를 해결하게 될 것입니다.
 
 ## 참고 자료
 
