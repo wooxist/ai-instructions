@@ -28,27 +28,50 @@
 name: Tweet Content Generation Pipeline
 trigger: Manual
 
+variables:
+  - idea: "AI 지침 설계에 대한 트윗" # 파라미터로 외부에서 주입 가능
+  - expanded_ideas: null
+  - selected_idea: null
+  - tweet_draft: null
+  - hashtags: null
+
 steps:
   - name: 1. Expand Idea
     agent: agents/01_idea_expander.md
     inputs:
-      - idea: "AI 지침 설계에 대한 트윗" # 파라미터로 외부에서 주입 가능
+      - idea: "{{idea}}"
     outputs:
-      - file: expanded_ideas.json
+      - variable: expanded_ideas
 
-  - name: 2. Draft Tweet
+  - name: 2. User Selects Idea
+    type: human_in_the_loop
+    instructions: "다음 3가지 아이디어 중 하나를 선택해주세요: {{expanded_ideas}}"
+    outputs:
+      - variable: selected_idea
+
+  - name: 3. Draft Tweet
     agent: agents/02_tweet_writer.md
     inputs:
-      - file: expanded_ideas.json # 이전 단계의 출력을 입력으로 사용
+      - idea: "{{selected_idea}}" # 사용자가 선택한 아이디어를 입력으로 사용
     outputs:
-      - text: tweet_draft.txt
+      - variable: tweet_draft
 
-  - name: 3. Recommend Hashtags
+  - name: 4. Recommend Hashtags
     agent: agents/03_hashtag_recommender.md
     inputs:
-      - text: tweet_draft.txt
+      - text: "{{tweet_draft}}"
     outputs:
-      - file: hashtags.json
+      - variable: hashtags
+
+  - name: 5. Finalize
+    type: format
+    template: |
+      {
+        "tweet": "{{tweet_draft}}",
+        "hashtags": {{hashtags}}
+      }
+    outputs:
+      - file: final_tweet.json
 ```
 
 **3. 에이전트 인스트럭션 예시**
@@ -118,6 +141,7 @@ steps:
 name: Python Code Generation and Review
 trigger: Manual
 
+max_retries: 3 # 무한 루프 방지를 위한 안전장치 추가
 steps:
   - name: 1. Generate Code
     agent: agents/01_code_generator.md
