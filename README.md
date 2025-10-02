@@ -34,14 +34,28 @@
 ```plaintext
 ai-instructions/
 ├── README.md                # 프로젝트 개요
-├── ROADMAP.md               # 프로젝트 로드맵
+├── ROADMAP.md               # 프로젝트 로드맵 (Phase 2 이후 계획)
+├── ai-instructions/instructions.md # 모든 AI 에이전트가 따라야 할 집필 지침(SSOT)
 └── book/                    # 모든 원고와 자료 관리
-    ├── 00-preface.md        # 서문
-    ├── 01-introduction.md   # 1장. 프롬프트와 인스트럭션 이해하기
-    │   ... (각 장의 파일)
-    ├── 13-evolution.md      # 13장. 인스트럭션 시스템의 진화와 미래
-    ├── 14-conclusion.md     # 결론
-    └── index.md             # 전체 목차
+    ├── 00-preface.md          # 서문 (v1-released)
+    ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기 (v1-released)
+    ├── 02-questions.md        # 2장: 질문 설계하기 (v1-released)
+    ├── 03-good-instructions.md # 3장: 좋은 인스트럭션 (v1-released)
+    ├── 04-meta-principles.md  # 4장: 인스트럭션 설계의 메타 원칙 (v1-released)
+    ├── 05-agent-constraints.md # 5장: 역할(Agent)과 제약(Constraint) 설계 (v1-released)
+    ├── 06-io-design.md        # 6장: 입력과 출력 설계 (v1-released)
+    ├── 07-workflow-design.md  # 7장: 처리 방법과 워크플로우 설계 (v1-released)
+    ├── 08-performance.md      # 8장: 성능 최적화 (v1-released)
+    ├── 09-productivity.md     # 9장: 인스트럭션의 평가와 검증 (v1-released)
+    ├── 10-1-single-agent-patterns.md # 10장 1부: 단일 에이전트 패턴 (v1-released)
+    ├── 10-2-multi-agent-workflows.md # 10장 2부: 다중 에이전트 워크플로우 (v1-released)
+    ├── 10-3-organizational-standards.md # 10장 3부: 조직 표준 시스템 (v1-released)
+    ├── 10-4-advanced-architectures.md # 10장 4부: 고급 아키텍처 (v1-released)
+    ├── 11-tools.md            # 11장: 도구(Tools)와 플러그인 활용 (v1-released)
+    ├── 12-workflow-as-code.md # 12장: 워크플로우 자동화와 코드형 인프라 (v1-draft)
+    ├── 13-evolution.md        # 13장: 살아있는 시스템: 인스트럭션의 진화와 관리 (v1-released)
+    ├── 14-conclusion.md       # 결론 (v1-released)
+    └── index.md               # 전체 목차
 ```
 
 ## 📖 내용 참조
