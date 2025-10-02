@@ -50,14 +50,18 @@ ai-instructions/
     ├── 05-agent-constraints.md # 5장: 역할(Agent)과 제약(Constraint) 설계
     ├── 06-input-output.md   # 6장: 입력과 출력 설계
     ├── 07-process-workflow.md # 7장: 처리 방법과 워크플로우 설계
-    ├── 08-performance.md    # 8장: 인스트럭션 시스템의 성능 최적화
-    ├── 09-productivity.md   # 9장: 인스트럭션의 평가와 검증
-    ├── 10-practical.md      # 10장: 상황별 인스트럭션 설계 패턴 예제
+    ├── 08-performance.md       # 8장: 성능 측정 및 평가 (v1-draft)
+    ├── 09-productivity.md      # 9장: 생산성: 나만의 에이전트 구축하기 (v1-draft)
+    ├── 10장: 상황별 인스트럭션 설계 패턴 예제
+    │   - `10-1-single-agent-patterns.md`    # 1부: 기본 패턴 - 단일 에이전트 설계 (v1-draft)
+    │   - `10-2-multi-agent-workflows.md`    # 2부: 협력 패턴 - 다중 에이전트 워크플로우 (v1-draft)
+    │   - `10-3-organizational-standards.md` # 3부: 확장 패턴 - 조직 표준 시스템 (v1-draft)
+    │   - `10-4-advanced-architectures.md`   # 4부: 고급 아키텍처와 실전 구현 (v1-draft)
     │
     │── Part 3: 인스트럭션 시스템의 확장과 운영
-    ├── 11-tools.md          # 11장: 인스트럭션 시스템을 위한 도구와 프레임워크
-    ├── 12-workflow-as-code.md # 12장: 고급 워크플로우: DSL처럼 인스트럭션 설계하기
-    ├── 13-evolution.md      # 13장: 살아있는 시스템: 인스트럭션의 진화와 관리
+    ├── 11-tools.md               # 11장: 도구(Tools)와 플러그인 활용 (v1-draft)
+    ├── 12-workflow-as-code.md  # 12장: 워크플로우 자동화와 코드형 인프라 (v1-draft)
+    ├── 13-evolution.md           # 13장: 인스트럭션 시스템의 진화와 미래 (v1-draft)
     │
     └── index.md             # 전체 목차 및 개요
 ```
