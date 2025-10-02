@@ -14,7 +14,7 @@
 
 ## 들어가며: 인스트럭션은 살아있는 시스템이다
 
-우리가 공들여 만든 인스트럭션 시스템은 한번 구축하고 끝나는 정적인 산출물이 아닙니다. 그것은 비즈니스 환경과 기술 발전에 따라 끊임없이 적응하고 변화해야 하는 **'살아있는 시스템(Living System)'** 입니다. 최고의 인스트럭션도 관리되지 않으면 시간이 지나면서 그 가치를 잃고, 더 이상 작동하지 않는 '죽은 코드'가 될 수 있습니다.
+우리가 공들여 만든 인스트럭션 시스템은 한번 구축하고 끝나는 정적인 산출물이 아닙니다. 그것은 마치 잘 가꾸어야 하는 '정원'과 같습니다. 씨앗을 심고(시스템 구축), 물을 주고 거름을 주며(지속적인 관리), 잡초를 뽑고 가지치기를 해야(최적화와 유지보수) 아름다운 정원을 유지할 수 있습니다. 최고의 인스트럭션도 관리되지 않으면 시간이 지나면서 그 가치를 잃고, 더 이상 작동하지 않는 '죽은 코드'가 될 수 있습니다.
 
 인스트럭션 시스템의 진화를 이끄는 동력은 크게 두 가지입니다.
 
@@ -101,7 +101,7 @@ AI 기술은 무서운 속도로 발전합니다. 어제의 최고 모델이 오
 
 ## [부록] 실제 구현을 위한 프레임워크: LangChain & CrewAI
 
-이 책에서 `workflow.yaml`과 `agents/*.md` 파일로 설계한 개념적인 '다중 에이전트 시스템'을 실제 코드로 구현할 때, LangChain과 CrewAI는 가장 이상적인 도구입니다. 이 부록에서는 이 두 프레임워크의 개념과, 이 책의 예제를 실제 코드로 변환하는 방법을 간략히 소개합니다.
+이 책에서 `workflow.yaml`과 `agents/*.md` 파일로 설계한 개념적인 '다중 에이전트 시스템'을 실제 코드로 구현할 때, LangChain과 CrewAI는 가장 이상적인 도구입니다. 이 부록에서는 이 두 프레임워크의 개념과, 이 책의 예제를 실제 코드로 변환하는 방법을 간략히 소개하여, 독자들이 아이디어를 실제 작동하는 시스템으로 구현하는 데 도움을 드리고자 합니다.
 
 ### 1. LangChain: AI 애플리케이션을 위한 '레고 블록'
 
@@ -126,7 +126,7 @@ AI 기술은 무서운 속도로 발전합니다. 어제의 최고 모델이 오
 
 - **비유:** CrewAI는 유능한 **'프로젝트 매니저'** 나 **'오케스트라 지휘자'** 와 같습니다.
 
-### 예제: 10.4절의 '콘텐츠 생성 파이프라인' CrewAI로 구현하기
+### 예제: 10.4절의 '콘텐츠 생성 파이프라인'을 CrewAI로 구현하기
 
 책의 설계도가 CrewAI를 사용하면 어떻게 실제 코드로 변환되는지 보여줍니다.
 
@@ -134,13 +134,15 @@ AI 기술은 무서운 속도로 발전합니다. 어제의 최고 모델이 오
 from crewai import Agent, Task, Crew, Process
 
 # --- 1. 에이전트 정의 (agents/*.md 파일에 해당) ---
+# 책의 10.4절에서 정의한 각 에이전트의 역할과 목표를 CrewAI의 Agent 클래스로 구현합니다.
+# 'backstory'는 에이전트의 페르소나를 강화하여 더 일관된 답변을 유도합니다.
 
 # 01_idea_expander.md
 idea_expander = Agent(
   role='창의적인 콘텐츠 전략가',
   goal='주어진 아이디어를 (1) 질문형, (2) 정보 제공형, (3) 논란 유발형의 3가지 다른 각도로 구체화하여 제안',
   backstory='당신은 최신 트렌드에 밝고, 사용자의 참여를 이끌어내는 독창적인 콘텐츠 각도를 찾아내는 데 능숙합니다.',
-  verbose=True
+  verbose=True # 에이전트의 사고 과정을 출력하여 디버깅에 도움을 줍니다.
 )
 
 # 02_tweet_writer.md
@@ -161,6 +163,9 @@ hashtag_recommender = Agent(
 
 
 # --- 2. 태스크 정의 (workflow.yaml의 steps에 해당) ---
+# 책의 10.4절 workflow.yaml에 정의된 각 단계를 CrewAI의 Task 클래스로 구현합니다.
+# 각 태스크는 특정 에이전트에게 할당되며, 'description'에 구체적인 지시를 담습니다.
+# 'context'를 통해 이전 태스크의 결과물을 다음 태스크의 입력으로 전달합니다.
 
 # 1단계: 아이디어 확장
 task_expand_idea = Task(
@@ -170,6 +175,7 @@ task_expand_idea = Task(
 )
 
 # 2단계: 아이디어 선택 (Human-in-the-Loop)
+# CrewAI의 human_input=True 옵션을 사용하여 워크플로우 중간에 사람의 개입을 요청합니다.
 task_select_idea = Task(
   description='AI가 제안한 3가지 아이디어 중, 가장 마음에 드는 아이디어를 선택하여 입력해주세요.',
   agent=idea_expander, # 입력을 받을 주체를 임의로 지정
@@ -182,7 +188,7 @@ task_draft_tweet = Task(
   description='선택된 아이디어를 바탕으로 트윗 초안을 작성해줘.',
   agent=tweet_writer,
   expected_output='이모지가 포함된 140자 이내의 트윗 문장',
-  context=[task_select_idea] # 이전 태스크의 출력을 사용하도록 지정
+  context=[task_select_idea] # 이전 태스크(사용자가 선택한 아이디어)의 결과물을 입력으로 사용
 )
 
 # 4단계: 해시태그 추천
@@ -190,11 +196,13 @@ task_recommend_hashtags = Task(
   description='작성된 트윗 초안에 어울리는 해시태그를 추천해줘.',
   agent=hashtag_recommender,
   expected_output='추천 해시태그 5개를 담은 JSON 배열',
-  context=[task_draft_tweet]
+  context=[task_draft_tweet] # 이전 태스크(트윗 초안)의 결과물을 입력으로 사용
 )
 
 
 # --- 3. 크루(팀) 구성 및 실행 (워크플로우 엔진에 해당) ---
+# 정의된 에이전트들과 태스크들을 모아 하나의 '크루(Crew)'를 구성하고, 실행 프로세스를 정의합니다.
+# process=Process.sequential은 태스크들이 정의된 순서대로 실행됨을 의미합니다.
 
 tweet_crew = Crew(
   agents=[idea_expander, tweet_writer, hashtag_recommender],
