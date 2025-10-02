@@ -5,25 +5,25 @@
 # Part 1: 프롬프트와 인스트럭션의 기초
 
 ## [1장. 프롬프트와 인스트럭션 이해하기](01-introduction.md)
-### 1.1 프롬프트란?
-### 1.2 프롬프트를 잘 사용하려면
-### 1.3 프롬프트의 한계 및 인스트럭션의 필요성
+### [1.1 프롬프트란?](01-introduction.md#11-프롬프트란)
+### [1.2 프롬프트를 잘 사용하려면](01-introduction.md#12-프롬프트를-잘-사용하려면)
+### [1.3 프롬프트의 한계 및 인스트럭션의 필요성](01-introduction.md#13-프롬프트의-한계-및-인스트럭션의-필요성)
 
 ## [2장. 질문 설계하기](02-questions.md)
-### 2.1 폐쇄형 질문
-### 2.2 개방형 질문
-### 2.3 탐색형 질문
-### 2.4 비교형 질문
-### 2.5 맥락 의존형 질문
-### 2.6 메타 질문
+### [2.1 폐쇄형 질문](02-questions.md#21-폐쇄형-질문-closed-ended)
+### [2.2 개방형 질문](02-questions.md#22-개방형-질문-open-ended)
+### [2.3 탐색형 질문](02-questions.md#23-탐색형-질문-exploratory)
+### [2.4 비교형 질문](02-questions.md#24-비교형-질문-comparative)
+### [2.5 맥락 의존형 질문](02-questions.md#25-맥락-의존형-질문-context-dependent)
+### [2.6 메타 질문](02-questions.md#26-메타-질문-meta-questions)
 
 ## [3장. 좋은 인스트럭션](03-good-instructions.md)
-### 3.1 인스트럭션: 일회성 프롬프트를 넘어서
-### 3.2 명확성 (Clear)
-### 3.3 구체성 (Specific)
-### 3.4 단계성 (Step-wise)
-### 3.5 제약 조건과 한계 설정
-### 3.6 실패하는 지시의 특징 (안티패턴)
+### [3.1 인스트럭션: 일회성 프롬프트를 넘어서](03-good-instructions.md#31-인스트럭션-일회성-프롬프트를-넘어서)
+### [3.2 명확성 (Clear)](03-good-instructions.md#32-명확성-clear)
+### [3.3 구체성 (Specific)](03-good-instructions.md#33-구체성-specific)
+### [3.4 단계성 (Step-wise)](03-good-instructions.md#34-단계성-step-wise)
+### [3.5 제약 조건과 한계 설정](03-good-instructions.md#35-제약-조건constraints과-한계-설정)
+### [3.6 실패하는 지시의 특징 (안티패턴)](03-good-instructions.md#36-실패하는-지시의-특징-안티패턴)
 
 # Part 2: 인스트럭션 시스템 설계와 평가
 
