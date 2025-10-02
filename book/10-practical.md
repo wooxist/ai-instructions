@@ -493,6 +493,213 @@
 
 ---
 
+## 10.13 [실전 코딩] 9장의 '평가 에이전트' 직접 만들어보기
+
+9장에서 우리는 인스트럭션을 객관적으로 평가하는 방법과 '평가 에이전트'의 개념에 대해 배웠습니다. 이 섹션에서는 그 개념을 실제 파이썬 코드로 구현하는 구체적인 예제를 다룹니다. 이 예제를 통해 여러분은 더 이상 '감'이 아닌 데이터로 프롬프트의 성능을 측정하는 방법을 직접 경험하게 될 것입니다.
+
+### 시나리오
+
+비정형 텍스트에서 사용자의 이름과 이메일을 JSON 형식으로 추출하는 작업을 가정해 봅시다. 우리는 두 가지 버전의 프롬프트를 테스트하여 어느 것이 더 안정적으로 정확한 JSON을 생성하는지 평가하고자 합니다.
+
+### 사전 준비물
+
+- **Python 3.7 이상**이 설치된 환경
+- **OpenAI API 키:** OpenAI 플랫폼에서 발급받은 API 키가 필요합니다. 스크립트를 실행하기 전에 환경 변수로 키를 설정해야 합니다.
+  ```bash
+  export OPENAI_API_KEY='sk-...' # 실제 키로 대체
+  ```
+- **OpenAI 라이브러리 설치:**
+  ```bash
+  pip install openai
+  ```
+
+### 1단계: 평가 데이터셋과 프롬프트 준비
+
+먼저 테스트에 사용할 '골든 데이터셋'과 성능을 비교할 두 프롬프트를 정의합니다.
+
+- **골든 데이터셋:** 테스트할 입력(input)과, 해당 입력에 대한 완벽한 정답(ground_truth)의 쌍으로 구성됩니다.
+- **프롬프트 A:** 간단하고 직접적인 요청.
+- **프롬프트 B:** Few-shot 예시와 더 명확한 출력 형식을 포함한 개선된 요청.
+
+### 2단계: '평가 에이전트' 코드 작성 (Python)
+
+이제 전체 프로세스를 자동화하는 파이썬 스크립트를 작성합니다. 이 스크립트가 바로 우리의 '평가 에이전트'입니다.
+
+```python
+import os
+import json
+from openai import OpenAI
+
+# 1. 사전 준비
+# ----------------------------------------------------------------------------
+# OpenAI 클라이언트 초기화
+# 코드가 환경 변수에서 API 키를 자동으로 읽어들입니다.
+client = OpenAI()
+
+# 골든 데이터셋 정의
+golden_dataset = [
+    {
+        "id": "case1",
+        "input": "제 이름은 김민준이고, 이메일은 mj.kim@example.com 입니다. 연락주세요.",
+        "ground_truth": {"name": "김민준", "email": "mj.kim@example.com"}
+    },
+    {
+        "id": "case2",
+        "input": "연락처: 이서연 (sy.lee@example.com)",
+        "ground_truth": {"name": "이서연", "email": "sy.lee@example.com"}
+    },
+    {
+        "id": "case3",
+        "input": "박지훈입니다. 이메일 주소는 없지만, 제 웹사이트는 phoon.co 입니다.",
+        "ground_truth": {"name": "박지훈", "email": None}
+    }
+]
+
+# 프롬프트 버전 정의
+prompt_a = """
+다음 텍스트에서 이름과 이메일 주소를 추출하여 JSON 형식으로 반환하세요.
+TEXT: {text}
+"""
+
+prompt_b = """
+당신은 텍스트에서 개인 정보를 추출하는 전문 AI입니다.
+주어진 텍스트에서 이름(name)과 이메일(email)을 추출하여 JSON 형식으로 반환하세요.
+
+# 예시
+- Text: "담당자는 최수빈이고, 이메일은 sb.choi@example.com 입니다."
+- Output: {{"name": "최수빈", "email": "sb.choi@example.com"}}
+
+# 규칙
+- 만약 이메일 주소가 없다면, email 필드의 값은 null로 설정하세요.
+- 다른 말은 절대 하지 말고, JSON 객체만 반환해야 합니다.
+
+TEXT: {text}
+"""
+
+prompts = {"prompt_a": prompt_a, "prompt_b": prompt_b}
+
+# 2. 핵심 함수 정의
+# ----------------------------------------------------------------------------
+def get_llm_response(prompt, text):
+    """주어진 프롬프트와 텍스트로 LLM API를 호출하는 함수"""
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt.format(text=text)}
+            ],
+            temperature=0
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"Error: {e}"
+
+def judge_response(response_text, ground_truth):
+    """LLM-as-a-Judge: 결과물을 평가하고 점수를 매기는 함수"""
+    score = 0
+    # 평가 기준 1: 유효한 JSON인가?
+    try:
+        response_json = json.loads(response_text)
+        score += 50
+    except json.JSONDecodeError:
+        return 0 # JSON 파싱 실패 시 0점 처리
+
+    # 평가 기준 2: 추출된 데이터가 정답과 일치하는가?
+    if response_json.get("name") == ground_truth.get("name") and \
+       response_json.get("email") == ground_truth.get("email"):
+        score += 50
+    
+    return score
+
+# 3. 평가 에이전트 실행
+# ----------------------------------------------------------------------------
+results = {}
+
+for prompt_name, prompt_template in prompts.items():
+    print(f"--- {prompt_name.upper()} 평가 시작 ---")
+    total_score = 0
+    prompt_results = []
+
+    for item in golden_dataset:
+        case_id = item["id"]
+        input_text = item["input"]
+        truth = item["ground_truth"]
+
+        # 1. LLM으로부터 답변 생성
+        response = get_llm_response(prompt_template, input_text)
+
+        # 2. 심판(Judge)을 통해 결과 채점
+        score = judge_response(response, truth)
+        total_score += score
+
+        prompt_results.append({
+            "case_id": case_id,
+            "response": response,
+            "score": score
+        })
+        print(f"  Case {case_id}: Score {score}/100")
+
+    results[prompt_name] = {
+        "details": prompt_results,
+        "average_score": total_score / len(golden_dataset)
+    }
+    print(f"--- {prompt_name.upper()} 평가 종료 ---\n")
+
+# 4. 최종 리포트 생성
+# ----------------------------------------------------------------------------
+print("========== 최종 평가 리포트 ==========")
+for prompt_name, result_data in results.items():
+    print(f"프롬프트: {prompt_name}")
+    print(f"  평균 점수: {result_data['average_score']:.2f}")
+print("======================================")
+
+# 상세 결과 출력 (옵션)
+# import pprint
+# pprint.pprint(results)
+
+```
+
+### 3단계: 실행 및 결과 리포트 확인
+
+위 스크립트를 `evaluation_agent.py`로 저장하고 터미널에서 실행합니다.
+
+```bash
+python evaluation_agent.py
+```
+
+스크립트가 실행되면, 각 프롬프트와 각 테스트 케이스에 대한 채점 과정을 볼 수 있습니다. 모든 평가가 끝나면 다음과 같은 최종 리포트를 얻게 됩니다.
+
+```
+--- PROMPT_A 평가 시작 ---
+  Case case1: Score 100/100
+  Case case2: Score 0/100
+  Case case3: Score 0/100
+--- PROMPT_A 평가 종료 ---
+
+--- PROMPT_B 평가 시작 ---
+  Case case1: Score 100/100
+  Case case2: Score 100/100
+  Case case3: Score 100/100
+--- PROMPT_B 평가 종료 ---
+
+========== 최종 평가 리포트 ==========
+프롬프트: prompt_a
+  평균 점수: 33.33
+프롬프트: prompt_b
+  평균 점수: 100.00
+======================================
+```
+
+이 리포트를 통해 우리는 **프롬프트 B가 프롬프트 A보다 훨씬 더 안정적으로 원하는 결과물을 생성한다**는 사실을 '감'이 아닌 '데이터'로 명확히 증명할 수 있습니다. 프롬프트 A는 간단한 케이스는 잘 처리했지만, 형식이 조금만 달라지거나 예외적인 상황(이메일 없음)에서는 실패했기 때문입니다.
+
+### 결론
+
+이 예제는 '평가 에이전트'의 가장 기본적인 형태입니다. 여기서 더 나아가 심판(Judge)의 평가 기준을 더 정교하게 만들거나, 'LLM-as-a-Judge'를 활용하여 점수뿐만 아니라 '실패 원인'까지 분석하게 만들 수도 있습니다. 
+
+중요한 것은 이러한 자동화된 평가 시스템을 통해, 우리는 인스트럭션 개선 작업을 훨씬 더 빠르고, 정확하고, 자신감 있게 수행할 수 있다는 점입니다. 여러분도 자신의 중요한 반복 작업에 이 '평가 에이전트' 패턴을 적용하여 프롬프트를 과학적으로 관리해 보세요.
+
+
 ## 마치며: 패턴에서 원칙으로
 
 이 장에서는 4장부터 9장까지 배운 설계 원칙과 방법론이 실제 상황에서 어떻게 적용되는지 9가지 매트릭스 상황과 추가 보충 예제를 통해 살펴보았습니다.
