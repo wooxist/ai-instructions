@@ -676,11 +676,12 @@ steps:
 
 **3. 에이전트 인스트럭션 및 스키마 예시**
 - **`agents/01_classifier.md` (분류 에이전트 예시)**
-  ```markdown
+```markdown
   # 역할: 고객 리뷰 분류 전문가
   # 목표: 주어진 고객 리뷰 텍스트를 '제품', 'CS', '가격', '기타' 네 가지 카테고리 중 가장 적합한 하나로 분류한다.
   # 출력: 분류 결과 (JSON: {"review_id": "...", "category": "제품"})
-  ```
+```
+
 - **`agents/02_extractor.md`**: 분류된 리뷰에서 제품명, 감성(긍/부정), 핵심 키워드를 추출하는 규칙 정의.
 - **`agents/03_summarizer.md`**: 추출된 정보를 바탕으로 제품, CS 등 부서별 요약 보고서를 생성하는 규칙 정의.
 - **`schemas/report.schema.json`**: 최종 보고서의 JSON 구조를 정의. (예: `{"product_summary": "...", "cs_issues": [...]}`)

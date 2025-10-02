@@ -85,11 +85,209 @@
 - **대체 경로 (Fallback):** 핵심 에이전트가 실패했을 때, 더 단순하지만 최소한의 기능은 수행하는 '대체 에이전트'를 실행하거나, 즉시 담당자에게 알림을 보내 수동 개입을 요청하는 경로를 마련합니다.
 - **모니터링 및 로깅:** 4장의 **투명성 및 추적 가능성(Transparency & Traceability)** 원칙에 따라, 모든 태스크의 시작과 끝, 입/출력 데이터, 성공/실패 상태를 로그로 기록해야 합니다. 이는 문제 발생 시 원인을 신속하게 진단하고 워크플로우를 개선하는 데 필수적입니다.
 
-## 7.4 고급 워크플로우 패턴과 아키텍처
+## 7.4 실제 워크플로우 설계 예제
+
+이론적인 패턴들을 실제 업무에 어떻게 적용할 수 있을까요? 두 가지 구체적인 시나리오를 통해 워크플로우 설계 과정을 살펴보겠습니다.
+
+### 7.4.1 예제 1: 콘텐츠 제작 및 발행 자동화
+
+**목표:** "AI 최신 동향"이라는 주제의 블로그 포스트를 아이디어 단계부터 발행까지 자동화한다.
+
+이 워크플로우는 **파이프라인 패턴**과 **생성-검증 패턴**을 결합하여 콘텐츠의 품질과 일관성을 보장합니다.
+
+- **워크플로우 다이어그램:**
+  ```mermaid
+  graph TD
+      subgraph "아이디어 구체화"
+          A[아이디어 분석 에이전트] --> B{개요 확정}
+      end
+      subgraph "콘텐츠 생성"
+          B --> C[초안 작성 에이전트]
+          C --> D[이미지 생성 에이전트]
+      end
+      subgraph "검증 및 수정"
+          D -- 초안 전달 --> E(교정/편집 에이전트)
+          E -- 수정 요청 --> C
+          E -- 최종 승인 --> F
+      end
+      subgraph "발행"
+          F[발행 에이전트] --> G((CMS 업로드 완료))
+      end
+  ```
+
+- **에이전트별 역할:**
+  1.  **아이디어 분석 에이전트:**
+      - **입력:** `"AI 최신 동향"` (주제)
+      - **역할:** 관련 키워드, 타겟 독자층, 경쟁 콘텐츠를 분석하여 3~4개의 소제목으로 구성된 개요(Outline)를 생성합니다.
+      - **출력:** `{ "title": "AI 최신 동향 분석", "outline": ["서론: 왜 AI 동향이 중요한가?", "주요 동향 1: 멀티모달", "..."] }` (JSON)
+  2.  **초안 작성 에이전트:**
+      - **입력:** 아이디어 분석 에이전트가 생성한 개요 JSON
+      - **역할:** 개요에 맞춰 각 섹션의 본문을 작성합니다.
+      - **출력:** `{ "title": "...", "content": "최근 AI 기술은...", "image_requests": ["멀티모달 개념도", "..."] }`
+  3.  **이미지 생성 에이전트:**
+      - **입력:** 초안 본문과 이미지 요청 목록
+      - **역할:** 본문 내용과 요청에 가장 적합한 이미지를 생성하거나 스톡 이미지 사이트에서 검색합니다.
+      - **출력:** `{ "content_with_images": "...<img src='...'/>..." }`
+  4.  **교정/편집 에이전트 (검증자):**
+      - **입력:** 이미지가 포함된 원고
+      - **역할:** 맞춤법, 문법, 스타일 가이드 준수 여부를 검토합니다. 중대한 오류 발견 시, 수정을 위해 **초안 작성 에이전트**에게 피드백과 함께 작업을 반환합니다. (생성-검증 루프)
+      - **출력:** 최종 승인된 원고 또는 수정 요청
+  5.  **발행 에이전트:**
+      - **입력:** 최종 승인된 원고
+      - **역할:** 원고를 워드프레스나 벨로그 같은 CMS(콘텐츠 관리 시스템) API를 통해 업로드하고 '발행 예약' 상태로 설정합니다.
+      - **출력:** `{ "status": "success", "post_url": "..." }`
+
+- **워크플로우 코드 예시 (`workflow.yaml`):**
+  이러한 흐름은 다음과 같은 워크플로우 정의 파일로 표현될 수 있습니다. 이 파일은 전체 프로세스를 조율하는 '매니저 에이전트'가 읽고 실행하는 설계도 역할을 합니다.
+
+  ```yaml
+  # /workflows/content_creation.yaml
+  name: Blog Post Generation Pipeline
+  trigger: Manual
+
+  steps:
+    - name: 1. Analyze Idea
+      agent: agents/idea_analyzer.md
+      inputs:
+        - topic: "AI 최신 동향"
+      outputs:
+        - file: outline.json
+
+    - name: 2. Draft Content
+      agent: agents/draft_writer.md
+      inputs:
+        - file: outline.json
+      outputs:
+        - file: draft.json
+
+    - name: 3. Generate Images
+      agent: agents/image_generator.md
+      inputs:
+        - file: draft.json
+      outputs:
+        - file: draft_with_images.md
+
+    - name: 4. Review and Edit
+      agent: agents/editor.md
+      inputs:
+        - file: draft_with_images.md
+      outputs:
+        - file: final_content.md
+      # 이 단계에서 '수정 필요' 시 2단계로 피드백과 함께 돌아가는
+      # 조건부 로직(피드백 루프)을 추가할 수 있습니다.
+
+    - name: 5. Publish Content
+      agent: agents/publisher.md
+      inputs:
+        - file: final_content.md
+      outputs:
+        - file: publish_result.json
+  ```
+
+### 7.4.2 예제 2: 고객 지원 티켓 처리 자동화
+
+**목표:** 이메일로 접수된 고객 문의를 자동으로 분류하고, 가능한 경우 즉시 해결하며, 복잡한 문제는 담당자에게 전달한다.
+
+이 워크플로우는 **분기 패턴**과 **계층적 협력 시스템**을 활용하여 효율성과 고객 만족도를 동시에 높입니다.
+
+- **워크플로우 다이어그램:**
+  ```mermaid
+  graph TD
+      A(고객 이메일 접수) --> B{라우터 에이전트};
+      B -- "결제 문의" --> C[FAQ 답변 에이전트];
+      B -- "기술 지원" --> D[기술 분석 에이전트];
+      B -- "기타 문의" --> E[인간 상담사 전달];
+
+      C -- 해결 가능 --> F((자동 답변 발송));
+      C -- 해결 불가 --> E;
+      
+      D -- 로그 분석 후 해결 --> F;
+      D -- 추가 정보 필요 --> E;
+  ```
+
+- **에이전트별 역할:**
+  1.  **라우터 에이전트 (매니저):**
+      - **입력:** 고객 이메일 본문
+      - **역할:** 이메일 내용을 분석하여 문의 유형을 `결제`, `기술`, `계정`, `기타` 등으로 분류하고, 적절한 다음 에이전트에게 작업을 전달하는 **분기** 역할을 수행합니다.
+      - **출력:** `{ "ticket_id": "...", "category": "기술", "summary": "...", "original_email": "..." }`
+  2.  **FAQ 답변 에이전트 (워커):**
+      - **입력:** 분류된 문의 데이터
+      - **역할:** 내부 FAQ 데이터베이스를 검색하여 해당 문의에 답변할 수 있는지 확인합니다. 답변 가능 시, 고객의 이름 등을 포함하여 개인화된 답변 초안을 생성합니다.
+      - **출력:** `{ "status": "resolved", "answer": "..." }` 또는 `{ "status": "escalation_needed" }`
+  3.  **기술 분석 에이전트 (워커):**
+      - **입력:** 기술 지원으로 분류된 문의 데이터
+      - **역할:** 고객의 계정 ID를 기반으로 서버 로그나 데이터베이스를 조회하여 오류의 원인을 진단합니다. 알려진 문제일 경우 해결책을 제시합니다.
+      - **출력:** `{ "status": "resolved", "answer": "..." }` 또는 `{ "status": "escalation_needed", "analysis_report": "..." }`
+  4.  **인간 상담사 전달 에이전트:**
+      - **입력:** 해결 불가(`escalation_needed`)로 판정된 모든 문의
+      - **역할:** Zendesk나 Jira 같은 티켓 관리 시스템에 새로운 티켓을 생성합니다. 이때, 이전 에이전트들이 분석한 내용(문의 요약, 로그 분석 결과 등)을 티켓에 자동으로 첨부하여 상담사가 상황을 빠르게 파악하도록 돕습니다.
+      - **출력:** `{ "ticket_system_id": "...", "message": "상담사에게 전달되었습니다." }`
+
+- **워크플로우 코드 예시 (`workflow.yaml`):**
+  이 고객 지원 워크플로우는 조건에 따라 작업 흐름이 나뉘는 **분기 패턴**을 포함합니다.
+
+  ```yaml
+  # /workflows/customer_support.yaml
+  name: Customer Support Ticket Automation
+  trigger: New Email
+
+  steps:
+    - name: 1. Route Ticket
+      agent: agents/router.md
+      inputs:
+        - email_body: "{{trigger.email.body}}"
+      outputs:
+        - file: ticket_info.json
+
+    - name: 2. Process Ticket
+      type: switch # 입력 조건에 따라 다른 경로 실행
+      input: "{{steps.1.outputs.ticket_info.json.category}}"
+      cases:
+        - value: "결제"
+          next_step: 3.1
+        - value: "기술"
+          next_step: 3.2
+        - default: 4 # 그 외의 경우
+
+    - name: 3.1. Answer FAQ
+      agent: agents/faq_responder.md
+      inputs:
+        - file: ticket_info.json
+      outputs:
+        - file: resolution.json
+      # 이 단계의 결과에 따라 다시 분기하여, 해결되면 5단계로,
+      # 해결 불가 시 4단계로 이동할 수 있습니다.
+
+    - name: 3.2. Analyze Technical Issue
+      agent: agents/tech_analyzer.md
+      inputs:
+        - file: ticket_info.json
+      outputs:
+        - file: resolution.json
+
+    - name: 4. Escalate to Human
+      agent: agents/human_escalator.md
+      inputs:
+        - file: ticket_info.json
+        - analysis_data: "{{steps.3.outputs.resolution.json}}" # 이전 단계 결과
+      outputs:
+        - file: escalation_result.json
+
+    - name: 5. Send Auto-Reply
+      agent: agents/reply_sender.md
+      inputs:
+        - file: resolution.json
+      outputs:
+        - status: "Email Sent"
+  ```
+
+이러한 구체적인 예제들을 통해, 우리는 추상적인 패턴들이 어떻게 조합되어 실제 업무의 복잡성을 해결하는 강력한 자동화 시스템으로 구현될 수 있는지 이해할 수 있습니다.
+
+## 7.5 고급 워크플로우 패턴과 아키텍처
 
 지금까지는 비교적 단순한 워크플로우 패턴을 살펴보았습니다. 이제 더 복잡하고 동적인 문제를 해결하기 위한 고급 아키텍처를 알아봅니다.
 
-### 7.4.1 에이전트 협력 시스템의 두 가지 패러다임
+### 7.5.1 에이전트 협력 시스템의 두 가지 패러다임
 
 에이전트들이 협력하는 방식은 크게 **계층적 협력 시스템**과 **수평적 협력 시스템** 두 가지로 나눌 수 있습니다.
 
@@ -195,14 +393,14 @@ graph TD
 
 이러한 복합적 접근법은 계층 구조의 명확한 책임 분담과 효율성, 그리고 수평 구조의 유연성과 품질 향상이라는 두 마리 토끼를 모두 잡을 수 있는 현실적인 해결책입니다.
 
-### 7.4.2 동적 피드백 루프 (Dynamic Feedback Loops)
+### 7.5.2 동적 피드백 루프 (Dynamic Feedback Loops)
 
 단순한 '생성-검증'을 넘어, 에이전트들이 서로의 작업을 동적으로 수정하고 개선하는 루프를 설계할 수 있습니다.
 
 - **계층적 피드백:** 워커의 결과물이 만족스럽지 않으면, 매니저가 워커에게 수정을 지시하고, 기준을 통과할 때까지 이 과정이 반복됩니다.
 - **수평적 피드백:** 동등한 위치의 에이전트들이 서로의 결과물에 대해 피드백을 주고받으며, 합의점에 도달할 때까지 반복적으로 개선합니다.
 
-### 7.4.3 메타 에이전트 (Meta Agents)
+### 7.5.3 메타 에이전트 (Meta Agents)
 
 메타 에이전트는 이 책과 프로젝트가 지향하는 궁극적인 목표입니다.
 
