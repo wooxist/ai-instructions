@@ -19,17 +19,17 @@
 - 질문 설계 방법
 - 좋은 인스트럭션의 핵심 원칙
 
-### Part 2: 복잡한 인스트럭션 설계 (4-8장)
+### Part 2: 인스트럭션 시스템 설계와 평가 (4-11장)
 - 인스트럭션 설계의 메타 원칙 (설계 철학)
 - 역할(Agent)과 제약(Constraint) 설계
 - 입력과 출력 설계 (결과물 중심 접근)
 - 처리 방법과 워크플로우 설계
-- 종합 예제로 배우는 실무 활용법
-
-### Part 3: 인스트럭션 시스템의 확장과 발전 (9-13장)
-- 인스트럭션 관리와 지원 도구
 - 성능에 영향을 미치는 요인
 - 생산성 측정 및 검증 방법
+
+### Part 3: 인스트럭션 시스템의 확장과 발전 (10-13장)
+- 종합 예제로 배우는 실무 활용법
+- 인스트럭션 관리와 지원 도구
 - 환경 변화에 따른 인스트럭션 진화
 - MCP와 인스트럭션의 미래 전망
 
@@ -45,19 +45,19 @@ ai-instructions/
     ├── 02-questions.md      # 2장: 질문 설계하기 (v1-released)
     ├── 03-good-instructions.md # 3장: 좋은 인스트럭션 (v1-released)
     │
-    │── Part 2: 복잡한 인스트럭션 설계
+    │── Part 2: 인스트럭션 시스템 설계와 평가
     ├── 04-meta-principles.md # 4장: 인스트럭션 설계의 메타 원칙 (v1-released)
-    ├── 05-agent-constraints.md # 5장: 역할(Agent)과 제약(Constraint) 설계 (v1-draft)
-    ├── 06-input-output.md   # 6장: 입력과 출력 설계 (v1-draft)
-    ├── 07-process-workflow.md # 7장: 처리 방법과 워크플로우 설계 (v1-draft)
-    ├── 08-practical.md      # 8장: 실무 활용하기 (v1-draft)
+    ├── 05-agent-constraints.md # 5장: 역할(Agent)과 제약(Constraint) 설계 (v1-released)
+    ├── 06-input-output.md   # 6장: 입력과 출력 설계 (v1-released)
+    ├── 07-process-workflow.md # 7장: 처리 방법과 워크플로우 설계 (v1-released)
+    ├── 08-performance.md    # 10장: 퍼포먼스에 영향을 미치는 요인 (v1-released)
+    ├── 09-productivity.md   # 11장: 생산성 측정 & 명령어 검증 (v1-released)
     │
     │── Part 3: 인스트럭션 시스템의 확장과 발전
-    ├── 09-tools.md          # 9장: 도움이 되는 도구 (v1-draft)
-    ├── 10-performance.md    # 10장: 퍼포먼스에 영향을 미치는 요인 (v1-draft)
-    ├── 11-productivity.md   # 11장: 생산성 측정 & 명령어 검증 (v1-draft)
-    ├── 12-evolution.md      # 12장: 환경 변화와 인스트럭션의 진화 (v1-draft)
-    ├── 13-mcp-future.md     # 13장: MCP와 인스트럭션의 미래 (v1-draft)
+    ├── 10-practical.md      # TEMP_10장: 실무 활용하기 (v1-released)
+    ├── 11-tools.md          # TEMP_11장: 도움이 되는 도구 (v1-released)
+    ├── 12-evolution.md      # 12장: 환경 변화와 인스트럭션의 진화 (v1-released)
+    ├── 13-mcp-future.md     # 13장: MCP와 인스트럭션의 미래 (v1-released)
     │
     └── index.md             # 전체 목차 및 개요
 ```
