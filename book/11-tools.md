@@ -61,6 +61,51 @@
 }
 ```
 
+### 지식 출처 한정과 Grounded Retrieval(RAG)
+
+4장에서 정의한 SSOT의 "지식 출처 한정" 원칙은 도구 설계로 구현할 때 가장 효과적입니다. 핵심은 두 가지입니다.
+
+- 허용된 자료원만 검색: 검색/조회 도구의 입력에 `allowed_sources`(또는 `corpus_id`)를 포함해, 에이전트가 사용할 수 있는 지식 범위를 **허용 목록(Whitelist)** 으로 제한합니다.
+- 근거 인용 강제: 도구 결과나 에이전트 출력에 `citations`(source_id, 위치/페이지, 스니펫)을 포함하여 **추적성(Traceability)** 을 보장합니다.
+
+도구 명세 예시(코퍼스 검색 도구):
+```json
+{
+  "name": "retrieve_corpus",
+  "description": "지정된 코퍼스에서 쿼리에 관련된 문서를 검색합니다.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "corpus_id": { "type": "string", "description": "허용된 코퍼스 식별자" },
+      "query": { "type": "string" },
+      "top_k": { "type": "integer", "default": 5 }
+    },
+    "required": ["corpus_id", "query"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "documents": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "source_id": { "type": "string" },
+            "title": { "type": "string" },
+            "snippet": { "type": "string" },
+            "page": { "type": "integer" }
+          },
+          "required": ["source_id", "snippet"]
+        }
+      }
+    },
+    "required": ["documents"]
+  }
+}
+```
+
+이렇게 제한된 검색 결과를 생성 에이전트에 주입(RAG)하고, 최종 출력에는 `citations` 필드를 포함하도록 5장에서 정의한 **제약(Constraints)** 을 설정하면, 지식 출처 한정이 워크플로우 전반에 일관되게 적용됩니다. 관련 원칙과 설계 흐름은 [4장. 메타 원칙](04-meta-principles.md)과 [5장. 역할·제약 설계](05-agent-constraints.md)를 참고하세요.
+
 ## 11.3 주요 프레임워크와 서비스
 
 앞서 설명한 개념들을 실제 환경에서 더 쉽게 구축하고 관리할 수 있도록 돕는 다양한 도구들이 있습니다.
