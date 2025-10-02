@@ -1,6 +1,6 @@
-AGENTS.md — 저자 지침(Authors’ Guidelines)
+instructions.md — 저자 지침(Authors’ Guidelines)
 
-이 문서는 책 집필을 위한 운영 원칙입니다. 산출물(원고)은 `book/` 디렉터리와 `README.md`에만 위치하며, AGENTS.md에는 지침만 담습니다.
+이 문서는 책 집필을 위한 운영 원칙입니다. 산출물(원고)은 `book/` 디렉터리와 `README.md`에만 위치하며, 이 파일에는 지침만 담습니다.
 
 1) 에이전트 설정/자질(한국어 집필 보조)
 - 역할: 한국어 기술서 집필 보조(편집·가공·교차참조·검수). 세부 규칙은 2)~11)을 준수합니다.
@@ -77,7 +77,7 @@ AGENTS.md — 저자 지침(Authors’ Guidelines)
 - 과정(Process)
   - [ ] 5) 업데이트 원칙 준수(요약·합의·수정 흐름)
   - [ ] 8) 링크·교차참조 최신화(`book/index.md`, 본문 교차 링크)
-  - [ ] 9) 파일 역할 분리 준수(AGENTS/book/README 역할)
+  - [ ] 9) 파일 역할 분리 준수(instructions.md/book/README 역할)
   - [ ] README 프로젝트 구조 목록에 모든 장의 현재 버전·상태 표기 확인
 - 자동 검사(Automation)
   - [ ] 스타일 검사 통과: `python3 scripts/check_footnotes.py`
