@@ -165,9 +165,10 @@
 - Evans, E. (2004). Domain-driven design: Tackling complexity in the heart of software. Addison-Wesley Professional.
 - Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). Design patterns: Elements of reusable object-oriented software. Pearson Education.
 - Rasmusson, J. (2010). The agile samurai: How agile masters deliver great software. Pragmatic Bookshelf.
-- McKinsey & Company. (2018). The MECE Principle: A Guide to Clear Thinking.
-- Google. (2023). Machine Learning Glossary. https://developers.google.com/machine-learning/glossary
-- IEEE. (2023). Ethically Aligned Design: A Vision for Prioritizing Human Well-being with Autonomous and Intelligent Systems.
+- Papoulis, A., & Pillai, S. U. (2002). *Probability, Random Variables, and Stochastic Processes* (4th ed.). McGraw-Hill.
+- Minto, B. (2009). *The Pyramid Principle: Logic in Writing and Thinking*. Pearson Education.
+- Google. Machine Learning Glossary. https://developers.google.com/machine-learning/glossary (지속적으로 업데이트됨)
+- IEEE. Ethically Aligned Design: A Vision for Prioritizing Human Well-being with Autonomous and Intelligent Systems. https://standards.ieee.org/industry-connections/ec/autonomous-systems.html
 
 ---
 
@@ -177,7 +178,7 @@ DRY(Don't Repeat Yourself) 원칙과 연결됨.
 [^2]: Separation of Concerns: 기능·역할을 분리해 변경 영향과 결합도를 줄이는 원칙.
 모듈화를 통해 재사용성을 높임.
 
-[^3]: Mutually Exclusive, Collectively Exhaustive: 겹치지 않되 전체를 빠짐없이 포괄하는 분류 원칙.
+[^3]: **MECE(Mutually Exclusive, Collectively Exhaustive)**: 확률론의 표본공간(Sample Space) 분할 개념에서 유래한 원칙으로, 요소들이 서로 겹치지 않으면서(Mutually Exclusive) 전체를 빠짐없이 포괄(Collectively Exhaustive)하는 분류 방법. 이후 컨설팅 분야에서 문제 해결 프레임워크로 차용되었습니다.
 
 [^4]: Atomicity: 각 작업을 더 이상 나눌 수 없는 최소 단위로 구성하여, 성공/실패를 명확히 판단할 수 있게 하는 원칙.
 

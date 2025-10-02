@@ -128,7 +128,7 @@
 - Anthropic. (2023). Claude Prompt Design Guidelines. https://docs.anthropic.com/claude/docs/introduction-to-prompt-design
 - Nielsen, J. (2003). Writing for the Web. Nielsen Norman Group.
 - Norman, D. A. (2013). *The design of everyday things: Revised and expanded edition*. Basic Books.
-- OpenAI. (2024). Prompt Engineering Best Practices. https://platform.openai.com/docs/guides/prompt-engineering
+- OpenAI. (2023). Prompt Engineering Best Practices. https://platform.openai.com/docs/guides/prompt-engineering
 - Reynolds, G. (2011). *Presentation Zen: Simple Ideas on Presentation Design and Delivery*. New Riders.
 - Strunk Jr., W., & White, E. B. (2000). *The Elements of Style*. Longman.
 - Yates, J., & Orlikowski, W. (1992). Genres of organizational communication: A structurational approach to studying communication and media. *Academy of management review*.

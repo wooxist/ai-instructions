@@ -125,6 +125,9 @@
 ## 참고 자료
 
 - Brown, T., et al. (2020). Language Models are Few-Shot Learners. *arXiv preprint arXiv:2005.14165*.
+- JSON Schema. (2020). JSON Schema: A Media Type for Describing JSON Documents. https://json-schema.org/specification.html
+- OpenAI. (2023). Function Calling and Structured Outputs. https://platform.openai.com/docs/guides/function-calling
+- Anthropic. (2023). Tool Use (Function Calling). https://docs.anthropic.com/claude/docs/tool-use
 
 ---
 
@@ -132,4 +135,6 @@
 
 [^2]: **JSON Schema:** JSON 데이터의 구조를 정의하고 검증하기 위한 표준 규격. 데이터의 필수 필드, 타입, 형식, 제약 조건 등을 명시할 수 있어, 시스템 간 데이터 교환의 안정성을 높이는 데 사용된다.
 
-[^3]: **퓨샷(Few-shot) 프롬프팅:** 대규모 언어 모델(LLM)에게 별도의 학습 없이, 몇 개(few)의 예시(shots)만으로 새로운 작업을 수행하도록 유도하는 기술. 모델이 예시의 패턴을 파악하여 유사한 작업을 처리하게 하는 방식이다.
+[^3]: **퓨샷(Few-shot) 프롬프팅:** 대규모 언어 모델(LLM)에게 별도의 학습 없이, 몇 개(few)의 예시(shots)만으로 새로운 작업을 수행하도록 유도하는 기술. 모델이 예시의 패턴을 파악하여 유사한 작업을 처리하게 하는 방식이다. 예: "사과→apple, 바나나→banana"라는 예시만으로 "오렌지→?"를 "orange"로 번역.
+
+[^4]: **파싱(Parsing):** 컴퓨터가 데이터의 구조를 분석하여 의미 있는 정보로 변환하는 과정. 예: JSON 문자열을 읽어 객체로 변환하거나, CSV 파일을 읽어 표 형식의 데이터로 변환하는 것.
