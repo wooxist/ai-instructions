@@ -27,6 +27,37 @@
 
 10장에서 여러 번 등장했던 `workflow.yaml` 파일은 다중 에이전트 시스템의 '설계도'이자 '실행 스크립트' 역할을 합니다. 이 파일은 사람이 읽고 이해하기 쉬우면서도, 기계가 파싱하여 실행할 수 있는 선언적인(declarative) 구조를 가집니다.
 
+### 12.2.1 DSL 설계: YAML vs. Markdown
+
+워크플로우 DSL을 설계할 때 YAML과 Markdown 중 어떤 것을 선택할지는 중요한 결정입니다. 우리는 두 가지를 모두 사용하는 하이브리드 접근법을 채택했습니다.
+
+- **YAML (`workflow.yaml`):** 워크플로우의 '구조'를 정의하는 데 사용됩니다. 단계(steps), 입/출력(inputs/outputs), 조건(conditions) 등 명확한 구조를 가진 정보를 표현하는 데 매우 효과적입니다. GitHub Actions나 Kubernetes 등 이미 많은 자동화 도구에서 표준으로 사용되고 있어 익숙하고, 기계가 파싱하기에 용이합니다.
+- **Markdown (`agents/*.md`):** 에이전트의 '지침'처럼, 사람이 읽고 이해해야 하는 서술적인 내용을 담는 데 사용됩니다. 역할, 처리 방법, 제약 조건 등 줄글로 된 설명은 Markdown으로 작성하는 것이 가독성과 유지보수성 면에서 훨씬 유리합니다.
+
+이처럼 **워크플로우의 뼈대는 YAML로, 각 에이전트의 상세한 지침은 Markdown으로** 역할을 분리하는 것이 이 책에서 제시하는 핵심 설계 패턴입니다.
+
+### 12.2.2 단일 에이전트 자동화: `yaml`이 필요한 이유
+
+그렇다면 단일 에이전트 작업에도 `workflow.yaml`이 필요할까요? **수동으로 실행할 때는 필요 없습니다.** 10.1절의 예시처럼 `agents/01_email_summarizer.md` 파일의 내용을 복사해 AI에게 직접 지시할 수 있습니다.
+
+하지만 이 작업을 **자동화**하고 싶다면 `workflow.yaml`이 필요합니다.
+
+```yaml
+# /workflows/summarize_email.yaml
+name: Summarize Single Email
+trigger: API Call
+
+steps:
+  - name: 1. Summarize
+    agent: agents/01_email_summarizer.md
+    inputs:
+      - email_body: "{{trigger.payload.body}}" # API로 전달된 이메일 본문
+    outputs:
+      - variable: summary_text
+```
+
+이처럼 `workflow.yaml`은 에이전트가 하나일 때도, 그 작업을 **언제(`trigger`), 어떤 데이터로(`inputs`), 어떻게 실행할지** 정의하는 '실행기' 역할을 합니다. 이렇게 설계하면 나중에 이 요약 에이전트를 더 큰 워크플로우의 한 부분으로 쉽게 재사용할 수 있습니다.
+
 ### `workflow.yaml`의 핵심 구성 요소
 
 ```yaml
@@ -64,7 +95,60 @@ steps: # 3. 실행 단계 목록
 3.  **`steps`**: 워크플로우를 구성하는 각 단계의 목록입니다. 각 단계는 특정 `agent`를 호출하고, `inputs`와 `outputs`를 통해 데이터를 주고받습니다. 이는 7장에서 배운 **파이프라인 패턴**과 **핸드오프** 개념을 코드로 구현한 것입니다.
 4.  **`type: human_in_the_loop`**: AI가 자동으로 처리할 수 없거나, 반드시 사람의 검토가 필요한 중요한 의사결정 지점을 명시합니다. 이는 4장의 **Human-in-the-Loop** 원칙을 워크플로우에 내장하는 방법입니다.
 
-## 12.3 자동화된 테스트와 배포 (Instruction DevOps)
+## 12.3 고급 제어 흐름: 루프와 조건
+
+실제 업무는 단순한 순차 실행(A→B→C)만으로 해결되지 않는 경우가 많습니다. `workflow.yaml`은 조건 분기와 반복(루프) 같은 고급 제어 흐름을 정의하여, 더 동적이고 지능적인 자동화를 구현할 수 있습니다.
+
+### `do-while` 반복문 구현하기
+
+사용자께서 궁금해하신 `do-while` 루프는 "결과물이 특정 품질 기준을 만족할 때까지 작업을 반복하라"와 같은 시나리오에 매우 유용합니다. 이는 10.5절의 '코드 생성 및 리뷰' 예제처럼, '생성-검증' 패턴을 자동화하는 핵심 로직입니다.
+
+```yaml
+# /instructions/code_generation_review/workflow.yaml
+name: Self-Correcting Code Generation
+trigger: Manual
+
+variables:
+  - requirements: "S3 버킷의 모든 이미지 파일에 대해 썸네일을 생성하는 함수"
+  - generated_code: null
+  - review_result: null
+  - retry_count: 0
+
+steps:
+  - name: 1. Generate Code
+    agent: agents/01_code_generator.md
+    inputs:
+      - requirements: "{{requirements}}"
+    outputs:
+      - variable: generated_code
+
+  - name: 2. Review Code
+    agent: agents/02_code_reviewer.md
+    inputs:
+      - code: "{{generated_code}}"
+    outputs:
+      - variable: review_result
+
+  - name: 3. Check and Loop
+    type: condition
+    # 조건: 리뷰 상태가 '수정 필요'이고, 재시도 횟수가 3회 미만인가?
+    check: "{{review_result.status == '수정 필요' and retry_count < 3}}"
+    on_true:
+      # 조건을 만족하면, 피드백을 포함하여 1단계로 돌아간다.
+      next_step: 1
+      inputs:
+        - requirements: "이전 요구사항과 다음 피드백을 반영하여 코드 수정: {{review_result.feedback}}"
+        - retry_count: "{{retry_count + 1}}" # 재시도 횟수 증가
+```
+
+이 워크플로우는 다음과 같이 `do-while` 루프를 구현합니다.
+1.  **Do (실행):** 먼저 1단계(코드 생성)와 2단계(코드 리뷰)를 무조건 한 번 실행합니다.
+2.  **While (조건 확인):** 3단계에서 리뷰 결과가 '수정 필요'인지, 그리고 최대 재시도 횟수를 넘지 않았는지 **조건을 확인**합니다.
+3.  **Loop (반복):** 조건이 참이면, 리뷰 피드백을 새로운 요구사항으로 만들어 1단계로 돌아가 작업을 반복합니다. 조건이 거짓이면(리뷰 통과 또는 최대 재시도 도달), 루프를 탈출하고 워크플로우가 종료됩니다.
+
+이처럼 `workflow.yaml`에 `condition`과 `next_step`을 조합하여 사용하면, 단순한 선언적 파일을 넘어 프로그래밍 언어와 유사한 동적 제어 구조를 만들 수 있습니다.
+
+## 12.4 자동화된 테스트와 배포 (Instruction DevOps)
 
 인스트럭션을 코드로 관리하면, 소프트웨어 개발에서 사용하는 CI/CD(지속적 통합/지속적 배포) 파이프라인을 도입하여 'Instruction DevOps'를 구축할 수 있습니다.
 
@@ -118,6 +202,6 @@ jobs:
 
 이처럼 'Instruction DevOps' 파이프라인을 구축하면, 인스트럭션 시스템의 품질과 안정성을 사람의 '꼼꼼함'이 아닌, 자동화된 '시스템'으로 보장할 수 있게 됩니다.
 
-## 12.4 실무 예제로 이어보기
+## 12.5 실무 예제로 이어보기
 
 이 장에서 다룬 `workflow.yaml`과 자동화 개념은 10장 4부: 고급 아키텍처와 실전 구현에서 소개될 '메타 에이전트'의 핵심 기반이 됩니다. 메타 에이전트는 바로 이 `workflow.yaml` 파일 자체를 동적으로 생성하고 수정함으로써, 시스템 스스로가 발전하고 적응하는 고도의 자율성을 구현합니다.
