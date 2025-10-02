@@ -51,7 +51,6 @@ ai-instructions/
     ├── 07-process-workflow.md # 7장: 처리 방법과 워크플로우 설계
     ├── 08-performance.md    # 8장: 인스트럭션 시스템의 성능 최적화
     ├── 09-productivity.md   # 9장: 인스트럭션의 평가와 검증
-    │
     ├── 10-practical.md      # 10장: 상황별 인스트럭션 설계 패턴 예제
     │
     │── Part 3: 인스트럭션 시스템의 확장과 운영
