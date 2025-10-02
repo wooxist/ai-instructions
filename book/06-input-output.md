@@ -27,7 +27,7 @@
 출력에 대한 명확한 명세가 없다면, AI는 자유롭게 결과를 '창작'합니다. 이는 창의적인 아이디어를 얻을 때는 유용할 수 있지만, 여러 에이전트가 협력하는 자동화 시스템을 구축할 때는 심각한 문제를 야기합니다.
 
 - **일관성 부재:** 동일한 작업을 요청해도 매번 다른 형식(줄글, 목록, 표 등)과 다른 구조로 결과물을 생성하여, 결과의 일관성을 보장할 수 없습니다.
-- **후속 처리의 어려움:** 한 에이전트의 출력을 다른 에이전트의 입력으로 사용해야 하는 워크플로우에서, 출력 형식이 비정형적이면 후속 에이전트가 정보를 파싱(parsing)하고 처리하는 데 실패하게 됩니다. 이는 전체 자동화 시스템의 중단으로 이어집니다.
+- **후속 처리의 어려움:** 한 에이전트의 출력을 다른 에이전트의 입력으로 사용해야 하는 워크플로우에서, 출력 형식이 비정형적이면 후속 에이전트가 정보를 파싱(parsing)[^4]하고 처리하는 데 실패하게 됩니다. 이는 전체 자동화 시스템의 중단으로 이어집니다.
 - **검증의 어려움:** 정해진 형식이 없으면 결과물이 요구사항을 충족했는지 자동으로 검증하기가 매우 어렵습니다.
 
 ## 6.2 무엇을 설계해야 하는가?: 입력과 출력의 명세화
@@ -124,7 +124,7 @@
 
 ## 참고 자료
 
-- Brown, T., et al. (2020). Language Models are Few-Shot Learners. *arXiv preprint arXiv:2005.14165*.
+- Brown, T., et al. (2020). Language Models are Few-Shot Learners. arXiv:2005.14165. https://arxiv.org/abs/2005.14165
 - JSON Schema. (2020). JSON Schema: A Media Type for Describing JSON Documents. https://json-schema.org/specification.html
 - OpenAI. (2023). Function Calling and Structured Outputs. https://platform.openai.com/docs/guides/function-calling
 - Anthropic. (2023). Tool Use (Function Calling). https://docs.anthropic.com/claude/docs/tool-use

@@ -134,9 +134,9 @@ AI는 사실이 아닌 정보를 그럴듯하게 지어내는 경향이 있습�
 > **참고: 사용 중인 AI 모델의 컨텍스트 윈도우 크기 확인 방법**
 >
 > 1. **공식 문서 참조**
->    - Anthropic (Claude): Claude 3.5 Sonnet/Opus/Haiku - 200K 토큰
->    - OpenAI (GPT): GPT-4 Turbo - 128K, GPT-4 - 8K/32K, GPT-3.5 Turbo - 16K 토큰
->    - Google (Gemini): Gemini 1.5 Pro - 2M, Gemini 1.5 Flash - 1M 토큰
+>    - Anthropic (Claude): Claude 3.5 Sonnet/Opus/Haiku - 200K 토큰[^8]
+>    - OpenAI (GPT): GPT-4 Turbo - 128K, GPT-4 - 8K/32K, GPT-3.5 Turbo - 16K 토큰[^9]
+>    - Google (Gemini): Gemini 1.5 Pro - 2M, Gemini 1.5 Flash - 1M 토큰[^10]
 >
 > 2. **API 응답 확인** (프로그래밍 방식)
 >    ```python
@@ -181,9 +181,12 @@ AI는 사실이 아닌 정보를 그럴듯하게 지어내는 경향이 있습�
 
 ## 참고 자료
 
-- Lewis, P., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. *arXiv preprint arXiv:2005.11401*.
-- Liu, N. F., et al. (2023). Lost in the Middle: How Language Models Use Long Contexts. *arXiv preprint arXiv:2307.03172*.
-- Martin, R. C. (2017). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
+- Lewis, P., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. arXiv:2005.11401. https://arxiv.org/abs/2005.11401
+- Liu, N. F., et al. (2023). Lost in the Middle: How Language Models Use Long Contexts. arXiv:2307.03172. https://arxiv.org/abs/2307.03172
+- Martin, R. C. (2017). Clean Architecture: A Craftsman's Guide to Software Structure and Design. Prentice Hall.
+- Anthropic. Claude 3/3.5 Models Overview (Context Window). https://docs.anthropic.com/claude/docs/models-overview
+- OpenAI. Models and Context Lengths. https://platform.openai.com/docs/models
+- Google. Gemini 1.5 Model Context Window. https://ai.google.dev/models/gemini
 
 ---
 
@@ -200,3 +203,9 @@ AI는 사실이 아닌 정보를 그럴듯하게 지어내는 경향이 있습�
 [^6]: **단일 책임 원칙 (Single Responsibility Principle, SRP):** 하나의 모듈(여기서는 에이전트)은 단 하나의 액터(사용자 또는 이해관계자)에 대해서만 책임을 져야 한다는 객체지향 설계 원칙. 즉, 변경의 이유가 단 하나여야 함을 의미한다.
 
 [^7]: **응집도 (Cohesion):** 하나의 모듈 내의 요소들이 얼마나 서로 밀접하게 관련되어 있는지를 나타내는 척도. 높은 응집도는 모듈이 단일한 목적을 위해 잘 설계되었음을 의미하며, 유지보수성과 재사용성을 높인다.
+
+[^8]: **공식 문서(Anthropic, Claude 모델):** Claude 3/3.5 시리즈의 컨텍스트 윈도우는 최대 200K 토큰. 자세한 사양은 Anthropic 문서 참조.
+
+[^9]: **공식 문서(OpenAI, GPT 계열):** GPT-4 Turbo(128K), GPT-4(8K/32K), GPT-3.5 Turbo(16K) 등 모델별 컨텍스트 길이는 OpenAI 문서의 모델 목록에서 확인 가능.
+
+[^10]: **공식 문서(Google, Gemini 1.5):** Gemini 1.5 Pro(최대 약 2M), Gemini 1.5 Flash(최대 약 1M) 토큰 컨텍스트 윈도우. 세부 사양은 Google AI 문서 참조.
