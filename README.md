@@ -16,22 +16,20 @@
 
 ### Part 1: 프롬프트와 인스트럭션의 기초 (1-3장)
 - 프롬프트와 인스트럭션의 기본 개념
-- 질문 설계 방법
+- 좋은 질문과 좋은 인스트럭션의 기본 원칙
 - 좋은 인스트럭션의 핵심 원칙
 
-### Part 2: 인스트럭션 시스템 설계와 평가 (4-10장)
+### Part 2: 인스트럭션 시스템 설계와 평가 (4-9장)
 - 인스트럭션 설계의 메타 원칙 (설계 철학)
 - 역할(Agent)과 제약(Constraint) 설계
 - 입력과 출력 설계 (결과물 중심 접근)
 - 처리 방법과 워크플로우 설계
-- 성능에 영향을 미치는 요인
-- 생산성 측정 및 검증 방법
-- 상황별 인스트럭션 설계 패턴 예제
+- 성능 최적화와 평가 방법론
 
-### Part 3: 인스트럭션 시스템의 확장과 운영 (11-13장)
-- 인스트럭션 관리와 지원 도구
-- 워크플로우를 코드로 설계하는 고급 기법
-- 환경 변화에 따른 인스트럭션 진화
+### Part 3: 인스트럭션 시스템의 확장과 운영 (10-13장)
+- 상황별 인스트럭션 설계 실전 패턴
+- 외부 도구 연동 및 시스템 관리
+- 인스트럭션 시스템의 지속적인 진화 전략
 
 ## 📂 프로젝트 구조
 ```plaintext
@@ -39,31 +37,12 @@ ai-instructions/
 ├── README.md                # 프로젝트 개요
 ├── ROADMAP.md               # 프로젝트 로드맵
 └── book/                    # 모든 원고와 자료 관리
-    │
-    │── Part 1: 프롬프트와 인스트럭션의 기초
-    ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기
-    ├── 02-questions.md      # 2장: 질문 설계하기
-    ├── 03-good-instructions.md # 3장: 좋은 인스트럭션
-    │
-    │── Part 2: 인스트럭션 시스템 설계와 평가
-    ├── 04-meta-principles.md # 4장: 인스트럭션 설계의 메타 원칙
-    ├── 05-agent-constraints.md # 5장: 역할(Agent)과 제약(Constraint) 설계
-    ├── 06-input-output.md   # 6장: 입력과 출력 설계
-    ├── 07-process-workflow.md # 7장: 처리 방법과 워크플로우 설계
-    ├── 08-performance.md       # 8장: 성능 측정 및 평가 (v1-draft)
-    ├── 09-productivity.md      # 9장: 생산성: 나만의 에이전트 구축하기 (v1-draft)
-    ├── 10장: 상황별 인스트럭션 설계 패턴 예제
-    │   - `10-1-single-agent-patterns.md`    # 1부: 기본 패턴 - 단일 에이전트 설계 (v1-draft)
-    │   - `10-2-multi-agent-workflows.md`    # 2부: 협력 패턴 - 다중 에이전트 워크플로우 (v1-draft)
-    │   - `10-3-organizational-standards.md` # 3부: 확장 패턴 - 조직 표준 시스템 (v1-draft)
-    │   - `10-4-advanced-architectures.md`   # 4부: 고급 아키텍처와 실전 구현 (v1-draft)
-    │
-    │── Part 3: 인스트럭션 시스템의 확장과 운영
-    ├── 11-tools.md               # 11장: 도구(Tools)와 플러그인 활용 (v1-draft)
-    ├── 12-workflow-as-code.md  # 12장: 워크플로우 자동화와 코드형 인프라 (v1-draft)
-    ├── 13-evolution.md           # 13장: 인스트럭션 시스템의 진화와 미래 (v1-draft)
-    │
-    └── index.md             # 전체 목차 및 개요
+    ├── 00-preface.md
+    ├── 01-introduction.md
+    ...
+    ├── 13-evolution.md
+    ├── 14-conclusion.md
+    └── index.md
 ```
 
 ## 📖 내용 참조
