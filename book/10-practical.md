@@ -451,6 +451,32 @@ steps:
 - 쿼리 실행 중 오류가 발생하면, 즉시 작업을 중단하고 "[DB ERROR]" 태그와 함께 오류 메시지를 반환한다.
 ```
 
+- **`agents/02_analyzer.md` (분석 에이전트 예시)**
+```markdown
+# 역할: 데이터 분석가
+
+# 목표
+주어진 매출 데이터 파일(`sales_data.csv`)을 분석하여, 주요 지표(총 매출, 평균 주문 금액, 고객 수 등)를 계산하고, 시각화 자료(차트)를 생성한다.
+
+# 입력 형식
+- CSV 파일: `sales_data.csv`
+  - 필드: order_id, customer_id, order_amount, order_date, product_category
+
+# 처리 방법
+1. CSV 파일을 읽어들인다.
+2. 데이터 유효성 검사를 수행한다(예: 필수 필드 누락, 형식 오류 등).
+3. 주요 지표를 계산한다:
+   - 총 매출: order_amount의 합계
+   - 평균 주문 금액: order_amount의 평균
+   - 고객 수: 고유한 customer_id의 수
+4. 매출 추이 차트(시간에 따른 총 매출 변화)를 생성한다.
+5. 카테고리별 매출 비율 파이차트 생성.
+
+# 출력 형식
+- 분석 결과는 `summary.json` 파일에 저장한다.
+- 차트 이미지는 `chart.png`로 저장한다.
+```
+
 - **`agents/03_report_writer.md` (콘텐츠 생성 에이전트 예시)**
 ```markdown
 # 역할: 5년차 재무 분석가
@@ -468,223 +494,103 @@ steps:
 - 전문 용어 사용을 최소화하고, 간결하고 명확한 문체를 사용한다.
 ```
 
-**4. 전체 시스템 흐름 요약**
-이 시스템은 `workflow.yaml`의 정의에 따라, **데이터 추출 → 분석 및 시각화 → 보고서 작성 → 이메일 작성 → 최종 인간 승인**의 순서로 각 전문 에이전트가 자신의 역할을 수행하며 결과물을 다음 단계로 전달하는 자동화된 파이프라인입니다.
-
-#### 실행 시나리오 (Execution Model)
-이 워크플로우는 **매니저 에이전트(Manager Agent)**에 의해 자동으로 실행됩니다.
-
-1.  **[사용자]** ➡️ **[매니저 에이전트]**에게 작업을 지시합니다: "3분기 실적 보고서 생성 워크플로우를 실행해줘."
-2.  **[매니저 에이전트]** ➡️ `workflow.yaml` 파일을 읽어 전체 작업 계획을 수립합니다.
-3.  **[매니저 에이전트]** ➡️ **1단계(Extractor)**를 실행합니다. `agents/01_extractor.md` 인스트럭션과 `quarter: "2024-Q3"` 파라미터를 사용해 `sales_data.csv`를 생성합니다.
-4.  **[매니저 에이전트]** ➡️ **2단계(Analyzer)**를 실행합니다. 이전 단계의 출력인 `sales_data.csv`를 입력으로 하여 `summary.json`과 `chart.png`를 생성합니다.
-5.  **[매니저 에이전트]** ➡️ **3단계(Report Writer)**와 **4단계(Email Writer)**를 순차적으로 실행하여 `report_draft.md`와 `email_draft.txt`를 생성합니다.
-6.  **[매니저 에이전트]** ➡️ **5단계(Human Approval)**에 도달하면, 생성된 결과물들을 담당자에게 전달하고 승인을 대기합니다.
-7.  **[담당자]** ➡️ 결과물을 검토하고 승인하면 워크플로우가 최종 완료됩니다.
-
-#### 설계 분석
-- **메타 원칙 (4장):** 이 시스템은 복잡한 '재무 보고'라는 과업을 '데이터 추출', '분석', '보고서 작성' 등 각자 하나의 책임만 갖는 단계로 명확히 분리하여 **SoC(관심사 분리)** 원칙을 따릅니다. 덕분에 각 에이전트의 역할을 이해하기 쉽고, 특정 기능(예: 시각화 방식)만 독립적으로 개선하기도 용이해집니다. 또한, 재무 정보라는 민감하고 중요한 데이터를 다루므로, 최종 단계에 반드시 **Human-in-the-Loop**를 포함시켜 AI의 실수를 인간이 최종 검증하도록 설계한 것이 리스크 관리의 핵심입니다.
-- **에이전트 설계 (5장):** AI는 `agents/` 디렉토리에 있는 구체적인 인스트럭션 파일에 따라 'DBA', '재무 분석가'와 같은 명확한 **역할**을 부여받습니다. 이는 각 에이전트가 자신의 전문 분야에 맞는 고품질 결과물을 생성하도록 유도하며, `tools/` 디렉토리의 특정 **도구**를 사용할 수 있는 권한과 책임을 명확히 합니다.
-- **입/출력 설계 (6장):** `workflow.yaml` 파일에서 각 단계가 어떤 파일(`sales_data.csv`, `summary.json` 등)을 주고받을지 명확히 정의했습니다. 이렇게 데이터 흐름을 명시적으로 설계하면, 각 에이전트가 독립적인 부품처럼 작동하면서도 전체 시스템이 마치 잘 짜인 컨베이어 벨트처럼 안정적으로 연결되게 만듭니다.
-- **워크플로우 설계 (7장):** 이 시스템의 가장 중요한 특징은 **`workflow.yaml` 파일 자체가 바로 이 시스템의 워크플로우 설계도**입니다. 여러 에이전트를 순차적으로 실행되는 **파이프라인 패턴**을 명시적으로 정의하고, 최종 단계에 인간의 승인(Approval)을 포함시켜 시스템의 예측 가능성과 안정성을 높입니다.
-
----
-
-## 10.7 [사례 7] 조직 표준, 간단/일상
-
-- **상황:** 조직 내 모든 팀에서 공통적으로 사용하는 회의록 요약 규칙.
-
-#### 최종 인스트럭션 시스템 예시
-
-이 사례는 자동화된 워크플로우가 아닌, 조직의 '표준 자산(Standard Asset)'을 관리하는 시스템으로 설계할 수 있습니다.
-
-**1. 시스템의 디렉토리 구조 예시**
-```
-/instructions/meeting_summary_standard/
-└── template.md  # 1. 조직의 표준 회의록 요약 템플릿 (v1.2)
-```
-
-**2. 표준 템플릿 정의 (`template.md`)**
-조직의 위키(Confluence 등)나 공유 문서에 아래 템플릿을 저장하고, 모든 팀원이 회의록 요약 시 이 템플릿을 사용하도록 안내합니다.
-
+- **`agents/04_email_writer.md` (이메일 작성 에이전트 예시)**
 ```markdown
-# 회의록 요약 표준 인스트럭션 (v1.2)
+# 역할: 커뮤니케이션 전문가
 
 # 목표
-주어진 회의록 텍스트를 지정된 형식에 맞춰 요약한다.
+작성된 보고서 초안(`report_draft.md`)을 바탕으로, 경영진에게 발송할 이메일 초안을 작성한다.
+
+# 처리 방법
+1. 보고서 초안을 읽고, 핵심 메시지와 주요 결과를 파악한다.
+2. 경영진이 이해하기 쉬운 언어로 이메일 본문을 작성한다.
+3. 이메일 제목, 수신자, 참조인, 첨부파일(보고서 파일) 등을 설정한다.
 
 # 출력 형식
-## 회의 핵심 결정사항 (3가지)
-- [결정사항 1]
-- [결정사항 2]
-- [결정사항 3]
-
-## Action Items (담당자, 기한 명시)
-- [할 일 1] - 담당자: [이름], 기한: [YYYY-MM-DD]
-- [할 일 2] - 담당자: [이름], 기한: [YYYY-MM-DD]
+- 이메일 초안은 텍스트 형식으로 작성하며, 제목, 수신자, 본문, 첨부파일 정보가 포함되어야 한다.
 ```
 
-**3. 전체 시스템 흐름 요약**
-이 시스템은 특정 워크플로우를 자동 실행하는 대신, 조직의 공유 지식 베이스(예: Confluence, Notion)에 저장된 **표준 템플릿(`template.md`)**을 제공합니다. 조직 구성원은 이 템플릿을 활용하여 일관된 품질과 형식의 회의록 요약본을 생성합니다.
-
-#### 실행 시나리오 (Execution Model)
-이 인스트럭션은 '실행'된다기보다는 조직의 공유 지식 베이스(예: Confluence, Notion, 사내 위키)에 **'표준 템플릿'**으로 게시되어 활용됩니다. 
-1.  **[팀원]** ➡️ 회의록 요약이 필요할 때, 공유 지식 베이스에서 이 표준 템플릿을 찾습니다.
-2.  **[팀원]** ➡️ 템플릿 내용을 복사하여 자신이 사용하는 AI 도구(ChatGPT, Claude 등)에 붙여넣습니다.
-3.  **[팀원]** ➡️ 템플릿 아래에 회의록 원문을 붙여넣고 실행하여, 표준화된 형식의 요약본을 얻습니다.
-4.  **[팀원]** ➡️ 결과물을 팀 스페이스에 공유합니다.
-
-#### 설계 분석
-- **메타 원칙 (4장):** **SSOT(Single Source of Truth)** 원칙이 가장 중요하게 작용합니다. 중앙의 단일 템플릿을 통해 모든 조직원이 동일한 품질과 형식의 결과물을 얻도록 보장합니다. **점진적 개선** 원칙에 따라, 템플릿은 버전(v1.2) 관리되며 조직의 필요에 따라 지속적으로 발전할 수 있습니다.
-- **에이전트 설계 (5장):** 이 시스템에서는 AI 에이전트의 페르소나보다는, 템플릿을 사용하는 '사람'이 따라야 할 **책임**과 **규칙**이 더 강조됩니다. AI는 이 규칙을 충실히 이행하는 역할을 합니다.
-- **입/출력 설계 (6장):** **출력** 형식이 매우 엄격하게 정의되어 있어, 누가 어떤 AI로 실행하든 일관된 구조의 결과물을 보장하는 것이 핵심입니다.
-- **워크플로우 설계 (7장):** 자동화된 워크플로우는 없지만, '템플릿 복사 → AI에 붙여넣기 → 결과 공유'라는 **사람이 따르는 표준 운영 절차(SOP)**를 정의합니다.
-
----
-
-## 10.8 [사례 8] 조직 표준, 표준/전문
-
-- **상황:** 사내의 복잡한 규정이나 프로세스에 대해 직원들의 질문에 답변하는 Q&A 봇.
-
-#### 최종 인스트럭션 시스템 예시
-
-이 사례는 검색 증강 생성(RAG) 기술을 활용하는 Q&A 봇 시스템으로 설계할 수 있습니다.
-
-**1. 시스템의 디렉토리 구조 예시**
+- **`schemas/report.schema.json` (최종 보고서 스키마 예시)**
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Weekly Customer Review Report",
+  "description": "A weekly summary report of customer reviews, categorized by department.",
+  "type": "object",
+  "properties": {
+    "report_period": {
+      "description": "The period the report covers, e.g., '2024-W40'.",
+      "type": "string"
+    },
+    "total_reviews": {
+      "description": "Total number of reviews analyzed.",
+      "type": "integer"
+    },
+    "product_summary": {
+      "description": "Summary for the product department.",
+      "type": "object",
+      "properties": {
+        "summary_text": {
+          "description": "A high-level text summary of product-related feedback.",
+          "type": "string"
+        },
+        "top_product": {
+          "description": "The most frequently mentioned product.",
+          "type": "string"
+        },
+        "sentiment_ratio": {
+          "description": "Sentiment ratio for the top product.",
+          "type": "object",
+          "properties": {
+            "positive": {"type": "number", "description": "Percentage of positive reviews."},
+            "negative": {"type": "number", "description": "Percentage of negative reviews."},
+            "neutral": {"type": "number", "description": "Percentage of neutral reviews."}
+          },
+          "required": ["positive", "negative"]
+        },
+        "positive_keywords": {
+          "description": "Top positive keywords.",
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "negative_keywords": {
+          "description": "Top negative keywords.",
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "recommendations": {
+          "description": "Actionable recommendations for the product team.",
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "required": ["summary_text", "positive_keywords", "negative_keywords", "recommendations"]
+    },
+    "cs_summary": {
+      "description": "Summary for the customer service department.",
+      "type": "object",
+      "properties": {
+        "summary_text": {
+          "description": "A high-level text summary of CS-related feedback.",
+          "type": "string"
+        },
+        "top_issues": {
+          "description": "Top issues raised in CS reviews.",
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "recommendations": {
+          "description": "Actionable recommendations for the CS team.",
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "required": ["summary_text", "top_issues", "recommendations"]
+    }
+  },
+  "required": ["report_period", "total_reviews", "product_summary", "cs_summary"]
+}
 ```
-/instructions/internal_qa_bot/
-├── workflow.yaml        # 1. 전체 워크플로우의 순서와 규칙을 정의
-└── agents/              # 2. 답변 생성을 담당하는 에이전트
-    └── 01_rag_qa_agent.md
-```
-
-**2. 워크플로우 정의 예시 (`workflow.yaml`)**
-`workflow.yaml`은 사용자의 질문을 받아 내부 문서를 검색하고, 그 결과를 바탕으로 답변을 생성하는 과정을 정의합니다.
-
-```yaml
-# workflow.yaml
-name: Internal Regulation Q&A Bot
-trigger: User Query
-
-steps:
-  - name: 1. Search Relevant Documents
-    tool: vector_db_retriever
-    inputs:
-      - query: "{{user_question}}"
-      - knowledge_base: "internal_regulations_v3.4"
-      - top_k: 3
-    outputs:
-      - context: "retrieved_documents"
-
-  - name: 2. Generate Answer
-    agent: agents/01_rag_qa_agent.md
-    inputs:
-      - question: "{{user_question}}"
-      - context: "{{retrieved_documents}}" # 검색된 문서 조각을 입력으로 사용
-    outputs:
-      - text: "final_answer"
-```
-
-**3. 에이전트 인스트럭션 예시**
-- **`agents/01_rag_qa_agent.md` (RAG 답변 에이전트)**
-  ```markdown
-  # 역할: [우리 회사] 인사규정 전문 비서
-
-  # 처리 방법
-  1. 사용자의 질문과 주어진 `[컨텍스트 문서]`를 분석한다.
-  2. `[컨텍스트 문서]`의 내용만으로 답변을 생성한다. 절대 추측하거나 기존 지식을 사용하지 않는다.
-  3. 답변의 마지막에는 반드시 참고한 문서의 제목과 페이지 번호를 출처로 명시한다.
-
-  # 제약 조건
-  - 만약 주어진 문서로 답변을 할 수 없다면, "죄송합니다. 해당 내용은 규정집에서 찾을 수 없습니다. 인사팀에 문의해주세요."라고만 답변한다.
-  - 연봉, 개인 평가 등 민감 정보와 관련된 질문에는 답변을 거부한다.
-  ```
-
-**4. 전체 시스템 흐름 요약**
-이 시스템은 `workflow.yaml`의 정의에 따라, 사용자의 질문이 들어오면 **내부 문서 검색(RAG) → 검색된 내용을 기반으로 답변 생성**의 순서로 작동하는 자동화된 Q&A 봇입니다.
-
-#### 실행 시나리오 (Execution Model)
-이 인스트럭션은 사내 Q&A 챗봇 애플리케이션의 **'시스템 프롬프트'**로 내장되어 실행됩니다.
-1.  **[사용자]** ➡️ 챗봇에 질문을 입력합니다: "육아휴직은 최대 몇 개월까지 가능한가요?"
-2.  **[매니저 에이전트/애플리케이션]** ➡️ `workflow.yaml`을 실행합니다.
-3.  **[매니저 에이전트]** ➡️ **1단계(Search)**를 실행하여, 사용자의 질문과 가장 관련 있는 내부 규정 문서 조각 3개를 벡터 DB에서 검색합니다.
-4.  **[매니저 에이전트]** ➡️ **2단계(Generate Answer)**를 실행합니다. 검색된 문서 조각들과 사용자의 질문, 그리고 `01_rag_qa_agent.md` 인스트럭션을 함께 LLM API에 전달하여 최종 답변을 생성합니다.
-5.  **[LLM]** ➡️ 생성된 답변("최대 12개월까지 가능합니다. (출처: 내부 인사 규정 v3.4, 52페이지)")을 반환하고, 챗봇이 사용자에게 보여줍니다.
-
-#### 설계 분석
-- **메타 원칙 (4장):** **SSOT(Single Source of Truth)** 원칙에 따라 답변의 근거가 되는 지식 소스를 중앙에서 관리되는 `내부 규정 문서` 벡터 DB로 한정하여 답변의 일관성과 정확성을 보장합니다. **피드백 루프** 원칙에 따라, 답변 불가 시 명확한 다음 행동(인사팀 문의)을 안내하여 사용자 경험을 개선합니다.
-- **에이전트 설계 (5장):** AI는 '인사규정 전문 비서'라는 명확한 **역할**을 수행하며, 추측 금지, 민감 정보 답변 거부 등 조직의 정책을 반영한 **윤리적/운영적 제약** 하에 작동합니다.
-- **입/출력 설계 (6장):** 사용자의 자연어 질문이 **입력**이고, 근거(출처)가 명시된 답변이 **출력**입니다. RAG 기술을 활용하여 입력된 질문에 가장 적합한 컨텍스트를 동적으로 구성하여 할루시네이션을 최소화합니다.
-- **워크플로우 설계 (7장):** '질문 분석 → 문서 검색 → 답변 생성'의 간단한 **파이프라인 패턴**을 따르며, 이는 RAG 기반 시스템의 가장 표준적인 워크플로우입니다.
-
----
-
-## 10.9 [사례 9] 조직 표준, 복잡/중요
-
-- **상황:** 전사적으로 사용하는, 여러 부서(제품, 마케팅, CS)의 데이터가 통합되는 '주간 고객 리뷰 분석 시스템'.
-
-#### 최종 인스트럭션 시스템 예시
-
-이 단계의 인스트럭션은 더 이상 하나의 '글'이 아닌, 여러 부품이 유기적으로 연결된 하나의 '소프트웨어 시스템'과 같은 형태를 띠게 됩니다. 각 파일은 특정 에이전트의 지시나 워크플로우의 규칙을 담게 됩니다.
-
-**1. 시스템의 디렉토리 구조 예시**
-```
-/instructions/weekly_review_report/
-├── workflow.yaml        # 1. 전체 워크플로우 정의
-├── agents/              # 2. 각 에이전트 정의 폴더
-│   ├── 01_classifier.md
-│   ├── 02_extractor.md
-│   └── 03_summarizer.md
-└── schemas/             # 3. 데이터 스키마 폴더
-    └── report.schema.json
-```
-
-**2. 워크플로우 정의 예시 (`workflow.yaml`)**
-```yaml
-# workflow.yaml
-name: Weekly Customer Review Analysis
-trigger: Weekly (Sunday 23:00)
-
-steps:
-  - name: 1. Classify Reviews
-    agent: agents/01_classifier.md
-    inputs:
-      - source: "customer_reviews_db"
-    outputs:
-      - file: classified_reviews.json
-
-  - name: 2. Extract Key Information
-    agent: agents/02_extractor.md
-    inputs:
-      - file: classified_reviews.json
-    outputs:
-      - file: extracted_info.json
-
-  - name: 3. Generate Departmental Summaries
-    agent: agents/03_summarizer.md
-    inputs:
-      - file: extracted_info.json
-    outputs:
-      - file: weekly_report.json # schemas/report.schema.json 스키마 준수
-
-  - name: 4. Human Approval
-    type: approval
-    inputs:
-      - file: weekly_report.json
-    instructions: "제품, 마케팅, CS팀 담당자는 주간 리포트를 검토하고 최종 승인합니다."
-```
-
-**3. 에이전트 인스트럭션 및 스키마 예시**
-- **`agents/01_classifier.md` (분류 에이전트 예시)**
-```markdown
-  # 역할: 고객 리뷰 분류 전문가
-  # 목표: 주어진 고객 리뷰 텍스트를 '제품', 'CS', '가격', '기타' 네 가지 카테고리 중 가장 적합한 하나로 분류한다.
-  # 출력: 분류 결과 (JSON: {"review_id": "...", "category": "제품"})
-```
-
-- **`agents/02_extractor.md`**: 분류된 리뷰에서 제품명, 감성(긍/부정), 핵심 키워드를 추출하는 규칙 정의.
-- **`agents/03_summarizer.md`**: 추출된 정보를 바탕으로 제품, CS 등 부서별 요약 보고서를 생성하는 규칙 정의.
-- **`schemas/report.schema.json`**: 최종 보고서의 JSON 구조를 정의. (예: `{"product_summary": "...", "cs_issues": [...]}`)
 
 **4. 전체 시스템 흐름 요약**
 이 시스템은 `workflow.yaml`의 정의에 따라, 매주 자동으로 **리뷰 분류 → 핵심 정보 추출 → 부서별 요약 리포트 생성 → 최종 인간 승인**의 순서로 각 전문 에이전트가 자신의 역할을 수행하며 결과물을 다음 단계로 전달하는 자동화된 데이터 분석 파이프라인입니다.
@@ -698,7 +604,7 @@ steps:
 4.  **[담당자들]** ➡️ 내용을 검토하고 승인하면, 리포트가 경영진에게 자동으로 발송되거나 대시보드에 게시됩니다.
 
 #### 설계 분석
-- **메타 원칙 (4장):** **SoC**에 따라 기능이 파일 단위로 분리되고, **SSOT**에 따라 `workflow.yaml`가 전체 구조를 정의합니다. 각 단계는 **원자적**이며, 최종 결과물은 **산출물 중심** 원칙에 따라 스키마로 관리됩니다. **Human-in-the-Loop**를 통한 최종 검증도 가능합니다.
+- **메타 원칙 (4장):** **SoC** 원칙에 따라 기능이 파일 단위로 분리되고, **SSOT**에 따라 `workflow.yaml`가 전체 구조를 정의합니다. 각 단계는 **원자적**이며, 최종 결과물은 **산출물 중심** 원칙에 따라 스키마로 관리됩니다. **Human-in-the-Loop**를 통한 최종 검증도 가능합니다.
 - **에이전트 설계 (5장):** `agents/` 폴더 내에 각 에이전트의 **역할, 책임, 제약**이 개별 파일로 명확히 정의되어, 시스템의 모듈성과 유지보수성을 높입니다.
 - **입/출력 설계 (6장):** `schemas/` 폴더에 위치한 `report.schema.json` 파일이 최종 결과물의 구조를 명세화하여, 시스템 전체의 **출력** 일관성을 보장합니다.
 - **워크플로우 설계 (7장):** `workflow.yaml` 파일이 **파이프라인 패턴**에 따라 에이전트들의 협력 순서와 데이터 **핸드오프** 규칙, 그리고 각 단계의 **실패 처리** 방안을 명시적으로 정의합니다.
