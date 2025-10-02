@@ -446,6 +446,66 @@ steps:
 
 ---
 
+### 현실적인 구현: 인간과 협력하는 최적화 에이전트
+
+완전 자율적인 최적화 에이전트는 데이터 분석, 전략 수립, 트레이드오프 고려 등 매우 높은 수준의 추론 능력을 요구하여 구현이 어렵습니다. 하지만 이 패턴 역시 **'인간의 개입(Human-in-the-Loop)'**을 추가하면, AI를 '유능한 시스템 분석가'로 활용하는 현실적인 시스템으로 만들 수 있습니다.
+
+#### 협력 워크플로우 예시 (`meta_optimizer_workflow.yaml`)
+
+```yaml
+# /instructions/system_management/meta_optimizer_workflow.yaml
+name: Human-Collaborative System Optimization
+trigger: Manual
+
+steps:
+  - name: 1. Analyze and Propose Options
+    agent: agents/optimizer_agent.md # 10.13의 최적화 에이전트
+    inputs:
+      - goal: "API 비용 20% 절감"
+      - perf_log: "perf_log.csv"
+    outputs:
+      - file: optimization_options.md # AI가 제안하는 여러 최적화 방안
+
+  - name: 2. Human Selects Strategy
+    type: human_in_the_loop
+    instructions: |
+      다음 최적화 방안들을 검토하고, 가장 합리적인 전략 하나를 선택해주세요.
+      각 옵션의 장단점(예상 비용 절감 vs. 품질 저하 리스크)을 고려하여 결정해주세요.
+      ---
+      {{ file: optimization_options.md }}
+    outputs:
+      - variable: selected_strategy
+
+  - name: 3. Generate Modified Instructions
+    agent: agents/optimizer_agent.md # 동일 에이전트 재사용
+    inputs:
+      - request: "선택된 전략 '{{selected_strategy}}'에 따라, 관련된 인스트럭션 파일의 수정안과 A/B 테스트 계획을 생성하라."
+    outputs:
+      - file: modification_plan.json # 수정될 파일 내용과 테스트 계획이 담긴 JSON
+
+  - name: 4. Human Approves Changes
+    type: human_in_the_loop
+    instructions: |
+      AI가 생성한 아래 변경안과 테스트 계획을 최종 검토하고 승인해주세요.
+      ---
+      {{ file: modification_plan.json }}
+    outputs:
+      - file: approved_plan.json
+
+  - name: 5. Execute A/B Test
+    tool: ab_test_runner # 10.14의 평가 에이전트를 실행하는 도구
+    inputs:
+      - plan: "{{ file: approved_plan.json }}"
+    outputs:
+      - file: test_report.md
+```
+
+#### 설계 분석
+
+- **역할 재정의:** AI는 더 이상 '자율적인 의사결정자'가 아닌, 데이터에 기반한 여러 '개선 옵션'과 그 장단점을 제시하는 '컨설턴트'가 됩니다. 최종 전략을 선택하는 책임은 인간 관리자에게 있습니다.
+- **리스크 관리:** AI가 시스템을 잘못된 방향으로 '최적화'하여 품질을 크게 해치는 위험을 인간의 검토(2단계, 4단계)를 통해 사전에 방지할 수 있습니다.
+- **데이터 기반 의사결정:** 인간은 '감'이 아닌, AI가 분석해준 데이터와 예상 효과를 바탕으로 더 합리적인 의사결정을 내릴 수 있습니다. 최종적으로 5단계에서 실행되는 A/B 테스트는 이 결정이 옳았는지 과학적으로 검증하는 역할을 합니다.
+
 ## 10.14 '평가 에이전트' 직접 만들어보기
 
 앞선 `10.12`에서는 아키텍트 에이전트가 다른 에이전트를 생성하는 패턴을 살펴보았습니다. 이 섹션에서는 바로 그 아키텍트 에이전트가 **최종 목표물로 삼아야 할 '평가 에이전트'의 구체적인 구현 설계도**를 실제 코드를 통해 알아봅니다. 이 예제는 개념을 구체화하고, 독자가 직접 활용할 수 있는 실용적인 청사진을 제공합니다.
