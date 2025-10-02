@@ -121,24 +121,59 @@
 - 이 보고서는 법률적 자문이 아니며, 실제 의사결정은 반드시 담당 변호사의 검토를 거쳐야 한다. 보고서 서두에 이 경고 문구를 반드시 포함하라.
 - 조항의 해석이 모호할 경우, 자의적으로 판단하지 말고 "[해석 필요]" 태그를 달고 사용자에게 질문하라.
 
-# 출력 형식 (JSON)
+# 출력 형식
+아래 `legal_report.schema.json`에 정의된 JSON 스키마를 따른다.
+
+```
+
+[legal_report.schema.json]
+```json
 {
-  "report_id": "[문서 ID]",
-  "clauses": [
-    {
-      "category": "책임 및 보상",
-      "clause_number": "[조항 번호]",
-      "risk_description": "[위험성에 대한 상세 설명]",
-      "recommendation": "[수정 또는 삭제 제안]"
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Legal Risk Analysis Report",
+  "description": "A report identifying potential risks in legal contract clauses.",
+  "type": "object",
+  "properties": {
+    "report_id": {
+      "description": "The ID of the document being analyzed.",
+      "type": "string"
+    },
+    "clauses": {
+      "description": "A list of identified risky clauses.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "description": "The category of the clause.",
+            "type": "string",
+            "enum": ["책임 및 보상", "계약 해지", "지적 재산권"]
+          },
+          "clause_number": {
+            "description": "The number or identifier of the clause in the contract.",
+            "type": "string"
+          },
+          "risk_description": {
+            "description": "A detailed description of the potential risk.",
+            "type": "string"
+          },
+          "recommendation": {
+            "description": "A suggestion for how to mitigate the risk (e.g., amend or delete).",
+            "type": "string"
+          }
+        },
+        "required": ["category", "clause_number", "risk_description", "recommendation"]
+      }
     }
-  ]
+  },
+  "required": ["report_id", "clauses"]
 }
 ```
 
 #### 설계 분석
-- **메타 원칙 (4장):** **MECE** 원칙에 따라 분석 대상을 3가지 영역으로 명확히 나누고, **피드백 루프** 원칙을 통해 모호할 때 질문하도록 유도합니다. **Human-in-the-Loop**와 **윤리적 경계** 원칙은 AI의 역할을 '보조'로 한정하고 최종 책임을 사람에게 두어 리스크를 관리합니다.
+- **메타 원칙 (4장):** **산출물 중심** 원칙에 따라, 기계가 검증할 수 있는 명확한 JSON 스키마로 출력을 정의합니다. 또한 **MECE** 원칙에 따라 분석 대상을 3가지 영역으로 명확히 나누고, **피드백 루프** 원칙을 통해 모호할 때 질문하도록 유도합니다. **Human-in-the-Loop**와 **윤리적 경계** 원칙은 AI의 역할을 '보조'로 한정하고 최종 책임을 사람에게 두어 리스크를 관리합니다.
 - **에이전트 설계 (5장):** AI의 **역할**을 '보조'로 명확히 하고, 법률 판단을 직접 내리지 않도록 하는 중요한 **제약**을 설정합니다.
-- **입/출력 설계 (6장):** 입력은 '계약서 초안'이며, 출력은 보고서의 구조를 명확히 정의한 `JSON` 형식으로, 기계적 처리가 용이한 **구조화된 출력**입니다.
+- **입/출력 설계 (6장):** 입력은 '계약서 초안'이며, 출력은 인스트럭션에 명시된 **구조화된 출력(JSON Schema)**으로, 기계적 처리가 용이합니다.
 - **워크플로우 설계 (7장):** `#처리 방법`이 간단한 순차적 태스크를 정의합니다.
 
 ---
