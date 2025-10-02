@@ -1,6 +1,6 @@
 # 11장. 인스트럭션 시스템을 위한 도구와 프레임워크
 
-**Part 3: 인스트럭션 시스템의 확장과 발전**
+**Part 3: 인스트럭션 시스템의 확장과 운영**
 
 **목적:** 에이전트가 실제 세상과 상호작용하고, 인스트럭션 시스템을 효율적으로 관리하며, 그 미래를 조망하는 데 도움이 되는 다양한 도구, 프레임워크, 표준을 이해합니다.
 
@@ -102,7 +102,7 @@
 - OpenAI. (2023). Function Calling. https://platform.openai.com/docs/guides/function-calling
 - PromptLayer Documentation. (2023). https://promptlayer.com/docs
 - Weights & Biases Documentation. (2023). https://docs.wandb.ai/
-� 에이전트들을 동적으로 찾아, 스스로 팀을 구성하고 워크플로우를 설계하여 복잡한 문제를 해결하게 될 것입니다.
+� 에이전트들을 동적으로 찾아, 스스로 팀을 구성하고 워크플로우를 설계하여 복잡한 문제를 해결하게 될 것입니다.
 
 ## 참고 자료
 
