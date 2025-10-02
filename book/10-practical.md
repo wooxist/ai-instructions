@@ -276,20 +276,114 @@
 
 - **상황:** 분기별 매출 데이터를 분석하고, 시각화 자료를 포함한 보고서 초안을 생성하며, 최종적으로 경영진에게 보낼 이메일까지 작성하는 복잡한 재무 보고 프로세스.
 
-#### 최종 인스트럭션 시스템 예시 (개념적)
-이 경우, 각 에이전트는 별도의 파일로 정의되고, 워크플로우 엔진에 의해 실행되는 복잡한 시스템이 됩니다. (10.9 사례와 유사)
+#### 최종 인스트럭션 시스템 설계
+이처럼 복잡하고 중요한 워크플로우는 하나의 파일이 아닌, 다음과 같이 여러 파일로 구성된 시스템으로 설계하는 것이 바람직합니다. 각 파일은 특정 에이전트의 지시나 워크플로우의 규칙을 담게 됩니다.
 
-- **AGENT 1: 데이터 추출 에이전트 (with Tool)**
-- **AGENT 2: 데이터 분석 및 시각화 에이전트 (with Tool)**
-- **AGENT 3: 보고서 작성 에이전트**
-- **AGENT 4: 이메일 작성 에이전트**
-- **최종 검토 (Human-in-the-Loop)**
+**1. 시스템의 디렉토리 구조 예시**
+```
+/instructions/quarterly_report/
+├── workflow.yaml        # 1. 전체 워크플로우의 순서와 규칙을 정의
+├── agents/              # 2. 각 역할을 수행할 에이전트들의 인스트럭션
+│   ├── 01_extractor.md
+│   ├── 02_analyzer.md
+│   ├── 03_report_writer.md
+│   └── 04_email_writer.md
+└── tools/               # 3. 에이전트들이 사용할 도구의 코드
+    ├── db_connector.py
+    └── data_visualizer.py
+```
+
+**2. 워크플로우 정의 예시 (`workflow.yaml`)**
+시스템의 심장 역할을 하는 `workflow.yaml` 파일은 각 에이전트를 어떤 순서로, 어떤 데이터를 주고받으며 실행할지 정의합니다.
+
+```yaml
+# workflow.yaml
+name: Quarterly Financial Report Generation
+trigger: Manual (Quarterly)
+
+steps:
+  - name: 1. Extract Sales Data
+    agent: agents/01_extractor.md
+    inputs:
+      - quarter: "2024-Q3" # 파라미터로 외부에서 주입 가능
+    outputs:
+      - file: sales_data.csv
+
+  - name: 2. Analyze and Visualize Data
+    agent: agents/02_analyzer.md
+    inputs:
+      - file: sales_data.csv # 이전 단계의 출력을 입력으로 사용
+    outputs:
+      - file: summary.json
+      - file: chart.png
+
+  - name: 3. Draft Report
+    agent: agents/03_report_writer.md
+    inputs:
+      - file: summary.json
+      - file: chart.png
+    outputs:
+      - file: report_draft.md
+
+  - name: 4. Draft Email
+    agent: agents/04_email_writer.md
+    inputs:
+      - file: report_draft.md
+    outputs:
+      - text: email_draft.txt
+
+  - name: 5. Human Approval
+    type: approval
+    inputs:
+      - file: report_draft.md
+      - text: email_draft.txt
+    instructions: "담당자는 최종 보고서와 이메일을 검토하고 승인 후 발송합니다."
+```
+
+**3. 에이전트 인스트럭션 예시 (`agents/*.md`)**
+워크플로우의 각 단계를 실제로 수행하는 에이전트들의 인스트럭션은 다음과 같이 작성될 수 있습니다.
+
+- **`agents/01_extractor.md` (도구 사용 에이전트 예시)**
+  ```markdown
+  1. # 역할: 데이터베이스 전문가 (DBA)
+
+  2. # 목표
+  주어진 분기(quarter)에 해당하는 매출 데이터를 사내 데이터베이스에서 추출하여 `sales_data.csv` 파일로 저장한다.
+
+  3. # 도구 사용 규칙
+  - `db_connector.py` 도구를 사용하여 데이터베이스에 안전하게 연결하고 쿼리를 실행해야 한다.
+  - SQL 쿼리는 `SELECT * FROM sales WHERE quarter = '{quarter}';` 형식을 따라야 한다.
+
+  4. # 제약 조건
+  - 데이터베이스 연결 정보나 개인정보를 로그에 남기지 않는다.
+  - 쿼리 실행 중 오류가 발생하면, 즉시 작업을 중단하고 "[DB ERROR]" 태그와 함께 오류 메시지를 반환한다.
+  ```
+
+- **`agents/03_report_writer.md` (콘텐츠 생성 에이전트 예시)**
+  ```markdown
+  1. # 역할: 5년차 재무 분석가
+
+  2. # 목표
+  입력된 핵심 분석 지표(`summary.json`)와 매출 추이 그래프(`chart.png`)를 바탕으로, 경영진이 이해하기 쉬운 분기 실적 보고서 초안을 작성한다.
+
+  3. # 처리 방법
+	  - `summary.json`의 데이터를 기반으로 보고서의 핵심 내용을 요약한다.
+	  - `chart.png` 이미지를 보고서에 포함시키고, 해당 그래프가 의미하는 바를 설명한다.
+	  - 보고서의 구조는 '1. 핵심 요약', '2. 상세 지표 분석', '3. 결론 및 제언' 순서를 따른다.
+
+  4. # 출력 형식
+  - 마크다운 형식으로 작성한다.
+  - 전문 용어 사용을 최소화하고, 간결하고 명확한 문체를 사용한다.
+  ```
+
+**4. 전체 시스템 흐름 요약**
+이 시스템은 `workflow.yaml`의 정의에 따라, **데이터 추출 → 분석 및 시각화 → 보고서 작성 → 이메일 작성 → 최종 인간 승인**의 순서로 각 전문 에이전트가 자신의 역할을 수행하며 결과물을 다음 단계로 전달하는 자동화된 파이프라인입니다.
 
 #### 설계 분석
-- **메타 원칙 (4장):** **SoC, MECE** 원칙에 따라 에이전트 역할이 명확히 분리되고, **SSOT** 원칙에 따라 단일 데이터 소스를 사용합니다. 각 단계는 **원자성**과 **산출물 중심** 원칙을 따르며, 최종적으로 **Human-in-the-Loop** 원칙으로 리스크를 관리합니다.
-- **에이전트 설계 (5장):** 각 에이전트는 'DBA', '데이터 분석가', '재무 분석가' 등 고도의 전문화된 **역할**을 가지며, 외부 **도구(Tool)**를 사용할 수 있는 권한과 **제약**을 가집니다.
-- **입/출력 설계 (6장):** 각 단계의 입/출력(SQL 쿼리, CSV, PNG 이미지, Markdown 보고서)이 명확히 정의되어, 전체 프로세스의 데이터 흐름을 구성합니다.
-- **워크플로우 설계 (7장):** 여러 에이전트가 순차적으로 실행되는 **파이프라인 패턴**을 기반으로 하며, 최종 단계에 인간의 승인(Approval)이 포함된 복합 워크플로우입니다.
+- **메타 원칙 (4장):** 복잡한 작업을 '추출', '분석', '작성' 등 단일 책임을 갖는 여러 단계로 명확히 분리하여 **SoC(관심사 분리)**와 **MECE** 원칙을 따릅니다. 데이터베이스라는 단일 출처를 사용하므로 **SSOT** 원칙도 준수합니다. 재무 정보라는 고위험 작업을 다루므로, 최종 단계에 **Human-in-the-Loop**를 포함하여 리스크를 관리하는 것이 핵심입니다.
+- **에이전트 설계 (5장):** 각 에이전트는 `agents/` 디렉토리에 위와 같이 구체적인 **역할, 목표, 제약 조건**이 정의된 인스트럭션에 따라 전문화된 역할을 수행하며, `tools/` 디렉토리의 특정 **도구(Tool)**를 사용할 수 있는 권한과 책임을 갖습니다.
+- **입/출력 설계 (6장):** `workflow.yaml`에서 각 단계의 입/출력(`sales_data.csv`, `summary.json` 등)이 명확히 정의되어, 전체 프로세스의 데이터 흐름을 안정적으로 만듭니다.
+- **워크플로우 설계 (7장):** **`workflow.yaml` 파일 자체가 바로 이 시스템의 워크플로우 설계도**입니다. 여러 에이전트가 순차적으로 실행되는 **파이프라인 패턴**을 명시적으로 정의하고, 최종 단계에 인간의 승인(Approval)을 포함시켜 시스템의 예측 가능성과 안정성을 높입니다.
 
 ---
 
