@@ -410,7 +410,9 @@ graph TD
 
 ## 참고 자료
 
-- Hohpe, G., & Woolf, B. (2003). *Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions*. Addison-Wesley Professional.
+- Hohpe, G., & Woolf, B. (2003). Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions. Addison-Wesley Professional. https://www.enterpriseintegrationpatterns.com/
+- Google SRE. Cascading Failures. https://sre.google/sre-book/cascading-failures/
+- Google SRE. Handling Overload (Exponential Backoff and Jitter). https://sre.google/sre-book/handling-overload/
 
 ---
 
