@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Generated Summary",
+  "type": "object",
+  "properties": {
+    "id": {"type": "string"},
+    "summary": {"type": "string"},
+    "confidence": {"type": "number"},
+    "model": {"type": "string"}
+  },
+  "required": ["id", "summary", "confidence"]
+}

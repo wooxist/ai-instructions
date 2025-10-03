@@ -1,0 +1,36 @@
+name: workflow-ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run pipeline
+        run: |
+          python3 -m pip install --upgrade pip
+          cd expert-book/lab
+          python3 runner.py
+      - name: Eval
+        run: |
+          cd expert-book/lab
+          python3 tests/eval_regression.py logs/generate.jsonl > .cache/metrics.json
+          python3 tools/promote_baseline.py
+      - name: Report
+        run: |
+          cd expert-book/lab
+          python3 tools/report.py > .cache/report.md
+          python3 tools/report_html.py > .cache/report_html_path.txt
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab-run-artifacts
+          path: |
+            expert-book/lab/logs/generate.jsonl
+            expert-book/lab/logs/calls.jsonl
+            expert-book/lab/logs/route_summary.json
+            expert-book/lab/.cache/metrics.json
+            expert-book/lab/.cache/report.md
+            expert-book/lab/.cache/report.html

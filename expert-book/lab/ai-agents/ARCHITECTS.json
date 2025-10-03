@@ -1,0 +1,10 @@
+{
+  "07-process-workflow.md": "TRA-Workflow",
+  "13-workflow-as-code.md": "TRA-Workflow",
+  "10-advanced-collaboration-architectures.md": "TRA-Collab",
+  "12-tools.md": "TRA-Tools",
+  "08-performance.md": "TRA-Perf",
+  "06-input-output.md": "TRA-IO",
+  "11-2-organizational-standards.md": "TRA-Org",
+  "others": "TRA-General"
+}

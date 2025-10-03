@@ -1,0 +1,31 @@
+set shell := bash
+
+run:
+  @python3 runner.py
+
+render:
+  @python3 render.py questions/spec.yaml > .cache/prompt.txt && cat .cache/prompt.txt
+
+eval:
+  @python3 tests/eval_regression.py logs/generate.jsonl
+
+report:
+  @python3 tests/eval_regression.py logs/generate.jsonl && python3 tools/report.py
+
+report-html:
+  @python3 tools/report_html.py
+
+env:
+  @printenv | sort
+
+ollama-test:
+  @bash tools/test_ollama.sh
+
+openai-test:
+  @bash tools/test_openai.sh
+
+anthropic-test:
+  @bash tools/test_anthropic.sh
+
+route-demo TEXT="Summarize this short line.":
+  @python3 scripts/router_demo.py "{{TEXT}}"
