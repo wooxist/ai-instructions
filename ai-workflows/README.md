@@ -8,10 +8,10 @@
 
 ```mermaid
 graph TD
-    A[1: 요구사항 분석<br>에이전트] --> B[2: 메타 원칙<br>적용 에이전트]
-    B --> C[3: 에이전트 설계<br>에이전트]
-    C --> D[4: 입출력 명세<br>에이전트]
-    D --> E[5: 워크플로우 구성<br>에이전트]
+    A["1: 요구사항 분석<br>에이전트"] --> B["2: 메타 원칙<br>적용 에이전트"]
+    B --> C["3: 에이전트 설계<br>에이전트"]
+    C --> D["4: 입출력 명세<br>에이전트"]
+    D --> E["5: 워크플로우 구성<br>에이전트"]
     E --> F{검증}
     F -- 수정 필요 --> B
     F -- 승인 --> G((완료))
@@ -866,8 +866,8 @@ graph TD
     B --> C[3: 키워드 추출]
     C --> D[4: 보고서 초안 작성]
     D --> E{5: 인간 검토}
-    E -- 승인 --> F[6a: 최종 보고서 확정]
-    E -- 수정 요청 --> G[6b: 수정 요청 알림]
+    E -- 승인 --> F[6a. 최종 보고서 확정]
+    E -- 수정 요청 --> G[6b. 수정 요청 알림]
     F --> H[7: 보고서 발송]
     H --> End([완료])
     G --> End
@@ -878,7 +878,6 @@ graph TD
     
     style E fill:#ffd700,stroke:#333,stroke-width:2px
     style End fill:#90EE90,stroke:#333,stroke-width:2px
-```
 ```
 ```
 
@@ -976,11 +975,11 @@ mkdir -p agents/
 
 ## 참고 자료
 
-- [4장. 인스트럭션 설계의 메타 원칙](book/04-meta-principles.md)
-- [5장. 역할(Agent)과 제약(Constraint) 설계](book/05-agent-constraints.md)
-- [6장. 입력과 출력 설계](book/06-input-output.md)
-- [7장. 처리 방법과 워크플로우 설계](book/07-process-workflow.md)
-- [10장 2부: 다중 에이전트 워크플로우](book/10-2-multi-agent-workflows.md)
+- 4장. 인스트럭션 설계의 메타 원칙
+- 5장. 역할(Agent)과 제약(Constraint) 설계
+- 6장. 입력과 출력 설계
+- 7장. 처리 방법과 워크플로우 설계
+- 10장 2부: 다중 에이전트 워크플로우
 
 ---
 

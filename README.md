@@ -35,7 +35,7 @@
 ai-instructions/
 ├── README.md                # 프로젝트 개요
 ├── ROADMAP.md               # 프로젝트 로드맵 (Phase 2 이후 계획)
-├── ai-instructions/instructions.md # 모든 AI 에이전트가 따라야 할 집필 지침(SSOT)
+├── .instructions.md # 모든 AI 에이전트가 따라야 할 집필 지침(SSOT)
 └── book/                    # 모든 원고와 자료 관리
     ├── 00-preface.md          # 서문 (v1-released)
     ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기 (v1-released)
