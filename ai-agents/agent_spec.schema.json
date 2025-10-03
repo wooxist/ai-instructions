@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["agents", "execution_order", "design_rationale"],
+  "properties": {
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "display_name", "role", "responsibilities", "constraints"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "display_name": { "type": "string" },
+          "role": { "type": "string" },
+          "responsibilities": { "type": "array", "items": { "type": "string" } },
+          "constraints": { "type": "array", "items": { "type": "string" } },
+          "knowledge_sources": { "type": "array", "items": { "type": "string" } },
+          "persona": { "type": "string" },
+          "estimated_complexity": { "type": "string", "enum": ["low", "medium", "high"] },
+          "dependencies": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "execution_order": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "design_rationale": {
+      "type": "string"
+    }
+  }
+}

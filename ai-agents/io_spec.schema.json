@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["schemas", "handoffs", "validation_rules"],
+  "properties": {
+    "schemas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["agent_id", "agent_name", "input_schema", "output_schema"],
+        "properties": {
+          "agent_id": { "type": "string" },
+          "agent_name": { "type": "string" },
+          "input_schema": { "type": "object" },
+          "output_schema": { "type": "object" }
+        }
+      }
+    },
+    "handoffs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "mapping", "validation"],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "mapping": { "type": "object" },
+          "validation": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "validation_rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

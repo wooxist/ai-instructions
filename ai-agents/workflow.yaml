@@ -1,0 +1,117 @@
+name: Meta-Agent Design Workflow
+description: 새로운 AI 에이전트 시스템을 체계적으로 설계하는 워크플로우
+version: 1.0
+trigger: Manual
+
+variables:
+  - user_request: null              # 사용자의 초기 요구사항
+  - requirements: null              # 분석된 요구사항
+  - applicable_principles: null     # 적용할 메타 원칙
+  - agent_specs: null              # 설계된 에이전트 명세
+  - io_specs: null                 # 입출력 명세
+  - workflow_config: null          # 워크플로우 구성
+  - validation_result: null        # 검증 결과
+
+steps:
+  # 1단계: 요구사항 분석
+  - name: 1. Analyze Requirements
+    agent: agents/01_requirements_analyzer.md
+    inputs:
+      - user_request: "{{user_request}}"
+    outputs:
+      - variable: requirements
+      - file: outputs/01_requirements.json
+    retry:
+      max_attempts: 2
+      on_failure: notify
+
+  # 2단계: 메타 원칙 적용
+  - name: 2. Apply Meta Principles
+    agent: agents/02_principles_advisor.md
+    inputs:
+      - requirements: "{{requirements}}"
+    outputs:
+      - variable: applicable_principles
+      - file: outputs/02_principles.json
+    retry:
+      max_attempts: 2
+
+  # 3단계: 에이전트 설계
+  - name: 3. Design Agents
+    agent: agents/03_agent_designer.md
+    inputs:
+      - requirements: "{{requirements}}"
+      - principles: "{{applicable_principles}}"
+    outputs:
+      - variable: agent_specs
+      - file: outputs/03_agent_specs.json
+    retry:
+      max_attempts: 3
+
+  # 4단계: 입출력 명세 작성
+  - name: 4. Specify Input/Output
+    agent: agents/04_io_specifier.md
+    inputs:
+      - agent_specs: "{{agent_specs}}"
+      - principles: "{{applicable_principles}}"
+    outputs:
+      - variable: io_specs
+      - file: outputs/04_io_specs.json
+    retry:
+      max_attempts: 2
+
+  # 5단계: 워크플로우 구성
+  - name: 5. Compose Workflow
+    agent: agents/05_workflow_composer.md
+    inputs:
+      - agent_specs: "{{agent_specs}}"
+      - io_specs: "{{io_specs}}"
+      - principles: "{{applicable_principles}}"
+    outputs:
+      - variable: workflow_config
+      - file: outputs/05_workflow.yaml
+    retry:
+      max_attempts: 2
+
+  # 6단계: 인간 검증 (Human-in-the-Loop)
+  - name: 6. Human Validation
+    type: human_in_the_loop
+    instructions: |
+      다음 설계 결과를 검토해주세요:
+      1. 요구사항: {{requirements}}
+      2. 적용된 원칙: {{applicable_principles}}
+      3. 에이전트 명세: {{agent_specs}}
+      4. 입출력 명세: {{io_specs}}
+      5. 워크플로우: {{workflow_config}}
+      
+      승인하시겠습니까? (approve/revise)
+    outputs:
+      - variable: validation_result
+
+  # 7단계: 최종 패키징
+  - name: 7. Package Results
+    type: format
+    condition: "{{validation_result}} == 'approve'"
+    template: |
+      # 에이전트 시스템 설계 완료
+      
+      ## 프로젝트 정보
+      - 생성일: {{timestamp}}
+      - 요구사항: {{requirements.summary}}
+      
+      ## 설계 산출물
+      - 에이전트 수: {{agent_specs.count}}
+      - 적용 원칙: {{applicable_principles.list}}
+      
+      ## 다음 단계
+      1. `outputs/` 디렉토리의 파일들을 검토하세요
+      2. 각 에이전트의 인스트럭션 파일을 작성하세요
+      3. 워크플로우를 테스트하세요
+    outputs:
+      - file: outputs/README.md
+
+on_failure:
+  - type: notification
+    message: "메타 에이전트 설계 워크플로우에서 오류가 발생했습니다: {{error}}"
+  - type: log
+    level: error
