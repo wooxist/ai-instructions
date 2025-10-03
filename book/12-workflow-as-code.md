@@ -1,213 +1,64 @@
-# 12장. 워크플로우 자동화와 코드형 인프라 (IaC)
+# 12장. 도메인 특화 언어(DSL) 설계: AI와 소통하는 우리만의 언어
 
 **Part 3: 인스트럭션 시스템의 확장과 운영**
 
-**목적:** 수동으로 실행하던 인스트럭션과 워크플로우를 '코드'로 관리하고, 이를 통해 전체 프로세스를 자동화, 테스트, 배포하는 '코드형 인스트럭션(Instruction as Code, IaC)'의 개념과 실용적인 구현 방법을 학습합니다.
-
-### 이 장에서 배우는 것
-- 인스트럭션을 코드로 관리할 때의 장점(버전 관리, 재사용성, 자동화).
-- `workflow.yaml`과 같은 선언적 파일을 사용하여 다중 에이전트 워크플로우를 정의하는 방법.
-- GitHub Actions와 같은 CI/CD 도구를 활용하여 인스트럭션의 변경 사항을 자동으로 테스트하고 배포하는 방법.
-- 인스트럭션 시스템을 위한 간단한 DevOps(Instruction DevOps) 파이프라인 구축 아이디어.
+**목적:**
+- 도메인 특화 언어(Domain-Specific Language, DSL)의 기본 개념을 이해합니다.
+- 왜 AI 에이전트 시스템을 위해 우리만의 언어(DSL)를 설계해야 하는지 그 필요성을 배웁니다.
+- YAML과 마크다운을 조합하여, 사람이 읽기 쉽고 기계가 처리하기 쉬운 실용적인 DSL을 설계하는 방법을 학습합니다.
 
 ---
 
-## 12.1 왜 인스트럭션을 코드로 관리해야 하는가?
+## 12.1 도메인 특화 언어(DSL)란 무엇인가?
 
-지금까지 우리는 인스트럭션을 사람이 읽고 이해할 수 있는 마크다운(`.md`) 파일로 작성했습니다. 이는 팀원 간의 공유와 이해에는 유용하지만, 복잡한 워크플로우를 매번 수동으로 실행해야 하는 한계가 있습니다. '코드형 인스트럭션(Instruction as Code)'은 이러한 수동 작업을 자동화하고, 인스트럭션 시스템 전체를 하나의 소프트웨어 프로젝트처럼 체계적으로 관리하기 위한 접근법입니다.
+**도메인 특화 언어(Domain-Specific Language, DSL)**는 말 그대로 '특정 영역(Domain)의 문제를 해결하는 데 특화된 컴퓨터 언어'입니다. 이는 파이썬(Python)이나 자바(Java)처럼 어떤 문제든 해결할 수 있는 '범용 언어(General-Purpose Language, GPL)'와는 다른 개념입니다.
 
-이는 마치 서버를 관리할 때, 수동으로 클릭하여 설정하는 대신 설정 파일을 코드로 작성하여 관리하는 '코드형 인프라(Infrastructure as Code, IaC)'[^1]와 같은 철학을 공유합니다. 인스트럭션을 코드로 관리하면 다음과 같은 강력한 이점을 얻을 수 있습니다.
+비유하자면, 범용 언어는 어떤 요리든 만들 수 있는 전문가용 주방과 같습니다. 다양한 도구와 재료가 있지만, 이를 제대로 사용하려면 전문적인 지식과 경험이 필요합니다. 반면, DSL은 '캡슐 커피 머신'과 같습니다. 커피를 내린다는 특정 목적에 완벽하게 맞춰져 있어, 누구나 버튼 몇 번만 누르면 쉽고 일관되게 맛있는 커피를 만들 수 있습니다.
 
-- **버전 관리 (Versioning):** 모든 변경 사항이 Git을 통해 추적되므로, 언제 누가 무엇을 왜 바꿨는지 명확히 알 수 있고, 문제가 생겼을 때 이전 버전으로 쉽게 되돌릴 수 있습니다.
-- **자동화 (Automation):** `workflow.yaml`과 같은 설정 파일을 기반으로, 워크플로우 엔진이 전체 프로세스를 사람의 개입 없이 자동으로 실행할 수 있습니다.
-- **재사용성 (Reusability):** 잘 만들어진 에이전트 인스트럭션이나 워크플로우는 다른 프로젝트에서 쉽게 가져와 재사용할 수 있는 '모듈'이 됩니다.
-- **테스트 용이성 (Testability):** 9장에서 배운 '평가 에이전트'를 자동화된 테스트 스크립트로 만들어, 인스트럭션이 변경될 때마다 기존 기능이 망가지지 않았는지(회귀 테스트) 자동으로 검증할 수 있습니다.
+우리에게 익숙한 DSL의 예시는 다음과 같습니다.
 
-## 12.2 워크플로우를 코드로 정의하기: `workflow.yaml`
+- **HTML:** 웹 페이지의 '구조'를 표현하는 데 특화된 언어입니다. 우리는 HTML로 게임을 만들지는 않지만, 웹 페이지를 만드는 데는 이보다 더 좋은 언어가 없습니다.
+- **SQL:** 데이터베이스에 데이터를 '요청'하는 데 특화된 언어입니다. `SELECT * FROM users WHERE age > 30;` 라는 구문은 "30세 이상인 모든 사용자의 정보를 보여줘"라는 명확한 의도를 표현합니다.
+- **CSS:** 웹 페이지의 '스타일'을 꾸미는 데 특화된 언어입니다.
 
-10장에서 여러 번 등장했던 `workflow.yaml` 파일은 다중 에이전트 시스템의 '설계도'이자 '실행 스크립트' 역할을 합니다. 이 파일은 사람이 읽고 이해하기 쉬우면서도, 기계가 파싱하여 실행할 수 있는 선언적인(declarative) 구조를 가집니다.
+이 책에서 우리가 `workflow.yaml`을 통해 정의하는 언어 역시, **'AI 에이전트들의 협업 방식을 정의'**하는 데 특화된 우리만의 DSL입니다.
 
-### 12.2.1 DSL 설계: YAML vs. Markdown
+## 12.2 왜 우리만의 언어(DSL)가 필요한가?
 
-워크플로우 DSL[^2]을 설계할 때 YAML과 Markdown 중 어떤 것을 선택할지는 중요한 결정입니다. 우리는 두 가지를 모두 사용하는 하이브리드 접근법을 채택했습니다.
+그렇다면 왜 복잡하게 우리만의 언어를 만들어야 할까요? 그냥 파이썬 같은 범용 언어로 모든 것을 처리하면 안 될까요? 특히 이 책의 핵심 독자인 '일반 사용자'에게 DSL이 필요한 이유는 다음과 같습니다.
 
-- **YAML (`workflow.yaml`):** 워크플로우의 '구조'를 정의하는 데 사용됩니다. 단계(steps), 입/출력(inputs/outputs), 조건(conditions) 등 명확한 구조를 가진 정보를 표현하는 데 매우 효과적입니다. GitHub Actions나 Kubernetes 등 이미 많은 자동화 도구에서 표준으로 사용되고 있어 익숙하고, 기계가 파싱하기에 용이합니다.
-- **Markdown (`agents/*.md`):** 에이전트의 '지침'처럼, 사람이 읽고 이해해야 하는 서술적인 내용을 담는 데 사용됩니다. 역할, 처리 방법, 제약 조건 등 줄글로 된 설명은 Markdown으로 작성하는 것이 가독성과 유지보수성 면에서 훨씬 유리합니다.
+### 1. 복잡성 추상화 (Hiding Complexity)
 
-이처럼 **워크플로우의 뼈대는 YAML로, 각 에이전트의 상세한 지침은 Markdown으로** 역할을 분리하는 것이 이 책에서 제시하는 핵심 설계 패턴입니다.
+가장 큰 이유는 **복잡한 내부 구현을 감추고, 사용자가 자신의 '의도'에만 집중하게 만들기 위함**입니다.
 
-### 12.2.2 단일 에이전트 자동화: `yaml`이 필요한 이유
+예를 들어, 10장에서 본 `type: parallel`이라는 한 줄의 코드를 생각해 봅시다. 만약 이를 범용 언어로 직접 구현하려면, 여러 에이전트를 동시에 실행하고(멀티스레딩 또는 비동기 처리), 모든 작업이 끝날 때까지 기다렸다가, 그 결과들을 다시 하나로 합치는 복잡한 코드를 작성해야 합니다.
 
-그렇다면 단일 에이전트 작업에도 `workflow.yaml`이 필요할까요? **수동으로 실행할 때는 필요 없습니다.** 10.1절의 예시처럼 `agents/01_email_summarizer.md` 파일의 내용을 복사해 AI에게 직접 지시할 수 있습니다.
+하지만 DSL을 사용하면, 사용자는 그저 "이 단계들을 동시에 실행해줘"라는 의도만 `type: parallel`로 선언하면 됩니다. 복잡한 실행 과정은 DSL을 해석하는 '워크플로우 엔진'이 알아서 처리해 줍니다. 이는 마치 자동차 운전자가 엔진의 원리를 몰라도 운전할 수 있는 것과 같습니다.
 
-하지만 이 작업을 **자동화**하고 싶다면 `workflow.yaml`이 필요합니다.
+### 2. 인간과 기계 모두를 위한 공용어 (Human & Machine Readable)
 
-```yaml
-# /workflows/summarize_email.yaml
-name: Summarize Single Email
-trigger: API Call
+잘 설계된 DSL은 **사람이 읽고 이해하기 쉬우면서도, 동시에 기계가 정확하게 해석하여 실행할 수 있는** 이중의 장점을 가집니다.
 
-steps:
-  - name: 1. Summarize
-    agent: agents/01_email_summarizer.md
-    inputs:
-      - email_body: "{{trigger.payload.body}}" # API로 전달된 이메일 본문
-    outputs:
-      - variable: summary_text
-```
+- **사람을 위해:** `workflow.yaml`은 프로젝트의 전체 흐름을 보여주는 '업무 계획서'나 '설계도' 역할을 합니다. 개발자가 아니더라도 기획자, 마케터, 매니저 등 누구나 파일을 열어보고 "아, 재무팀의 보고서가 나와야 마케팅팀의 작업이 시작되는구나"라고 쉽게 이해할 수 있습니다. 즉, DSL은 팀원 간의 소통과 협업을 위한 훌륭한 '공용어'가 됩니다.
 
-이처럼 `workflow.yaml`은 에이전트가 하나일 때도, 그 작업을 **언제(`trigger`), 어떤 데이터로(`inputs`), 어떻게 실행할지** 정의하는 '실행기' 역할을 합니다. 이렇게 설계하면 나중에 이 요약 에이전트를 더 큰 워크플로우의 한 부분으로 쉽게 재사용할 수 있습니다.
+- **기계를 위해:** YAML 형식은 기계가 파싱(해석)하고 검증하기에 매우 용이한 구조입니다. 워크플로우 엔진은 이 파일을 읽어, 각 단계가 유효한지, 필요한 입력값은 모두 있는지 등을 확인하고 자동화된 프로세스를 실행할 수 있습니다.
 
-### `workflow.yaml`의 핵심 구성 요소
+### 3. 의도의 명확한 표현 (Clear Expression of Intent)
 
-```yaml
-# /instructions/quarterly_report/workflow.yaml
+범용 언어로 작성된 코드는 '어떻게(How)' 동작하는지는 보여주지만, '왜(Why)' 그렇게 하는지에 대한 '의도'는 숨겨져 있는 경우가 많습니다. 반면, DSL은 사용자가 자신의 의도를 명확하게 표현하도록 유도합니다.
 
-name: Quarterly Financial Report Generation # 1. 워크플로우의 이름
-trigger: Manual # 2. 실행 트리거 (수동, 매주, API 호출 등)
+- `type: human_in_the_loop`: "이 단계는 위험하니, 반드시 사람의 승인이 필요하다"는 의도를 명확히 합니다.
+- `type: handoff`: "여기까지가 우리 팀의 책임이고, 이제부터는 다른 팀의 책임이다"라는 조직 간의 업무 경계를 명확히 합니다.
+- `retry: 3`: "이 작업은 가끔 실패할 수 있으니, 3번까지는 다시 시도해봐도 괜찮다"는 실패 처리 의도를 명확히 합니다.
 
-steps: # 3. 실행 단계 목록
-  - name: 1. Extract Sales Data # 단계의 이름
-    agent: agents/01_extractor.md # 이 단계를 수행할 에이전트
-    inputs: # 에이전트에게 전달할 입력
-      - quarter: "2024-Q3"
-    outputs: # 이 단계의 결과물
-      - file: sales_data.csv
+이처럼 의도가 명시적으로 드러나면, 다른 사람이 워크플로우를 유지보수하거나 인수인계받을 때 훨씬 더 쉽고 안전하게 시스템을 이해할 수 있습니다.
 
-  - name: 2. Analyze and Visualize Data
-    agent: agents/02_analyzer.md
-    inputs:
-      - file: sales_data.csv # 이전 단계의 출력을 입력으로 사용
-    outputs:
-      - file: summary.json
-      - file: chart.png
+### 4. 안전성과 제약 (Safety through Constraints)
 
-  - name: 3. Human Approval # 4. 인간 개입 단계
-    type: human_in_the_loop # 4장에서 정의한 'Human-in-the-Loop' 원칙의 구체적인 구현
-    instructions: "분석 결과와 차트를 검토하고 승인해주세요."
-    inputs:
-      - file: summary.json
-      - file: chart.png
-```
+DSL은 특정 도메인에 필요한 기능만 제공하고, 그 외의 위험한 행동은 원천적으로 '제약'함으로써 시스템의 안정성을 높입니다.
 
-1.  **`name`**: 워크플로우를 식별하는 고유한 이름입니다.
-2.  **`trigger`**: 워크플로우가 언제 시작되는지를 정의합니다. (예: `Manual`, `Weekly`, `OnCommit`)
-3.  **`steps`**: 워크플로우를 구성하는 각 단계의 목록입니다. 각 단계는 특정 `agent`를 호출하고, `inputs`와 `outputs`를 통해 데이터를 주고받습니다. 이는 7장에서 배운 **파이프라인 패턴**과 **핸드오프** 개념을 코드로 구현한 것입니다.
-4.  **`type: human_in_the_loop`**: AI가 자동으로 처리할 수 없거나, 반드시 사람의 검토가 필요한 중요한 의사결정 지점을 명시합니다. 이는 4장의 **검증 및 책임 원칙**에서 강조한 **Human-in-the-Loop**를 실제 워크플로우에 코드로 내장하는 방법으로, 시스템의 안전성과 신뢰성을 확보하는 핵심 장치입니다.
+범용 언어는 자유도가 높은 만큼, 실수로 시스템의 중요 파일을 삭제하거나 무한 루프에 빠지는 등의 위험한 코드를 작성할 가능성도 열려 있습니다.
 
-## 12.3 고급 제어 흐름: 루프와 조건
+하지만 우리가 설계한 `workflow.yaml` DSL에서는 `agent`, `inputs`, `outputs` 등 미리 약속된 키워드만 사용할 수 있습니다. 만약 사용자가 `delete_all_files: true`와 같은 임의의 명령어를 추가하더라도, 워크플로우 엔진은 이를 알 수 없는 명령어로 인지하고 실행을 거부할 것입니다. 이러한 '제약'은 사용자를 실수로부터 보호하는 안전장치(Guardrail) 역할을 합니다.
 
-실제 업무는 단순한 순차 실행(A→B→C)만으로 해결되지 않는 경우가 많습니다. `workflow.yaml`은 조건 분기와 반복(루프) 같은 고급 제어 흐름을 정의하여, 더 동적이고 지능적인 자동화를 구현할 수 있습니다.
-
-### `do-while` 반복문 구현하기
-
-사용자께서 궁금해하신 `do-while` 루프는 "결과물이 특정 품질 기준을 만족할 때까지 작업을 반복하라"와 같은 시나리오에 매우 유용합니다. 이는 10.5절의 '코드 생성 및 리뷰' 예제처럼, '생성-검증' 패턴을 자동화하는 핵심 로직입니다.
-
-```yaml
-# /instructions/code_generation_review/workflow.yaml
-name: Self-Correcting Code Generation
-trigger: Manual
-
-variables:
-  - requirements: "S3 버킷의 모든 이미지 파일에 대해 썸네일을 생성하는 함수"
-  - generated_code: null
-  - review_result: null
-  - retry_count: 0
-
-steps:
-  - name: 1. Generate Code
-    agent: agents/01_code_generator.md
-    inputs:
-      - requirements: "{{requirements}}"
-    outputs:
-      - variable: generated_code
-
-  - name: 2. Review Code
-    agent: agents/02_code_reviewer.md
-    inputs:
-      - code: "{{generated_code}}"
-    outputs:
-      - variable: review_result
-
-  - name: 3. Check and Loop
-    type: condition
-    # 조건: 리뷰 상태가 '수정 필요'이고, 재시도 횟수가 3회 미만인가?
-    check: "{{review_result.status == '수정 필요' and retry_count < 3}}"
-    on_true:
-      # 조건을 만족하면, 피드백을 포함하여 1단계로 돌아간다.
-      next_step: 1
-      inputs:
-        - requirements: "이전 요구사항과 다음 피드백을 반영하여 코드 수정: {{review_result.feedback}}"
-        - retry_count: "{{retry_count + 1}}" # 재시도 횟수 증가
-```
-
-이 워크플로우는 다음과 같이 `do-while` 루프를 구현합니다.
-1.  **Do (실행):** 먼저 1단계(코드 생성)와 2단계(코드 리뷰)를 무조건 한 번 실행합니다.
-2.  **While (조건 확인):** 3단계에서 리뷰 결과가 '수정 필요'인지, 그리고 최대 재시도 횟수를 넘지 않았는지 **조건을 확인**합니다.
-3.  **Loop (반복):** 조건이 참이면, 리뷰 피드백을 새로운 요구사항으로 만들어 1단계로 돌아가 작업을 반복합니다. 조건이 거짓이면(리뷰 통과 또는 최대 재시도 도달), 루프를 탈출하고 워크플로우가 종료됩니다.
-
-이처럼 `workflow.yaml`에 `condition`과 `next_step`을 조합하여 사용하면, 단순한 선언적 파일을 넘어 프로그래밍 언어와 유사한 동적 제어 구조를 만들 수 있습니다.
-
-## 12.4 자동화된 테스트와 배포 (Instruction DevOps)
-
-인스트럭션을 코드로 관리하면, 소프트웨어 개발에서 사용하는 CI/CD(지속적 통합/지속적 배포) 파이프라인을 도입하여 'Instruction DevOps'를 구축할 수 있습니다.
-
-### GitHub Actions를 활용한 자동화 파이프라인 예시
-
-다음은 GitHub Actions를 사용하여, 인스트럭션이 변경될 때마다 자동으로 품질을 검증하는 파이프라인의 예시입니다.
-
-```yaml
-# .github/workflows/instruction_validation.yml
-
-name: Instruction Quality Check
-
-on:
-  push:
-    branches: [ main ] # main 브랜치에 변경사항이 푸시될 때마다 실행
-  pull_request:
-    branches: [ main ] # main 브랜치로 PR이 생성될 때마다 실행
-
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: Run Evaluation Agent # 9장에서 설계한 평가 에이전트 실행
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      run: |
-        pip install -r requirements.txt
-        python scripts/evaluation_agent.py --target-instruction "all"
-
-    - name: Check Regression
-      run: |
-        # 평가 결과 리포트를 분석하여, 이전보다 성능이 저하되었는지 확인
-        # 만약 성능이 저하되었다면, 파이프라인을 실패 처리하여 변경사항이 병합되지 않도록 함
-        python scripts/check_regression.py --report "evaluation_report.json"
-```
-
-이 자동화 파이프라인은 다음과 같이 작동합니다.
-1.  개발자가 인스트럭션(`*.md`)이나 워크플로우(`*.yaml`) 파일을 수정하여 `main` 브랜치에 푸시합니다.
-2.  GitHub Actions가 변경을 감지하고, `Instruction Quality Check` 워크플로우를 자동으로 실행합니다.
-3.  9장에서 만든 `evaluation_agent.py` 스크립트가 실행되어, 변경된 인스트럭션의 품질, 비용, 속도를 자동으로 측정합니다.
-4.  `check_regression.py` 스크립트가 평가 결과를 이전 결과와 비교하여, 성능이 오히려 나빠졌는지(회귀) 확인합니다.
-5.  만약 성능이 저하되었다면, 파이프라인은 '실패' 상태가 되고, 해당 변경사항이 운영 환경에 배포되는 것을 막습니다.
-
-이처럼 'Instruction DevOps' 파이프라인을 구축하면, 인스트럭션 시스템의 품질과 안정성을 사람의 '꼼꼼함'이 아닌, 자동화된 '시스템'으로 보장할 수 있게 됩니다.
-
-## 12.5 실무 예제로 이어보기
-
-이 장에서 다룬 `workflow.yaml`과 자동화 개념은 10장 4부에서 소개된 **아키텍트 에이전트**와 **메타 에이전트**를 구현하는 핵심 기반 기술입니다. 아키텍트 에이전트는 실행 시스템의 `workflow.yaml`을 생성하고, 메타 에이전트는 아키텍트 에이전트의 인스트럭션(`*.md`) 자체를 생성하고 개선합니다. 이 모든 과정은 인스트럭션을 '코드'로 다룰 수 있기에 가능합니다.
-
----
-
-[^1]: **코드형 인프라(IaC, Infrastructure as Code):** 서버, 네트워크, 데이터베이스 등의 IT 인프라를 수동으로 관리하는 대신, 코드를 통해 정의하고 관리하는 방식. 이 책에서는 인스트럭션과 워크플로우를 '인프라'로 간주하고 코드로 관리하는 개념으로 확장하여 사용한다.
-
-[^2]: **DSL(Domain-Specific Language):** '특정 영역에 특화된 언어'라는 의미. `workflow.yaml`은 'AI 에이전트 워크플로우 정의'라는 특정 목적을 위해 설계된 DSL의 한 예이다. HTML이 웹 페이지 구조 표현에 특화된 DSL인 것과 같다.
+다음 절에서는 이러한 원칙을 바탕으로, YAML과 마크다운을 조합하여 실용적인 워크플로우 DSL을 어떻게 설계하고 구현하는지 구체적으로 알아보겠습니다.

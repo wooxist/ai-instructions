@@ -1,15 +1,19 @@
 # 10장 4부: 고급 아키텍처와 실전 구현
 # 미래를 향한 아키텍처
+# AI 기반 업무 자동화 패턴
 
 ---
 
 ## 10.10 계층적 에이전트 협력 시스템
 
 - **상황:** 신제품 출시를 위한 종합 마케팅 캠페인을 기획하고 실행하는 프로젝트. 보스-비서-매니저-워커의 4계층 구조를 활용하며, 각자의 역할과 책임에 따라 명확한 보고 및 지시 라인을 따릅니다.
+- **핵심 아이디어:** AI 에이전트들이 완전 자동화된 시스템을 구성하는 것이 아니라, **인간 조직의 '지능형 비서' 역할을 수행**하여 복잡한 프로젝트의 계획을 수립하고, 각 팀(사람)이 수행해야 할 업무와 산출물을 명확히 정의해주는 패턴입니다.
 
 #### 최종 인스트럭션 시스템 예시
+#### AI가 생성하는 프로젝트 계획서
 
 이 시스템은 각 계층의 역할과 데이터 흐름을 명확히 정의한 워크플로우 기반 시스템으로 설계됩니다.
+이 시스템의 핵심 산출물은 AI가 생성하는 `workflow.yaml` 파일입니다. 이는 기계가 실행하는 스크립트가 아니라, **프로젝트에 참여하는 모든 '사람'이 따라야 할 명확한 '업무 계획서'** 역할을 합니다.
 
 **1. 시스템의 디렉토리 구조 예시**
 ```
@@ -33,59 +37,52 @@ name: New Product Marketing Campaign
 trigger: Manual
 
 steps:
-  - name: 1. Set Goal
+  - name: "1. 목표 설정 (담당: 프로젝트 리더)"
     agent: agents/01_boss.md
     inputs:
       - product_info: "신제품 '오토 클린봇'은 AI 기반 자동 청소 로봇..."
     outputs:
       - file: campaign_goal.json
 
-  - name: 2. Create Action Plan
-    agent: agents/02_secretary.md
+  - name: "2. 실행 계획 수립 (담당: 기획팀)"
+    agent: agents/02_planning_secretary.md
     inputs:
       - file: campaign_goal.json
     outputs:
-      - file: plan_for_content_manager.md
-      - file: plan_for_performance_manager.md
-      - file: plan_for_pr_manager.md
+      - file: briefing_for_content_team.md
+      - file: briefing_for_performance_team.md
+      - file: briefing_for_pr_team.md
 
-  - name: 3. Execute Plans (Parallel)
-    type: parallel
-    steps:
-      - name: 3a. Content Team Execution
-        agent: agents/03_content_manager.md
-        inputs:
-          - file: plan_for_content_manager.md
-        outputs:
-          - file: content_report.json
+  - name: "3. 팀별 업무 브리핑 전달 (핸드오프)"
+    type: handoff
+    description: "기획팀은 생성된 브리핑 자료를 각 담당 팀(콘텐츠, 퍼포먼스, PR)의 리더에게 전달합니다. 이제부터 각 팀은 독립적으로 업무를 수행합니다."
+    # 이 단계는 자동화된 실행이 아니라, 인간 간의 업무 전달을 명시합니다.
 
-      - name: 3b. Performance Team Execution
-        agent: agents/04_performance_manager.md
-        inputs:
-          - file: plan_for_performance_manager.md
-        outputs:
-          - file: performance_report.json
+  - name: "4. 팀별 업무 실행 (담당: 각 팀)"
+    type: human_task
+    description: "각 팀은 전달받은 브리핑 자료를 바탕으로 내부적으로 업무를 수행하고 결과 보고서를 작성합니다. 이 과정은 이 워크플로우의 관리 범위를 벗어납니다."
+    # 예시: 콘텐츠팀은 briefing_for_content_team.md를 보고 블로그, 영상을 제작.
+    outputs:
+      - file: content_report.json
+      - file: performance_report.json
+      - file: pr_report.json
 
-      - name: 3c. PR Team Execution
-        agent: agents/05_pr_manager.md
-        inputs:
-          - file: plan_for_pr_manager.md
-        outputs:
-          - file: pr_report.json
-
-  - name: 4. Consolidate Reports
-    agent: agents/02_secretary.md # 비서 에이전트 재사용
+  - name: "5. 중간 결과 취합 (담당: 기획팀)"
+    agent: agents/02_planning_secretary.md # 기획팀의 AI 비서 재사용
     inputs:
       - file: content_report.json
       - file: performance_report.json
       - file: pr_report.json
     outputs:
-      - file: final_summary_for_boss.md
+      - file: final_summary_for_leader.md
 
-  - name: 5. Make Final Decision
-    agent: agents/01_boss.md # 보스 에이전트 재사용
-    inputs:
-      - file: final_summary_for_boss.md
+  - name: "6. 최종 의사결정 (담당: 프로젝트 리더)"
+    type: human_in_the_loop
+    instructions: |
+      AI 비서가 종합한 아래 보고서를 검토하고, 캠페인의 다음 단계를 결정해주세요.
+      (예: 캠페인 지속, 예산 증액, 전략 수정)
+      ---
+      {{ file: final_summary_for_leader.md }}
     outputs:
       - text: final_decision.txt
 ```
