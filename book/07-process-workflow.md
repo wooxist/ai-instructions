@@ -293,36 +293,51 @@
 
 #### 계층적 에이전트 협력 시스템 (Hierarchical Agent Collaboration)
 
-실제 회사 조직처럼, 에이전트에게 명확한 위계질서를 부여하여 복잡한 문제를 효율적으로 해결하는 방식입니다. 대표적인 예로 **'메타-보스-비서-매니저-워커'** 모델이 있습니다.
+실제 회사 조직처럼, 에이전트에게 명확한 위계질서를 부여하여 복잡한 문제를 효율적으로 해결하는 방식입니다. 조직의 규모와 복잡성에 따라, 아키텍트의 역할은 **플랫폼 아키텍트**와 **도메인 아키텍트**로 분화될 수 있습니다.
 
 ```mermaid
 graph TD
-    subgraph 계층 1
-        Meta(메타 에이전트)
-    end
-    subgraph 계층 2
-        Boss(보스 에이전트)
-    end
-    subgraph 계층 3
-        Secretary(비서 에이전트)
-    end
-    subgraph 계층 4
-        Manager1(매니저 A)
-        Manager2(매니저 B)
-    end
-    subgraph 계층 5
-        Worker1(워커 A1)
-        Worker2(워커 A2)
-        Worker3(워커 B1)
+    subgraph "L0: 플랫폼 설계"
+        PlatformArchitect(플랫폼 아키텍트)
     end
 
-    Meta -- 전체 전략 설계 --> Boss
-    Boss -- 정보 요청/보고 --> Secretary
-    Boss -- 작업 위임 --> Manager1
-    Boss -- 작업 위임 --> Manager2
-    Manager1 -- 태스크 할당 --> Worker1
-    Manager1 -- 태스크 할당 --> Worker2
-    Manager2 -- 태스크 할당 --> Worker3
+    subgraph "L1: 도메인 시스템 설계"
+        MarketingArchitect(마케팅 아키텍트)
+        DevArchitect(개발 아키텍트)
+    end
+    
+    PlatformArchitect -- "표준/템플릿 제공" --> MarketingArchitect
+    PlatformArchitect -- "표준/템플릿 제공" --> DevArchitect
+
+    subgraph "마케팅 부서 (실행 시스템)"
+        subgraph "L2: 전략"
+            MarketingBoss(마케팅 보스)
+        end
+        subgraph "L3: 관리"
+            ContentManager(콘텐츠 매니저)
+        end
+        subgraph "L4: 실행"
+            BlogWorker(블로그 워커)
+        end
+        MarketingArchitect -- "워크플로우 설계" --> MarketingBoss
+        MarketingBoss -- "작업 위임" --> ContentManager
+        ContentManager -- "태스크 할당" --> BlogWorker
+    end
+
+    subgraph "개발 부서 (실행 시스템)"
+        subgraph "L2: 전략 "
+             DevBoss(개발 보스)
+        end
+        subgraph "L3: 관리 "
+            BackendManager(백엔드 매니저)
+        end
+        subgraph "L4: 실행 "
+            ApiWorker(API 워커)
+        end
+        DevArchitect -- "워크플로우 설계" --> DevBoss
+        DevBoss -- "작업 위임" --> BackendManager
+        BackendManager -- "태스크 할당" --> ApiWorker
+    end
 ```
 
 - **메타 에이전트:** 가장 상위 계층으로, 문제 해결을 위한 에이전트 팀과 워크플로우 자체를 설계합니다. (예: "사용자 이탈률 분석 프로젝트를 위해 필요한 팀 구성과 업무 흐름을 설계하라.")
