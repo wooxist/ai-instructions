@@ -44,7 +44,7 @@ ai-instructions/
     ├── 04-meta-principles.md  # 4장: 인스트럭션 설계의 메타 원칙 (v1-released)
     ├── 05-agent-constraints.md # 5장: 역할(Agent)과 제약(Constraint) 설계 (v1-released)
     ├── 06-io-design.md        # 6장: 입력과 출력 설계 (v1-released)
-    ├── 07-workflow-design.md  # 7장: 처리 방법과 워크플로우 설계 (v1-released)
+    ├── 07-process-workflow.md # 7장: 프로세스 설계: 협업 워크플로우 만들기 (v1-released)
     ├── 08-performance.md      # 8장: 성능 최적화 (v1-released)
     ├── 09-productivity.md     # 9장: 인스트럭션의 평가와 검증 (v1-released)
     ├── 10-1-single-agent-patterns.md # 10장 1부: 단일 에이전트 패턴 (v1-released)
