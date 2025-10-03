@@ -140,20 +140,21 @@ graph TD;
 sequenceDiagram
     participant A as 아키텍트
     participant W as 워커
-    participant S as 공유 저장소
+    participant J as 작업 디렉토리<br/>(/jobs/.../job_xyz)
 
-    A->>W: 태스크 할당 (ID: task-123)
+    A->>W: 태스크 할당 (Job: job_xyz, Task: task-123)
     W->>W: 작업 수행
-    W->>S: 산출물(로그) 작성 (task-123.json)
+    W->>J: 산출물(로그) 작성<br/>(task-123.json)
+    Note right of W: status: "success" or "failure"
 
-    loop 상태 확인
-        A->>S: task-123.json 파일 확인
-        S-->>A: 파일 내용(로그) 반환
-        A->>A: 상태 분석 후 의사결정
+    loop 상태 확인 주기
+        A->>J: job_xyz 디렉토리의<br/>task-123.json 파일 확인
+        J-->>A: 파일 내용(로그) 반환
+        A->>A: 상태(status) 분석 후 의사결정
     end
 ```
 
-아키텍트는 위 다이어그램처럼 주기적으로 공유 저장소를 확인하여 각 작업의 상태를 파악하고, 성공/실패 여부에 따라 다음 행동을 결정합니다.
+아키텍트는 위 다이어그램처럼 주기적으로 각 **작업(Job) 디렉토리**를 확인하여 각 태스크의 상태를 파악하고, 성공/실패 여부에 따라 다음 행동을 결정합니다.
 
 ## 7.5 확장: 다중 작업(Job) 관리
 
