@@ -83,7 +83,7 @@ steps: # 3. 실행 단계 목록
       - file: chart.png
 
   - name: 3. Human Approval # 4. 인간 개입 단계
-    type: human_in_the_loop
+    type: human_in_the_loop # 4장에서 정의한 'Human-in-the-Loop' 원칙의 구체적인 구현
     instructions: "분석 결과와 차트를 검토하고 승인해주세요."
     inputs:
       - file: summary.json
@@ -93,7 +93,7 @@ steps: # 3. 실행 단계 목록
 1.  **`name`**: 워크플로우를 식별하는 고유한 이름입니다.
 2.  **`trigger`**: 워크플로우가 언제 시작되는지를 정의합니다. (예: `Manual`, `Weekly`, `OnCommit`)
 3.  **`steps`**: 워크플로우를 구성하는 각 단계의 목록입니다. 각 단계는 특정 `agent`를 호출하고, `inputs`와 `outputs`를 통해 데이터를 주고받습니다. 이는 7장에서 배운 **파이프라인 패턴**과 **핸드오프** 개념을 코드로 구현한 것입니다.
-4.  **`type: human_in_the_loop`**: AI가 자동으로 처리할 수 없거나, 반드시 사람의 검토가 필요한 중요한 의사결정 지점을 명시합니다. 이는 4장의 **Human-in-the-Loop** 원칙을 워크플로우에 내장하는 방법입니다.
+4.  **`type: human_in_the_loop`**: AI가 자동으로 처리할 수 없거나, 반드시 사람의 검토가 필요한 중요한 의사결정 지점을 명시합니다. 이는 4장의 **검증 및 책임 원칙**에서 강조한 **Human-in-the-Loop**를 실제 워크플로우에 코드로 내장하는 방법으로, 시스템의 안전성과 신뢰성을 확보하는 핵심 장치입니다.
 
 ## 12.3 고급 제어 흐름: 루프와 조건
 
