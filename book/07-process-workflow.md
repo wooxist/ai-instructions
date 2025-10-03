@@ -403,24 +403,47 @@ graph TD
 
 실제 복잡한 시스템에서는 계층적 구조와 수평적 구조가 함께 사용되는 복합적인 형태가 더 일반적입니다. 즉, 전체적으로는 상위 관리자가 작업을 분배하는 계층적 구조를 가지면서, 특정 팀이나 단계에서는 전문가들이 수평적으로 협력하는 방식입니다.
 
+예를 들어, '신규 앱 기능 개발'이라는 큰 목표 아래, **보스 에이전트**가 `프론트엔드 매니저`와 `백엔드 매니저`에게 작업을 할당하는 것은 **계층적** 협력입니다. 하지만 `백엔드 매니저` 팀 내에서 `DB 워커`와 `API 워커`가 서로의 결과물(DB 스키마와 API 명세)을 조율하는 것은 **수평적** 협력입니다.
+
 ```mermaid
 graph TD
-    subgraph "계층적 구조 (상→하)"
-        B(보스 에이전트) --> M1(백엔드 매니저)
+    subgraph "L2: 전략"
+        Boss(보스 에이전트)
     end
 
-    subgraph "수평적 구조 (동료 협력)"
-        W1(DB 워커) <--> W2(API 워커)
+    subgraph "L3: 관리 (계층적 분배)"
+        FrontendManager(프론트엔드 매니저)
+        BackendManager(백엔드 매니저)
     end
 
-    M1 -- 작업 지시 --> W1
-    M1 -- 작업 지시 --> W2
+    subgraph "L4: 실행 (수평적 협력)"
+        subgraph "백엔드 팀"
+            DBWorker(DB 워커)
+            APIWorker(API 워커)
+        end
+        subgraph "프론트엔드 팀"
+            UIWorker(UI 워커)
+            LogicWorker(로직 워커)
+        end
+    end
 
-    W1 -- 결과 보고 --> M1
-    W2 -- 결과 보고 --> M1
+    Boss -- "기능 개발 지시" --> FrontendManager
+    Boss -- "기능 개발 지시" --> BackendManager
+
+    BackendManager -- "DB 스키마 설계" --> DBWorker
+    BackendManager -- "API 엔드포인트 개발" --> APIWorker
+    
+    %% 백엔드 팀 내 수평적 협력
+    DBWorker -- "스키마 공유" --> APIWorker
+    APIWorker -- "API 명세 피드백" --> DBWorker
+
+    FrontendManager -- "UI/UX 디자인" --> UIWorker
+    FrontendManager -- "비즈니스 로직 구현" --> LogicWorker
+
+    %% 팀 간 수평적 협력
+    APIWorker -- "API 명세 전달" --> LogicWorker
+    LogicWorker -- "API 요청/응답 문의" --> APIWorker
 ```
-
-예를 들어, '신규 앱 기능 개발'이라는 큰 목표 아래, **보스 에이전트**가 `프론트엔드 매니저`와 `백엔드 매니저`에게 작업을 할당하는 것은 **계층적**입니다. 하지만 `백엔드 매니저`는 `데이터베이스 워커`와 `API 워커`에게 작업을 지시한 후, 두 워커가 서로의 결과물(DB 스키마와 API 명세)을 **수평적으로** 검토하고 조율하도록 만들 수 있습니다.
 
 이러한 복합적 접근법은 계층 구조의 명확한 책임 분담과 효율성, 그리고 수평 구조의 유연성과 품질 향상이라는 두 마리 토끼를 모두 잡을 수 있는 현실적인 해결책입니다.
 
