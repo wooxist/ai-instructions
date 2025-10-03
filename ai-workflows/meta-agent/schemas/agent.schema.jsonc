@@ -1,0 +1,114 @@
+{
+  // =================================================
+  // AI Agent Design Schema (v2.0)
+  // book/의 원칙들을 기반으로 확장된 에이전트 설계 스키마
+  // =================================================
+
+  // 1. 메타데이터 (참고: 14장)
+  // -------------------------------------------------
+  // 에이전트의 식별, 버전, 소유권 등 관리 정보를 정의합니다.
+  "metadata": {
+    "name": "string", // 에이전트의 고유 이름 (예: code_reviewer_agent)
+    "version": "string", // 버전 (예: 2.1.0)
+    "description": "string", // 에이전트의 목적과 기능에 대한 간략한 설명
+    "owner": "string", // 이 에이전트를 책임지는 팀 또는 개인
+    "created_at": "datetime",
+    "last_updated_at": "datetime",
+    "agent_level": "string" // (참고: 10장) 에이전트의 계층 (예: worker, architect, meta)
+  },
+
+  // 2. 역할 및 목표 (참고: 5장)
+  // -------------------------------------------------
+  // 에이전트의 페르소나와 핵심 임무를 정의합니다.
+  "persona": {
+    "role": "string", // 수행할 역할 (예: 10년차 파이썬 개발자)
+    "goal": "string", // 달성해야 할 명확한 목표
+    "backstory": "string" // (선택) 역할의 배경 설정 (페르소나 강화)
+  },
+
+  // 3. 성능 프로파일 (참고: 8장)
+  // -------------------------------------------------
+  // 에이전트의 품질, 비용, 속도 균형을 제어합니다.
+  "performance": {
+    "model": "string", // 사용할 LLM 모델 (예: gpt-4o, claude-3.5-sonnet)
+    "temperature": "float", // 0.0 ~ 1.0, 창의성 조절
+    "max_tokens": "int" // 최대 출력 길이
+  },
+
+  // 4. 지식 및 컨텍스트 (참고: 4장, 6장)
+  // -------------------------------------------------
+  // 에이전트가 작업을 수행하는 데 필요한 지식의 범위와 출처를 정의합니다.
+  "knowledge": {
+    "allowed_sources": [ // (SSOT 원칙) 답변 근거로 허용된 자료원 목록
+      "string"
+    ],
+    "forbidden_topics": [ // (윤리적 경계) 다루어서는 안 될 주제 목록
+      "string"
+    ],
+    "domain_knowledge_path": "string" // (선택) 참고할 도메인 지식 파일 경로
+  },
+
+  // 5. 입출력 인터페이스 (참고: 6장)
+  // -------------------------------------------------
+  // 에이전트가 받는 데이터와 생성하는 결과물의 명세를 정의합니다.
+  "interface": {
+    "inputs": [
+      {
+        "name": "string",
+        "description": "string",
+        "type": "string", // (예: string, file_path, json)
+        "required": "boolean"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "string",
+        "description": "string",
+        "format": "string", // (예: json, markdown, yaml)
+        "schema_path": "string" // (선택) 출력 JSON/YAML 스키마 파일 경로
+      }
+    ]
+  },
+
+  // 6. 워크플로우 및 제약 (참고: 7장, 10장)
+  // -------------------------------------------------
+  // 작업 처리 절차, 제약 조건, 오류 처리 방식을 정의합니다.
+  "execution": {
+    "process": [ // 단계별 처리 절차
+      {
+        "step": "int",
+        "description": "string",
+        "on_failure": "string" // (선택) 해당 단계 실패 시 행동 (예: retry, stop, run_fallback)
+      }
+    ],
+    "constraints": [ // 반드시 지켜야 할 규칙
+      "string"
+    ],
+    "error_handling": {
+      "max_retries": "int", // 실패 시 최대 재시도 횟수
+      "fallback_agent": "string" // (선택) 재시도 실패 시 호출할 대체 에이전트
+    }
+  },
+
+  // 7. 도구 사용 (참고: 12장)
+  // -------------------------------------------------
+  // 에이전트가 사용할 수 있는 외부 도구를 정의합니다.
+  "tools": [
+    {
+      "tool_name": "string" // 사용할 도구의 이름 (예: web_search, python_interpreter)
+      // 상세 명세는 별도의 tool_manifest.yaml 등에서 관리
+    }
+  ],
+
+  // 8. 평가 및 품질 (참고: 9장)
+  // -------------------------------------------------
+  // 에이전트의 결과물을 평가하는 기준을 정의합니다.
+  "evaluation": {
+    "success_criteria": [ // 성공 판정을 위한 체크리스트
+      {
+        "criteria": "string"
+      }
+    ],
+    "evaluation_dataset_path": "string" // (선택) 자동 회귀 테스트를 위한 평가 데이터셋 경로
+  }
+}
