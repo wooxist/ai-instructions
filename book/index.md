@@ -1,3 +1,8 @@
+<!--
+AI 에이전트 작업 지침:
+이 파일을 수정할 때, 각 장의 서브챕터 목록을 절대 삭제하지 마십시오.
+목차는 항상 서브챕터를 포함한 상세 목차여야 합니다.
+-->
 # 📚 AI 인스트럭션 설계 가이드북
 
 > **참고**: 이 가이드북은 인간과 AI의 협업으로 작성되었습니다. 가이드북의 내용을 실천하는 과정에서 AI를 활용하여 만들었습니다.
@@ -19,6 +24,11 @@
   * [2.6 메타 질문](02-questions.md#26-메타-질문-meta-questions)
 * [3장. 좋은 인스트럭션](03-good-instructions.md)
   * [3.1 인스트럭션: 일회성 프롬프트를 넘어서](03-good-instructions.md#31-인스트럭션-일회성-프롬프트를-넘어서)
+  * [3.2 명확성 (Clear)](03-good-instructions.md#32-명확성-clear)
+  * [3.3 구체성 (Specific)](03-good-instructions.md#33-구체성-specific)
+  * [3.4 단계성 (Step-wise)](03-good-instructions.md#34-단계성-step-wise)
+  * [3.5 제약 조건(Constraints)과 한계 설정](03-good-instructions.md#35-제약-조건constraints과-한계-설정)
+  * [3.6 실패하는 지시의 특징 (안티패턴)](03-good-instructions.md#36-실패하는-지시의-특징-안티패턴)
   * [3.7 표준 인스트럭션 템플릿: 8가지 핵심 구성 요소](03-good-instructions.md#37-표준-인스트럭션-템플릿-8가지-핵심-구성-요소)
 
 ---
@@ -27,29 +37,60 @@
   * [4.1 구조적 원칙](04-meta-principles.md#41-구조적-원칙-설계의-뼈대-세우기)
   * [4.2 실행 원칙](04-meta-principles.md#42-실행-원칙-ai와-함께-일하는-방식-정의하기)
   * [4.3 검증 및 책임 원칙](04-meta-principles.md#43-검증-및-책임-원칙-신뢰와-안전성-확보하기)
+  * [4.4 메타 원칙 요약표](04-meta-principles.md#44-메타-원칙-요약표)
+  * [4.5 상황별 원칙 적용 가이드](04-meta-principles.md#45-상황별-원칙-적용-가이드)
 * [5장. 역할(Agent)과 제약(Constraint) 설계](05-agent-constraints.md)
   * [5.1 왜 '에이전트'를 설계해야 하는가?](05-agent-constraints.md#51-왜-에이전트를-설계해야-하는가)
   * [5.2 해결 원칙과 방법론](05-agent-constraints.md#52-해결-원칙과-방법론-단일-책임을-갖는-에이전트로-분할하라)
+  * [5.3 에이전트 범위 설계를 위한 실용 가이드](05-agent-constraints.md#53-에이전트-범위-설계를-위한-실용-가이드)
 * [6장. 입력과 출력 설계](06-input-output.md)
   * [6.1 왜 입력과 출력 설계가 중요한가?](06-input-output.md#61-왜-입력과-출력-설계가-중요한가)
+  * [6.2 무엇을 설계해야 하는가?](06-input-output.md#62-무엇을-설계해야-하는가-입력과-출력의-명세화)
+  * [6.3 어떻게 설계하는가?](06-input-output.md#63-어떻게-설계하는가-결과물-중심-접근법과-구체적-기법)
 * [7장. 기본 워크플로우 패턴과 처리](07-process-workflow.md)
   * [7.1 파이프라인(Pipeline) 패턴](07-process-workflow.md#71-파이프라인pipeline-패턴)
   * [7.2 생성-검증(Generate-and-Verify) 패턴](07-process-workflow.md#72-생성-검증generate-and-verify-패턴)
   * [7.3 라우팅 패턴](07-process-workflow.md#73-라우팅-패턴)
+  * [7.4 워크플로우 정의 (`workflow.yaml`)](07-process-workflow.md#74-워크플로우-정의-workflowyaml)
 * [8장. 성능 최적화: 품질, 비용, 속도의 균형 맞추기](08-performance.md)
+  * [8.1 왜 성능 최적화가 필요한가?](08-performance.md#81-왜-성능-최적화가-필요한가)
+  * [8.2 무엇이 성능에 영향을 미치는가?](08-performance.md#82-무엇이-성능에-영향을-미치는가-사용자가-제어할-수-있는-요인)
+  * [8.3 어떻게 최적화하는가?](08-performance.md#83-어떻게-최적화하는가-사용자를-위한-실용적인-트레이드오프-전략)
 * [9장. 인스트럭션의 평가와 검증](09-productivity.md)
+  * [9.1 왜 '감'이 아닌 '기준'이 필요할까?](09-productivity.md#91-왜-감이-아닌-기준이-필요할까)
+  * [9.2 무엇을 보고 개선할까?](09-productivity.md#92-무엇을-보고-개선할까-나만의-평가-지표-찾기)
+  * [9.3 어떻게 개선할까?](09-productivity.md#93-어떻게-개선할까-나만의-작은-실험실)
 * [10장. 고급 협업 아키텍처와 시스템 설계](10-advanced-collaboration-architectures.md)
+  * [10.1 문제 해결 방식의 진화: ‘협업’의 필요성](10-advanced-collaboration-architectures.md#101-문제-해결-방식의-진화-협업의-필요성)
+  * [10.2 협업의 전제 조건: 산출물 인터페이스](10-advanced-collaboration-architectures.md#102-협업의-전제-조건-산출물-인터페이스)
   * [10.3 계층적 협업 아키텍처: 시스템의 시작과 동적 실행](10-advanced-collaboration-architectures.md#103-계층적-협업-아키텍처-시스템의-시작과-동적-실행)
+  * [10.4 실행 감독과 안정성 설계](10-advanced-collaboration-architectures.md#104-실행-감독과-안정성-설계-아키텍트의-역할)
+  * [10.5 확장: 다중 작업(Job) 관리](10-advanced-collaboration-architectures.md#105-확장-다중-작업job-관리)
   * [10.6 시스템 거버넌스: 태초의 메타 에이전트와 시스템의 시작](10-advanced-collaboration-architectures.md#106-시스템-거버넌스-태초의-메타-에이전트와-시스템의-시작)
 * [11장. 상황별 설계 패턴 예제]
     * [11장 1부: 단일 에이전트 설계](11-1-single-agent.md)
+      * [11.1.1 [사례 1] 간단/일상: 이메일 요약](11-1-single-agent.md#1111-사례-1-간단일상-이메일-요약)
+      * [11.1.2 [사례 2] 표준/전문: 마케팅 문구 생성](11-1-single-agent.md#1112-사례-2-표준전문-마케팅-문구-생성)
+      * [11.1.3 [사례 3] 복잡/중요: 회의록 기반 할 일 추출](11-1-single-agent.md#1113-사례-3-복잡중요-회의록-기반-할-일-추출)
     * [11장 2부: 단위 조직 설계](11-2-unit-organization.md)
+      * [11.2.1 [사례 4] 표준/전문: 소셜 미디어 콘텐츠 발행](11-2-unit-organization.md#1121-사례-4-표준전문-소셜-미디어-콘텐츠-발행)
     * [11장 3부: 복합 조직 설계](11-3-complex-organization.md)
+      * [11.3.1 [사례 5] 복잡/중요: 신제품 출시 캠페인 자동화](11-3-complex-organization.md#1131-사례-5-복잡중요-신제품-출시-캠페인-자동화)
 
 ---
 ### Part 3: 인스트럭션 시스템의 확장과 운영
 * [12장. 도구(Tools)와 플러그인 활용](12-tools.md)
+  * [12.1 왜 도구가 필요한가?](12-tools.md#121-왜-도구가-필요한가-뇌에-손과-발을-달아주기)
+  * [12.2 도구의 종류와 역할](12-tools.md#122-도구의-종류와-역할)
+  * [12.3 에이전트에게 도구를 부여하는 방법](12-tools.md#123-에이전트에게-도구를-부여하는-방법)
 * [13장. 도메인 특화 언어(DSL) 설계 (작성 중)](13-workflow-as-code.md)
+  * [13.1 도메인 특화 언어(DSL)란 무엇인가?](13-workflow-as-code.md#131-도메인-특화-언어dsl란-무엇인가)
+  * [13.2 왜 우리만의 언어(DSL)가 필요한가?](13-workflow-as-code.md#132-왜-우리만의-언어dsl가-필요한가)
 * [14장. 살아있는 시스템: 인스트럭션의 진화와 관리](14-evolution.md)
+  * [14.1 조직의 성장에 따른 진화](14-evolution.md#141-조직의-성장에-따른-진화)
+  * [14.2 기술의 발전에 따른 진화](14-evolution.md#142-기술의-발전에-따른-진화)
+  * [14.3 에이전트의 협력과 진화: 상호운용성의 중요성](14-evolution.md#143-에이전트의-협력과-진화-상호운용성의-중요성)
+  * [14.4 인스트럭션의 '부패'와 유지보수 (Instruction Decay)](14-evolution.md#144-인스트럭션의-부패와-유지보수-instruction-decay)
+  * [14.5 최종 요약: 좋은 인스트럭션의 가치는 변하지 않는다](14-evolution.md#145-최종-요약-좋은-인스트럭션의-가치는-변하지-않는다)
 
 ## [15장. 결론: AI 시대의 새로운 일잘법](15-conclusion.md)
