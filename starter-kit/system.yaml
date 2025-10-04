@@ -1,7 +1,7 @@
 # AI 시스템 전체의 구조와 메타데이터를 정의하는 단일 진실 공급원(SSOT)입니다.
-# 거버넌스 에이전트는 이 파일을 기준으로 시스템의 무결성을 검증합니다.
+# 이 파일은 `governance_agent`에 의해 사용자와의 대화를 통해 채워집니다.
 
-system_name: "AI Instruction System"
+system_name: "My New AI System" # 👈 `governance_agent`가 대화를 통해 이 이름을 변경할 것입니다.
 version: "1.0.0"
 
 # 시스템의 유일한 시작점 역할을 하는 최상위 메타 에이전트
@@ -17,25 +17,16 @@ system_agents:
     instruction: "bootstrap/scaffolding_agent.md"
 
 # 시스템을 구성하는 주요 도메인(부서) 목록
-domains:
-  - name: "engineering"
-    description: "소프트웨어 개발 관련 에이전트 및 워크플로우"
-    # 이 도메인을 책임지는 메타 에이전트의 정의 파일 경로
-    meta_agent_instruction: "ai-agents/engineering/meta.md"
-
-  - name: "marketing"
-    description: "마케팅 및 캠페인 관련 에이전트 및 워크플로우"
-    meta_agent_instruction: "ai-agents/marketing/meta.md"
+# `governance_agent`가 대화를 통해 이 목록을 채울 것입니다.
+domains: []
+#  - name: "engineering"
+#    description: "소프트웨어 개발 관련 에이전트 및 워크플로우"
+#    meta_agent_instruction: "ai-agents/engineering/meta.md"
 
 # 외부에서 직접 호출될 수 있는 주요 프로젝트(워크플로우)의 진입점 목록
-entrypoints:
-  - name: "Mobile App v1 Development"
-    workflow_file: "workflows/engineering/mobile_app_v1/workflow.yaml"
-    description: "모바일 앱 v1 개발 프로젝트를 시작합니다."
-    # 이 워크플로우를 실행할 아키텍트의 정의 파일 경로
-    primary_architect: "ai-agents/engineering/architects/mobile_app_architect.md"
-
-  - name: "New Product Campaign"
-    workflow_file: "workflows/marketing/new_product_campaign/workflow.yaml"
-    description: "신제품 출시 캠페인을 시작합니다."
-    primary_architect: "ai-agents/marketing/architects/campaign_architect.md"
+# `governance_agent`가 대화를 통해 이 목록을 채울 것입니다.
+entrypoints: []
+#  - name: "Mobile App v1 Development"
+#    workflow_file: "workflows/engineering/mobile_app_v1/workflow.yaml"
+#    description: "모바일 앱 v1 개발 프로젝트를 시작합니다."
+#    primary_architect: "ai-agents/engineering/architects/mobile_app_architect.md"
