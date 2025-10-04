@@ -18,7 +18,7 @@
 | **[02-agent-design-methodology.md](./02-agent-design-methodology.md)** | **HOW?** 어떤 절차와 방법론으로 에이전트를 설계하는가? (설계 절차) |
 | **[04-worker-patterns.md](./04-worker-patterns.md)** | **WHAT (Individual)?** 어떤 종류의 '워커'를 만들 수 있는가? (개별 실행자 패턴) |
 | **[03-architect-patterns.md](./03-architect-patterns.md)** | **WHAT (Team)?** 워커들을 어떻게 '팀'으로 조직하고 관리하는가? (팀 관리자 패턴) |
-| **[05-collaboration-systems.md](./05-collaboration-systems.md)** | **HOW (System)?** 전체 '시스템'은 어떻게 구성되고 작동하는가? (시스템 청사진) |
+| **[05-collaboration-systems.md](./05-collaboration-systems.md)** | **HOW (System)?** 전체 '시스템'을 어떻게 **구축하고 통치(Govern)**하는가? (시스템 청사진) |
 
 ---
 
