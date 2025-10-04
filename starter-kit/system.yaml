@@ -5,7 +5,7 @@ system_name: "My New AI System" # 👈 `governance_agent`가 대화를 통해 �
 version: "1.0.0"
 
 # 시스템의 유일한 시작점 역할을 하는 최상위 메타 에이전트
-primordial_meta_agent: "bootstrap/bootstrap_agent.md"
+# primordial_meta_agent: "ai-agents/primordial_meta_agent.md" # 👈 `governance_agent`가 대화를 통해 이 경로를 확정하고 실제 파일을 생성할 것입니다.
 
 # 시스템의 핵심 기능을 담당하는 특수 에이전트 목록
 system_agents:
