@@ -26,7 +26,7 @@ domains: []
 # 시스템을 통해 실행할 수 있는 주요 '실행 커맨드'의 목록
 # `governance_agent`가 대화를 통해 이 목록을 채울 것입니다.
 launch_commands: []
-#  - name: "Mobile App v1 Development"
-#    workflow_file: "workflows/engineering/mobile_app_v1/workflow.yaml"
-#    description: "모바일 앱 v1 개발 프로젝트를 시작합니다."
-#    primary_architect: "ai-agents/engineering/architects/mobile_app_architect.md"
+#  - name: "/run_new_feature_dev"
+#    workflow_file: "workflows/engineering/new_feature_dev/workflow.yaml"
+#    description: "새 기능 개발 워크플로우를 시작합니다."
+#    primary_architect: "ai-agents/engineering/architects/new_feature_architect.md"
