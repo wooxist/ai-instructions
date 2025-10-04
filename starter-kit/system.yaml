@@ -4,8 +4,14 @@
 system_name: "My New AI System" # 👈 `governance_agent`가 대화를 통해 이 이름을 변경할 것입니다.
 version: "1.0.0"
 
-# 시스템의 유일한 시작점 역할을 하는 최상위 메타 에이전트
-# primordial_meta_agent: "ai-agents/primordial_meta_agent.md" # 👈 `governance_agent`가 대화를 통해 이 경로를 확정하고 실제 파일을 생성할 것입니다.
+# 이 시스템이 달성해야 할 최상위 목표
+mission: "" # 👈 `governance_agent`가 대화를 통해 이 미션을 정의할 것입니다.
+
+# 시스템의 최상위 관리 툴(에이전트 팩토리) 역할을 하는 메타 에이전트
+primordial_meta_agent: "bootstrap/meta_agent.md" # 👈 이 에이전트는 고정된 관리 툴입니다.
+
+# 시스템의 실질적인 시작점이자 최상위 총괄 책임자 역할을 하는 아키텍트
+root_architect: "" # 👈 `governance_agent`가 대화를 통해 이 아키텍트를 정의할 것입니다.
 
 # 시스템의 핵심 기능을 담당하는 특수 에이전트 목록
 system_agents:
@@ -22,11 +28,3 @@ domains: []
 #  - name: "engineering"
 #    description: "소프트웨어 개발 관련 에이전트 및 워크플로우"
 #    meta_agent_instruction: "ai-agents/engineering/meta.md"
-
-# 시스템을 통해 실행할 수 있는 주요 '실행 커맨드'의 목록
-# `governance_agent`가 대화를 통해 이 목록을 채울 것입니다.
-launch_commands: []
-#  - name: "/run_new_feature_dev"
-#    workflow_file: "workflows/engineering/new_feature_dev/workflow.yaml"
-#    description: "새 기능 개발 워크플로우를 시작합니다."
-#    primary_architect: "ai-agents/engineering/architects/new_feature_architect.md"
