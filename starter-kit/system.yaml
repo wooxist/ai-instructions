@@ -7,16 +7,25 @@ version: "1.0.0"
 # 시스템의 유일한 시작점 역할을 하는 최상위 메타 에이전트
 primordial_meta_agent: "bootstrap/bootstrap_agent.md"
 
+# 시스템의 핵심 기능을 담당하는 특수 에이전트 목록
+system_agents:
+  - name: "governance_agent"
+    description: "시스템의 모든 구성 요소가 `knowledge/`의 원칙을 준수하는지 감사합니다."
+    instruction: "bootstrap/governance_agent.md"
+  - name: "scaffolding_agent"
+    description: "새로운 에이전트, 워크플로우, 작업(job)의 디렉토리 구조를 생성합니다."
+    instruction: "bootstrap/scaffolding_agent.md"
+
 # 시스템을 구성하는 주요 도메인(부서) 목록
 domains:
   - name: "engineering"
     description: "소프트웨어 개발 관련 에이전트 및 워크플로우"
     # 이 도메인을 책임지는 메타 에이전트의 정의 파일 경로
-    meta_agent: "ai-agents/engineering/meta.md"
+    meta_agent_instruction: "ai-agents/engineering/meta.md"
 
   - name: "marketing"
     description: "마케팅 및 캠페인 관련 에이전트 및 워크플로우"
-    meta_agent: "ai-agents/marketing/meta.md"
+    meta_agent_instruction: "ai-agents/marketing/meta.md"
 
 # 외부에서 직접 호출될 수 있는 주요 프로젝트(워크플로우)의 진입점 목록
 entrypoints:
