@@ -179,7 +179,7 @@
 - 도구 (Tools) → [12장](#도구-명세-tool-specification)
 
 ### ㅁ
-- 메타 에이전트 → [10장 10.3.4절](10-advanced-collaboration-architectures.md#1034-메타-에이전트-meta-agent-시스템-총괄-관리자)
+- 메타 에이전트 → [10장 10.3.4절](10-advanced-collaboration-architectures.md#1034-메타-에이전트-meta-agent-시스템-총괄-설계자)
 - 멱등성 → [#멱등성-idempotency](#멱등성-idempotency)
 
 ### ㅂ
@@ -196,7 +196,7 @@
 - 원자성 → [4장 4.1절](04-meta-principles.md#41-구조적-원칙-설계의-뼈대-세우기)
 
 ### ㅈ
-- 조직 표준 → [#조직-표준-시스템](#조직-표준-시스템)
+- 복합 조직 시스템 → [11장 2부](11-2-organizational-standards.md)
 
 ### ㅍ
 - 파이프라인 → [#파이프라인-pipeline-패턴](#파이프라인-pipeline-패턴)
