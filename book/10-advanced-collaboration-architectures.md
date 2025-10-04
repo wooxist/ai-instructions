@@ -31,7 +31,7 @@
 
 - **에이전트 (Agent):** 개별 작업을 수행하는 자율적인 주체입니다.
 - **워크플로 (Workflow):** 에이전트들이 작업을 수행하는 순서와 방식을 정의한 프로세스입니다.
-- **산출물 (Artifact):** 워크플로를 통해 생성되는 결과물입니다. (예: 코드, 문서, 보고서)
+- **[산출물 (Artifact)](glossary.md#산출물-artifact):** 워크플로를 통해 생성되는 결과물입니다. (예: 코드, 문서, 보고서)
 - **작업 로그 (Task Log):** 에이전트의 모든 활동(진행 상황, 성공, 실패 등)을 기록한 데이터입니다. 이 로그는 시스템의 검증, 평가, 및 운영에 필수적인 역할을 합니다.
 
 본격적인 협업 모델을 살펴보기에 앞서, 이 구성요소들, 특히 에이전트 간의 소통을 가능하게 하는 **산출물(Artifact)**에 대해 더 깊이 이해해야 합니다. 산출물은 어떻게 에이전트 간의 명확한 **인터페이스(Interface)** 역할을 할 수 있을까요?
@@ -100,9 +100,9 @@ sequenceDiagram
 
 이 모델을 통해 각 에이전트의 역할이 명확해집니다.
 
--   **메타 에이전트 (조직/자원 관리자):** 특정 도메인을 책임지며, 아키텍트의 '요청'에 따라 필요한 에이전트를 **생성**하고 제공하는 역할. 비즈니스 의사결정에는 직접 관여하지 않습니다.
--   **아키텍트 에이전트 (프로젝트 실행자):** **외부로부터 프로젝트 지시를 직접 받아** 팀(워커)을 이끌고 실행을 총괄하는 역할. 필요시 메타 에이전트에게 자원(워커) 충원을 **요청**합니다.
--   **워커 에이전트 (전문 실무자):** 아키텍트의 지시를 받아 구체적인 태스크를 수행하는 역할.
+-   **[메타 에이전트 (조직/자원 관리자)](glossary.md#계층적-협업-아키텍처):** 특정 도메인을 책임지며, 아키텍트의 '요청'에 따라 필요한 에이전트를 **생성**하고 제공하는 역할. 비즈니스 의사결정에는 직접 관여하지 않습니다.
+-   **[아키텍트 에이전트 (프로젝트 실행자)](glossary.md#계층적-협업-아키텍처):** **외부로부터 프로젝트 지시를 직접 받아** 팀(워커)을 이끌고 실행을 총괄하는 역할. 필요시 메타 에이전트에게 자원(워커) 충원을 **요청**합니다.
+-   **[워커 에이전트 (전문 실무자)](glossary.md#계층적-협업-아키텍처):** 아키텍트의 지시를 받아 구체적인 태스크를 수행하는 역할.
 
 
 ## 10.4 실행 감독과 안정성 설계 (아키텍트의 역할)
@@ -260,6 +260,15 @@ sequenceDiagram
 
 > **향후 발전 방향**
 > 대규모 시스템에서는 작업의 메타데이터를 **데이터베이스**에 저장하여 더 빠른 검색, 통계, 리포팅을 구현할 수 있습니다.
+
+## 참고 자료
+
+- Hohpe, G., & Woolf, B. (2003). *Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions*. Addison-Wesley Professional.
+- Evans, E. (2004). *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley Professional.
+- Martin, R. C. (2017). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
+- Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley Professional.
+
+---
 
 ## 10.6 시스템 거버넌스: 태초의 메타 에이전트와 시스템의 시작
 

@@ -62,3 +62,8 @@ DSL은 특정 도메인에 필요한 기능만 제공하고, 그 외의 위험�
 하지만 우리가 설계한 `workflow.yaml` DSL에서는 `agent`, `inputs`, `outputs` 등 미리 약속된 키워드만 사용할 수 있습니다. 만약 사용자가 `delete_all_files: true`와 같은 임의의 명령어를 추가하더라도, 워크플로우 엔진은 이를 알 수 없는 명령어로 인지하고 실행을 거부할 것입니다. 이러한 '제약'은 사용자를 실수로부터 보호하는 안전장치(Guardrail) 역할을 합니다.
 
 다음 절에서는 이러한 원칙을 바탕으로, YAML과 마크다운을 조합하여 실용적인 워크플로우 DSL을 어떻게 설계하고 구현하는지 구체적으로 알아보겠습니다.
+
+## 참고 자료
+
+- Fowler, M. (2010). *Domain-Specific Languages*. Addison-Wesley Professional.
+- Parr, T. (2009). *Language Implementation Patterns: Create Your Own Domain-Specific and General Programming Languages*. Pragmatic Bookshelf.
