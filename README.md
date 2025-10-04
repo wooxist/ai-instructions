@@ -18,44 +18,43 @@
 - 프롬프트와 인스트럭션의 기본 개념
 - 좋은 질문을 설계하고, 재사용 가능한 인스트럭션을 만드는 기본 원칙을 학습합니다.
 
-### Part 2: 인스트럭션 시스템 설계와 평가 (4-9장)
+### Part 2: 인스트럭션 시스템 설계와 평가 (4-11장)
 - 인스트럭션 설계의 메타 원칙 (설계 철학)
-- 역할(Agent)과 제약(Constraint) 설계
-- 입력과 출력 설계 (결과물 중심 접근)
-- 처리 방법과 워크플로우 설계
-- AI 시스템의 성능(품질, 비용, 속도)을 최적화하고, 그 결과를 객관적으로 평가하는 방법론을 익힙니다.
+- 역할(Agent), 입출력, 워크플로우 설계 방법론
+- 단일 에이전트부터 복합 조직까지, 상황별 설계 패턴 실전 예제
+- AI 시스템의 성능을 최적화하고, 그 결과를 객관적으로 평가하는 방법론을 익힙니다.
 
-### Part 3: 인스트럭션 시스템의 확장과 운영 (10-13장)
-- 상황별 인스트럭션 설계 실전 패턴
-- 외부 도구 연동 및 시스템 관리
+### Part 3: 인스트럭션 시스템의 확장과 운영 (12-15장)
+- 외부 도구 연동 및 시스템 관리(DSL)
 - 설계한 인스트럭션 시스템을 조직의 자산으로 만들고, 지속적으로 발전시키는 운영 전략을 다룹니다.
 
 ## 📂 프로젝트 구조
 ```plaintext
 ai-instructions/
 ├── README.md                # 프로젝트 개요
-├── ROADMAP.md               # 프로젝트 로드맵 (Phase 2 이후 계획)
-├── .instructions.md # 모든 AI 에이전트가 따라야 할 집필 지침(SSOT)
+├── ROADMAP.md               # 프로젝트 로드맵
+├── .instructions.md         # 모든 AI 에이전트가 따라야 할 집필 지침(SSOT)
 └── book/                    # 모든 원고와 자료 관리
     ├── 00-preface.md          # 서문 (v1-released)
-    ├── 01-introduction.md   # 1장: 프롬프트와 인스트럭션 이해하기 (v1-released)
+    ├── 01-introduction.md     # 1장: 프롬프트와 인스트럭션 이해하기 (v1-released)
     ├── 02-questions.md        # 2장: 질문 설계하기 (v1-released)
     ├── 03-good-instructions.md # 3장: 좋은 인스트럭션 (v1-released)
     ├── 04-meta-principles.md  # 4장: 인스트럭션 설계의 메타 원칙 (v1-released)
     ├── 05-agent-constraints.md # 5장: 역할(Agent)과 제약(Constraint) 설계 (v1-released)
-    ├── 06-io-design.md        # 6장: 입력과 출력 설계 (v1-released)
-    ├── 07-process-workflow.md # 7장: 프로세스 설계: 협업 워크플로우 만들기 (v1-released)
+    ├── 06-input-output.md     # 6장: 입력과 출력 설계 (v1-released)
+    ├── 07-process-workflow.md # 7장: 기본 워크플로우 패턴과 처리 (v1-released)
     ├── 08-performance.md      # 8장: 성능 최적화 (v1-released)
     ├── 09-productivity.md     # 9장: 인스트럭션의 평가와 검증 (v1-released)
-    ├── 10-1-single-agent-patterns.md # 10장 1부: 단일 에이전트 패턴 (v1-released)
-    ├── 10-2-multi-agent-workflows.md # 10장 2부: 다중 에이전트 워크플로우 (v1-released)
-    ├── 10-3-organizational-standards.md # 10장 3부: 조직 표준 시스템 (v1-released)
-    ├── 10-4-advanced-architectures.md # 10장 4부: 고급 아키텍처 (v1-released)
-    ├── 11-tools.md            # 11장: 도구(Tools)와 플러그인 활용 (v1-released)
-    ├── 12-workflow-as-code.md # 12장: 워크플로우 자동화와 코드형 인프라 (v1-draft)
-    ├── 13-evolution.md        # 13장: 살아있는 시스템: 인스트럭션의 진화와 관리 (v1-released)
-    ├── 14-conclusion.md       # 결론 (v1-released)
-    └── index.md               # 전체 목차
+    ├── 10-advanced-collaboration-architectures.md # 10장: 고급 협업 아키텍처와 시스템 설계 (v1-released)
+    ├── 11-1-single-agent.md   # 11장 1부: 단일 에이전트 설계 (v1-released)
+    ├── 11-2-unit-organization.md # 11장 2부: 단위 조직 설계 (v1-released)
+    ├── 11-3-complex-organization.md # 11장 3부: 복합 조직 설계 (v1-released)
+    ├── 12-tools.md            # 12장: 도구(Tools)와 플러그인 활용 (v1-released)
+    ├── 13-workflow-as-code.md # 13장: 도메인 특화 언어(DSL) 설계 (v1-draft)
+    ├── 14-evolution.md        # 14장: 살아있는 시스템: 인스트럭션의 진화와 관리 (v1-released)
+    ├── 15-conclusion.md       # 15장: 결론: AI 시대의 새로운 일잘법 (v1-released)
+    ├── glossary.md            # 용어집 (v1-released)
+    └── index.md               # 전체 목차 (v1-released)
 ```
 
 ## 📖 내용 참조
