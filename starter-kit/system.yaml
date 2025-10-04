@@ -23,9 +23,9 @@ domains: []
 #    description: "소프트웨어 개발 관련 에이전트 및 워크플로우"
 #    meta_agent_instruction: "ai-agents/engineering/meta.md"
 
-# 외부에서 직접 호출될 수 있는 주요 프로젝트(워크플로우)의 진입점 목록
+# 시스템을 통해 실행할 수 있는 주요 '실행 커맨드'의 목록
 # `governance_agent`가 대화를 통해 이 목록을 채울 것입니다.
-entrypoints: []
+launch_commands: []
 #  - name: "Mobile App v1 Development"
 #    workflow_file: "workflows/engineering/mobile_app_v1/workflow.yaml"
 #    description: "모바일 앱 v1 개발 프로젝트를 시작합니다."
