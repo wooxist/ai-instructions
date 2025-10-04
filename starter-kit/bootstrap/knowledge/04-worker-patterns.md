@@ -18,39 +18,51 @@
 
 ### 3.1. 생성 워커 (Generator)
 
-- **목적**: 주어진 요구사항에 따라 새로운 콘텐츠를 창작한다.
-- **인터페이스**: `Generator(requirements: JSON) -> new_content: JSON`
-- **실패 조건**: 요구사항이 모호하거나 상호 모순될 경우 에러를 반환한다.
+- **목적**: 주어진 컨텍스트와 스타일에 따라 새로운 콘텐츠를 창작한다.
+- **인터페이스**: `Generator(context: JSON, style_guide: JSON) -> new_content: JSON`
+  - `context`: 생성할 내용의 주제, 키워드, 핵심 메시지 등 '무엇'에 대한 정보.
+  - `style_guide`: 결과물의 톤앤매너, 길이, 형식 등 '어떻게'에 대한 정보.
+- **실패 조건**: `context`가 비어있거나 `style_guide`의 요구사항이 상호 모순될 경우.
 
 ### 3.2. 요약 워커 (Summarizer)
 
 - **목적**: 긴 텍스트의 핵심 정보를 압축한다.
-- **인터페이스**: `Summarizer(source_text: string, target_length: int) -> summary: JSON`
-- **실패 조건**: 원본 텍스트가 요약하기에 너무 짧거나 이해할 수 없는 형식일 경우 에러를 반환한다.
+- **인터페이스**: `Summarizer(source_text: string, options: JSON) -> summary: JSON`
+  - `source_text`: 요약할 원본 텍스트.
+  - `options`: `target_length`(목표 길이), `format`(불릿/줄글), `audience`(대상 독자) 등 요약 방식.
+- **실패 조건**: `source_text`가 너무 짧거나 분석할 수 없는 형식일 경우.
 
 ### 3.3. 추출 워커 (Extractor)
 
 - **목적**: 비정형 텍스트에서 구조화된 데이터를 뽑아낸다.
 - **인터페이스**: `Extractor(source_text: string, schema: JSON) -> extracted_data: JSON`
-- **실패 조건**: 원본 텍스트에서 스키마의 필수 필드를 하나도 찾을 수 없을 경우 에러를 반환한다.
+  - `source_text`: 정보를 추출할 원본 텍스트.
+  - `schema`: 추출할 데이터의 구조를 정의한 JSON Schema.
+- **실패 조건**: `source_text`에서 `schema`의 필수 필드를 하나도 찾을 수 없을 경우.
 
 ### 3.4. 분류 워커 (Classifier)
 
 - **목적**: 입력을 미리 정의된 카테고리 중 하나로 나눈다.
-- **인터페이스**: `Classifier(source_text: string, categories: array) -> classification_result: JSON`
-- **실패 조건**: 어떤 카테고리도 최소 신뢰도 임계값을 넘지 못할 경우 에러를 반환한다.
+- **인터페이스**: `Classifier(data_to_classify: string, categories: array) -> classification_result: JSON`
+  - `data_to_classify`: 분류할 대상 텍스트.
+  - `categories`: 분류 기준으로 사용될 카테고리 목록.
+- **실패 조건**: 어떤 `categories`도 최소 신뢰도 임계값을 넘지 못할 경우.
 
 ### 3.5. 검증 워커 (Validator/Reviewer)
 
 - **목적**: 다른 에이전트의 결과물을 평가 기준에 따라 검사한다.
-- **인터페이스**: `Validator(artifact: JSON, rubric: JSON) -> validation_result: JSON`
-- **실패 조건**: 평가 대상 산출물이나 평가 기준(rubric)의 형식이 올바르지 않을 경우 에러를 반환한다.
+- **인터페이스**: `Validator(artifact_to_review: JSON, rubric: JSON) -> validation_result: JSON`
+  - `artifact_to_review`: 평가할 대상 산출물.
+  - `rubric`: 평가 기준 항목과 점수를 정의한 평가표.
+- **실패 조건**: `artifact_to_review`나 `rubric`의 형식이 올바르지 않을 경우.
 
 ### 3.6. 변환 워커 (Transformer)
 
 - **목적**: 데이터를 한 형식에서 다른 형식으로 손실 없이 변환한다.
-- **인터페이스**: `Transformer(source_data: CSV | JSON) -> transformed_data: JSON | CSV`
-- **실패 조건**: 원본 데이터의 형식이 손상되어 파싱할 수 없을 경우 에러를 반환한다.
+- **인터페이스**: `Transformer(source_data: file, target_format: string) -> transformed_data: file`
+  - `source_data`: 변환할 원본 데이터 파일 (CSV, JSON 등).
+  - `target_format`: 변환 목표 형식 (e.g., "JSON", "CSV").
+- **실패 조건**: `source_data`의 형식이 손상되어 파싱할 수 없을 경우.
 
 ---
 ## 4. 최종 지침: 메타 에이전트의 의무

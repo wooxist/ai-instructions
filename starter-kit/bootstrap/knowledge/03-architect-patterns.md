@@ -63,6 +63,31 @@ graph TD
 - **한 줄 요약**: 중간 결과에 따라 다음 작업 경로를 동적으로 결정합니다.
 - **적용**: 우선순위 분류, 승인/거부에 따른 분기 처리.
 
+### 3.5. 작업 할당 프로토콜
+
+> **아키텍트 지시사항:**
+> 모든 워커에게 작업을 할당할 때는 반드시 아래의 표준 프로토콜을 따라야 한다. 이는 모든 작업의 컨텍스트를 명확히 하고 추적성을 보장하기 위함이다.
+
+아키텍트가 워커에게 작업을 위임할 때는 다음 정보가 포함된 `JSON` 형식의 메시지(또는 이에 준하는 산출물)를 생성하여 전달해야 한다.
+
+```json
+{
+  "job_id": "job_abc123",
+  "task_id": "task_01_extract_data",
+  "worker_instruction_path": "/agents/workers/extractor-v2.md",
+  "inputs": {
+    "source_text": "/jobs/job_abc123/source_document.txt",
+    "schema": "/shared/schemas/document_schema.json"
+  },
+  "output_path": "/jobs/job_abc123/extracted_data.json"
+}
+```
+- `job_id`: 전체 프로젝트 식별자.
+- `task_id`: 현재 작업의 고유 식별자.
+- `worker_instruction_path`: 워커가 따라야 할 인스트럭션 파일의 절대 경로.
+- `inputs`: 워커가 작업을 수행하는 데 필요한 입력 파일 경로 또는 값.
+- `output_path`: 워커가 결과물을 저장해야 할 경로.
+
 ## 4. 워커 평가 전략
 
 | 전략 | 설명 | 사용 사례 |
