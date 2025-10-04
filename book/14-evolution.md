@@ -219,7 +219,3 @@ print("## 최종 결과물:")
 print(result)
 print("########################")
 ```
-
-- Kotter, J. P. (2012). *Leading change*. Harvard Business Review Press.
-- Rogers, E. M. (2003). *Diffusion of innovations*. Simon and Schuster.
-- Senge, P. M. (2006). *The fifth discipline: The art and practice of the learning organization*. Broadway Business.
