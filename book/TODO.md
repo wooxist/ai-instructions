@@ -18,7 +18,7 @@
 
 ## 우선순위 (P1)
 - [x] Part 라벨과 `book/index.md` 파트 구성을 동기화(모든 장)
-- [ ] 용어 일관화: `book/glossary.md` 기준으로 본문 용어 링크/표기 정리
+- [x] 용어 일관화: `book/glossary.md` 기준으로 본문 용어 링크/표기 정리
 - [x] 실습 심화 과제 연결: 각 장 말미에서 `book/practice-guide.md`로 연결 확인
 - [x] `book/ROADMAP.md` 정비(루트 `ROADMAP.md`로 위임 또는 간단 요약 유지)
 
@@ -50,4 +50,4 @@
 ## 작업 이력
 - 2025-10-05: WRITER 부록 A에 시각 스타일 가이드(SSOT) 통합, TODO 재정비
 - 2025-10-05: P0 완료 — Mermaid init 스니펫 감사, 01장 체크리스트 병합, 02장 오탈자 교정, 06장 체크리스트 헤더 표준화, 10·13장 인덱스 앵커 수정, glossary 교차링크 수정
-- 2025-10-05: P1 진행 — 07·15장 Part 라벨 보강, 각 장 ‘실습 체크리스트’에 practice-guide 링크 추가, book/ROADMAP.md를 루트 로드맵 안내로 정비
+- 2025-10-05: P1 진행 — 07·15장 Part 라벨 보강, 각 장 ‘실습 체크리스트’에 practice-guide 링크 추가, book/ROADMAP.md를 루트 로드맵 안내로 정비, 용어 일관화(SSOT/SoC/MECE/Output-Driven/JSON Schema/Human-in-the-Loop/RAG/MCP 링크화)

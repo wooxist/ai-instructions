@@ -184,7 +184,7 @@ workflow:
         next_step: "notify_failure"
 ```
 
-**3) 사람 개입 (Human-in-the-Loop)**
+**3) 사람 개입 ([Human-in-the-Loop](glossary.md#human-in-the-loop))**
 
 ```yaml
 workflow:
@@ -198,7 +198,7 @@ workflow:
 
 ### 13.3.4 에이전트 정의 (마크다운 형식)
 
-각 에이전트의 세부 역할과 지시사항은 별도의 마크다운 파일로 관리합니다. 이는 **관심사 분리(SoC)** 원칙을 따르며, 에이전트 정의를 재사용 가능하게 만듭니다.
+각 에이전트의 세부 역할과 지시사항은 별도의 마크다운 파일로 관리합니다. 이는 [관심사 분리(SoC)](glossary.md#soc-separation-of-concerns) 원칙을 따르며, 에이전트 정의를 재사용 가능하게 만듭니다.
 
 **예시: `agents/workers/researcher.md`**
 
@@ -265,9 +265,9 @@ YAML과 마크다운의 역할을 명확히 분리하면 다음과 같은 장점
 
 아무리 잘 설계된 DSL이라도, 사용자가 잘못 작성하면 문제가 발생합니다. 따라서 **검증(Validation)**과 **명확한 오류 메시지**가 필수적입니다.
 
-### 13.4.1 스키마 검증 (JSON Schema)
+### 13.4.1 스키마 검증 ([JSON Schema](glossary.md#json-schema))
 
-YAML 파일의 구조가 올바른지 확인하기 위해 **JSON Schema**를 활용할 수 있습니다.
+YAML 파일의 구조가 올바른지 확인하기 위해 [JSON Schema](glossary.md#json-schema)를 활용할 수 있습니다.
 
 **예시: `workflow.schema.json`**
 
