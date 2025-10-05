@@ -34,7 +34,7 @@
 - 도형 의미 매핑: 결정=마름모, 에이전트=둥근 사각형, 산출물=서브루틴, 데이터=실린더, Human=원형.
 - 공통 클래스는 필요 시 다이어그램 내에 정의합니다(예: `principle`, `decision`, `agent` 등).
 - “한 다이어그램=한 메시지” 원칙. 산출물과 다음 입력의 연결을 명시합니다.
-- 자세한 기준과 예시는 `book/visual-style-guide.md` 참조.
+- 자세한 기준과 예시는 본 문서의 "부록 A) 시각 자료 스타일 가이드 (Mermaid)"를 참조합니다. 해당 부록이 SSOT이며, `book/visual-style-guide.md`는 부록으로의 안내 역할만 합니다.
 
 ## 4) 체크리스트와 실습
 - 각 장 말미에 “실습 체크리스트” 섹션을 포함합니다.
@@ -52,26 +52,55 @@
 ---
 
 ## 부록 A) 시각 자료 스타일 가이드 (Mermaid)
-본 부록은 다이어그램 작성 규칙의 핵심 요약입니다. SSOT는 `book/visual-style-guide.md`이며, 상세 규칙과 예시는 해당 문서를 우선합니다.
+본 부록은 가이드북 전반의 Mermaid 다이어그램을 일관된 스타일로 작성하기 위한 SSOT입니다. `book/visual-style-guide.md`는 본 부록으로의 안내(미러) 문서입니다.
 
-- 초기화 스니펫(반드시 포함):
-  ```mermaid
-  %%{init: {
-    'theme': 'base',
-    'themeVariables': {
-      'primaryColor': '#1f77b4',
-      'primaryTextColor': '#ffffff',
-      'primaryBorderColor': '#1f77b4',
-      'lineColor': '#6c757d',
-      'background': 'transparent',
-      'edgeLabelBackground': '#2ca02c'
-    }
-  }}%%
-  ```
-- 도형과 의미: 개념/원칙=직사각형, 결정=마름모, 에이전트=둥근 사각형, 산출물=서브루틴, 데이터=실린더, Human=원형.
-- 레이아웃: 기본 흐름 `LR`, 필요 시 `TD`. 서브그래프는 팀/모듈 경계에 사용.
-- 라벨: 간선 라벨은 의미 있을 때만, 간결하게. 연결 라벨·화살표의 배경은 자동으로 녹색(edgeLabelBackground) 적용.
-- 클래스 예시(선택): `principle`, `decision`, `agent`, `artifact`, `data`, `human` 등 공통 정의를 필요 시 다이어그램 내에 포함.
-- 품질 원칙: 한 다이어그램=한 메시지, 산출물 명시 및 다음 단계 입력과 연결.
+### 기본 테마 초기화 스니펫
+모든 다이어그램 상단에 아래 스니펫을 붙여 일관된 색상·선 스타일을 적용합니다.
 
-자세한 규칙과 예시는: `book/visual-style-guide.md`
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'noteBkgColor': '#f8f9fa',
+    'noteTextColor': '#212529',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
+```
+
+### 도형과 의미 매핑
+- 개념/원칙: 직사각형 `id[Text]`
+- 결정(분기): 마름모 `id{Question}`
+- 에이전트(역할): 둥근 사각형 `id(Text)`
+- 산출물/문서: 서브루틴 `id[[Artifact]]`
+- 데이터/저장소/로그: 실린더 `id[(Data)]`
+- 사람(Human-in-the-Loop): 원형 `id((Human))`
+
+### 공통 클래스 정의 (선택)
+필요 시 아래 클래스를 다이어그램에 포함해 시맨틱 강조를 통일합니다.
+
+```mermaid
+%% 클래스 예시 (다이어그램 내부에 포함)
+classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+```
+
+### 레이아웃 규칙
+- 흐름 방향: 기본 `LR`(좌→우), 복잡한 경우 `TD` 사용
+- 서브그래프: 팀/조직/모듈 경계를 표현할 때 사용(제목은 역할 기준)
+- 라벨: 동사+목적어 5–7단어 이내, 핵심만 기입
+- 간선: 의미 있는 곳에만 라벨(예/아니오, 승인/반려 등)
+
+### 작성 팁
+- 다이어그램마다 1가지 메시지에 집중합니다(“한 장에 한 메시지”).
+- 산출물을 명시하고(파일·JSON 등), 다음 단계 입력과 연결합니다.
+- 검증/승인 게이트는 `human_in_the_loop` 노드로 강조합니다.
