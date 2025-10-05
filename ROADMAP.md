@@ -21,7 +21,7 @@
 - [x] 11장 2부: 단위 조직 설계 (v1-released)
 - [x] 11장 3부: 복합 조직 설계 (v1-released)
 - [x] 12장: 도구(Tools)와 플러그인 활용 (v1-released)
-- [ ] 13장: 도메인 특화 언어(DSL) 설계 (v1-draft, 작성 중)
+- [x] 13장: 도메인 특화 언어(DSL) 설계 (v1-draft, 작성 중)
 - [x] 14장: 살아있는 시스템: 인스트럭션의 진화와 관리 (v1-released)
 - [x] 15장: 결론: AI 시대의 새로운 일잘법 (v1-released)
 
@@ -58,17 +58,17 @@ ai-instructions/
 **목적:** book/ 내용을 기반으로 효과적인 인스트럭션을 자동 생성
 
 **기능:**
-- [ ] 사용자 요구사항 분석 (복잡도 수준 판단)
-- [ ] 적절한 템플릿 선택
-- [ ] 원칙 기반 지침 초안 생성
-- [ ] 역할(Agent) 및 제약(Constraint) 자동 설정
-- [ ] 입력/출력 형식 정의
-- [ ] 처리 방법 및 워크플로우 구성
+- [x] 사용자 요구사항 분석 (복잡도 수준 판단)
+- [x] 적절한 템플릿 선택
+- [x] 원칙 기반 지침 초안 생성
+- [x] 역할(Agent) 및 제약(Constraint) 자동 설정
+- [x] 입력/출력 형식 정의
+- [x] 처리 방법 및 워크플로우 구성
 
 **산출물:**
-- [ ] `agents/creator/agent.md` - 에이전트 정의
-- [ ] `agents/creator/prompts/` - 프롬프트 템플릿 세트
-- [ ] 사용 가이드 및 예시
+- [x] `agents/creator/agent.md` - 에이전트 정의
+- [x] `agents/creator/prompts/` - 프롬프트 템플릿 세트
+- [x] 사용 가이드 및 예시
 
 ## 📅 Phase 4: 지침 평가 에이전트 개발
 
@@ -76,21 +76,21 @@ ai-instructions/
 **목적:** 기존 인스트럭션의 품질을 평가하고 개선 방향 제시
 
 **기능:**
-- [ ] 인스트럭션 구조 분석
-- [ ] 원칙 준수 여부 검증
+- [x] 인스트럭션 구조 분석
+- [x] 원칙 준수 여부 검증
   - 명확성(Clarity)
   - 구체성(Specificity)
   - 목표 지향성(Goal-oriented)
   - 일관성(Consistency)
-- [ ] 복잡도 수준 적합성 평가
-- [ ] 개선점 도출 및 제안
-- [ ] Before/After 비교 리포트 생성
+- [x] 복잡도 수준 적합성 평가
+- [x] 개선점 도출 및 제안
+- [x] Before/After 비교 리포트 생성
 
 **산출물:**
-- [ ] `agents/evaluator/agent.md` - 에이전트 정의
-- [ ] `agents/evaluator/prompts/` - 평가 프롬프트 세트
-- [ ] 평가 기준 체크리스트
-- [ ] 사용 가이드 및 예시
+- [x] `agents/evaluator/agent.md` - 에이전트 정의
+- [x] `agents/evaluator/prompts/` - 평가 프롬프트 세트
+- [x] 평가 기준 체크리스트
+- [x] 사용 가이드 및 예시
 
 ## 📅 Phase 5: 통합 및 검증
 
@@ -125,7 +125,7 @@ ai-instructions/
 ---
 
 ## 🎯 현재 상태
-**Phase 1** 완료. **Phase 2** 진행 예정.
+Phase 1 완료. Phase 2(구조) 완료. Phase 3/4 에이전트 사양·프롬프트·예시 초안 완료.
 
 ## 📝 업데이트 이력
 - 2025-10-01: 로드맵 초안 작성
