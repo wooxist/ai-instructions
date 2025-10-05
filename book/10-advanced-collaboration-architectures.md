@@ -76,6 +76,17 @@ AI 에이전트 시스템은 어떻게 시작될까요? 그리고 각 에이전�
 실제 프로젝트가 시작되면, 각 에이전트는 다음과 같은 동적 프로세스를 통해 협력합니다. 이러한 '생성'과 '실행'의 전체 흐름을 시퀀스 다이어그램으로 표현하면 다음과 같습니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 sequenceDiagram
     participant H as 인간 (인사팀장)
     participant M as 온보딩 메타 에이전트
@@ -134,6 +145,17 @@ sequenceDiagram
 **2. 아키텍트의 모니터링 프로세스**
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 sequenceDiagram
     participant A as 아키텍트
     participant W as 워커
@@ -261,14 +283,7 @@ sequenceDiagram
 > **향후 발전 방향**
 > 대규모 시스템에서는 작업의 메타데이터를 **데이터베이스**에 저장하여 더 빠른 검색, 통계, 리포팅을 구현할 수 있습니다.
 
-## 참고 자료
-
-- Hohpe, G., & Woolf, B. (2003). *Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions*. Addison-Wesley Professional.
-- Evans, E. (2004). *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Addison-Wesley Professional.
-- Martin, R. C. (2017). *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Prentice Hall.
-- Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley Professional.
-
----
+ 
 
 ## 10.6 시스템 거버넌스
 
@@ -325,3 +340,12 @@ domains:
 ### 실습 과제
 1. 본인 도메인에서 ‘아키텍트 ↔ 워커’ 1:3 구조를 설계하고, 각 산출물 파일 구조(확장자/필드)를 정의하세요.
 2. `/jobs/{job_id}/` 디렉터리와 `task-*.json` 로그 포맷을 초안으로 작성해 상태 추적 시나리오를 작성하세요.
+
+---
+
+## 참고 자료
+
+- Hohpe, G., & Woolf, B. (2003). Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions. Addison-Wesley Professional.
+- Evans, E. (2004). Domain-Driven Design: Tackling Complexity in the Heart of Software. Addison-Wesley Professional.
+- Martin, R. C. (2017). Clean Architecture: A Craftsman's Guide to Software Structure and Design. Prentice Hall.
+- Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). Design Patterns: Elements of Reusable Object-Oriented Software. Addison-Wesley Professional.

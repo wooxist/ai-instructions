@@ -38,6 +38,17 @@
 아키텍트는 자신의 목표를 달성하기 위해 다음과 같이 세 명의 워커 에이전트로 구성된 팀을 지휘합니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 graph TD
     subgraph "단위 조직: 소셜 미디어 팀"
         Architect["소셜 미디어 아키텍트 (팀장)"]
@@ -58,6 +69,17 @@ graph TD
 아키텍트는 외부로부터 받은 지시를 완수하기 위해, 다음과 같은 파이프라인 워크플로우에 따라 워커들에게 순차적으로 작업을 지시합니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 graph TD
     subgraph "콘텐츠 발행 워크플로우"
         A["1단계 기획 워커"] -- "아이디어 3개 제안" --> B["2단계 인간 관리자 선택"]

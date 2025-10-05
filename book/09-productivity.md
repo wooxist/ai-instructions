@@ -82,13 +82,6 @@ A/B 테스트는 두 가지 대안(A와 B) 중 어느 것이 더 나은지 비�
 - **정답이 비교적 명확한 업무 (Structured Tasks):** 데이터 추출, 분류, 코드 수정 등 결과의 좋고 나쁨을 판단하기 쉬운 작업입니다. 이 경우, '재작업 비율'이나 '정확도' 같은 지표 중심의 평가가 효과적입니다.
 - **정답이 없는 창의적 업무 (Creative Tasks):** 마케팅 슬로건 작성, 사업 전략 제안 등 정답이 없고 '취향'이나 '새로움'이 중요한 작업입니다. 이 경우, 여러 버전의 결과물을 놓고 "어떤 버전이 더 마음에 드시나요?"라고 동료에게 묻거나, '아이디어 채택률' 같은 지표를 활용하는 것이 더 의미 있습니다.
 
-## 참고 자료
-
-- Doshi-Velez, F., & Kim, B. (2017). Towards a rigorous science of interpretable machine learning. *arXiv preprint arXiv:1702.08608*.
-- Kohavi, R., et al. (2009). Controlled experiments on the web: survey and practical guide. *Data mining and knowledge discovery*.
-- Microsoft Research. (2023). Human-AI Guidelines. https://www.microsoft.com/en-us/research/project/guidelines-for-human-ai-interaction/
-- Nielsen, J. (1994). *Usability engineering*. Morgan Kaufmann.
-
 ## 실습 체크리스트
 
 ### 이 장을 완료하셨다면 다음을 확인하세요:
@@ -99,3 +92,10 @@ A/B 테스트는 두 가지 대안(A와 B) 중 어느 것이 더 나은지 비�
 ### 실습 과제
 1. 최근 사용한 인스트럭션 1개를 골라 A/B 실험을 설계·실행하고, 지표 2개로 비교하세요.
 2. 실패 사례 3개를 ‘오답 노트’로 정리하고, 수정 후 회귀 여부를 재검증하세요.
+
+## 참고 자료
+
+- Doshi-Velez, F., & Kim, B. (2017). Towards a rigorous science of interpretable machine learning. arXiv preprint arXiv:1702.08608.
+- Kohavi, R., et al. (2009). Controlled experiments on the web: survey and practical guide. Data mining and knowledge discovery.
+- Microsoft Research. (2023). Human-AI Guidelines. https://www.microsoft.com/en-us/research/project/guidelines-for-human-ai-interaction/
+- Nielsen, J. (1994). Usability engineering. Morgan Kaufmann.

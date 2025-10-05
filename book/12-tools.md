@@ -130,16 +130,6 @@
 
 이러한 문제를 해결하기 위한 노력으로, **MCP(Model-Context Protocol)**라는 표준 프로토콜이 등장했습니다. MCP는 인간, AI 모델, 도구가 서로의 역할, 기능, 맥락을 이해하고 소통하기 위한 '공용어(Lingua Franca)'를 지향합니다. 이는 마치 모든 전자기기가 'USB-C'라는 단일 표준으로 통일되어 어떤 충전기나 액세서리든 자유롭게 연결할 수 있게 되는 것과 같습니다. 또한, 전 세계의 컴퓨터가 HTTP라는 프로토콜 위에서 소통하며 월드 와이드 웹을 이룬 것과도 비견될 수 있습니다. 최근 일부 업체들이 MCP를 지원하는 서버를 출시하기 시작하면서, 이는 더 이상 가상의 개념이 아닌 현실적인 표준으로 자리잡아가고 있습니다.
 
-## 참고 자료
-
-- Anthropic. (2023). Claude Function Calling. https://docs.anthropic.com/claude/docs/function-calling
-- Hohpe, G., & Woolf, B. (2003). *Enterprise Integration Patterns*. Addison-Wesley Professional.
-- Langchain Documentation. (2023). https://docs.langchain.com/
-- LlamaIndex Documentation. (2023). https://www.llamaindex.ai/
-- OpenAI. (2023). Function Calling. https://platform.openai.com/docs/guides/function-calling
-- PromptLayer Documentation. (2023). https://promptlayer.com/docs
-- Weights & Biases Documentation. (2023). https://docs.wandb.ai/
-
 ## 실습 체크리스트
 
 ### 이 장을 완료하셨다면 다음을 확인하세요:
@@ -150,3 +140,13 @@
 ### 실습 과제
 1. `web_search` 또는 `execute_python_code` 중 하나의 도구 명세를 JSON Schema로 작성하세요.
 2. 도구 호출이 포함된 인스트럭션 1개를 작성하고, 안전장치(승인/권한/샌드박스)를 명시하세요.
+
+## 참고 자료
+
+- Anthropic. (2023). Claude Function Calling. https://docs.anthropic.com/claude/docs/function-calling
+- Hohpe, G., & Woolf, B. (2003). Enterprise Integration Patterns. Addison-Wesley Professional.
+- Langchain Documentation. (2023). https://docs.langchain.com/
+- LlamaIndex Documentation. (2023). https://www.llamaindex.ai/
+- OpenAI. (2023). Function Calling. https://platform.openai.com/docs/guides/function-calling
+- PromptLayer Documentation. (2023). https://promptlayer.com/docs
+- Weights & Biases Documentation. (2023). https://docs.wandb.ai/

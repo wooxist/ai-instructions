@@ -121,14 +121,7 @@ AI에게 특정 전문가나 역할을 부여하는 방식입니다.
 
 ---
 
-## 참고 자료
-
-- Anthropic. (2023). Claude Prompt Design. https://docs.anthropic.com/claude/docs/introduction-to-prompt-design
-- Brown, T., et al. (2020). Language Models are Few-Shot Learners. arXiv preprint arXiv:2005.14165.
-- Liu, J., et al. (2023). Lost in the Middle: How Language Models Use Long Contexts. arXiv preprint arXiv:2307.03172.
-- Prompt Engineering Guide. (2023). https://www.promptingguide.ai/
-
----
+ 
 
 ## 1장 실습 체크리스트
 
@@ -178,11 +171,6 @@ AI에게 특정 전문가나 역할을 부여하는 방식입니다.
 2. 재사용 횟수 파악 (1회성/가끔/자주)
 3. 인스트럭션으로 전환할 필요성 판단 및 근거 작성
 
----
-
-[^1]: Few-shot learning(퓨샷 러닝)은 AI에게 몇 가지 예시만 제공하여 패턴을 인식시키고 유사한 형식으로 새로운 문제를 해결하게 하는 학습 방법입니다. 대규모 언어 모델이 적은 수의 예시만으로도 새로운 작업을 수행할 수 있는 능력을 활용합니다.
-[^2]: 컨텍스트 창(context window)은 모델이 한 번에 처리하고 기억할 수 있는 입력 토큰의 최대 길이를 의미합니다. 창을 초과하는 정보는 잘리거나 활용도가 크게 떨어질 수 있습니다.
-
 ## 실습 체크리스트
 
 ### 이 장을 완료하셨다면 다음을 확인하세요:
@@ -193,3 +181,19 @@ AI에게 특정 전문가나 역할을 부여하는 방식입니다.
 ### 실습 과제
 1. 관심 주제 하나를 정하고, ‘나쁜 프롬프트’ 1개를 작성한 뒤 본문 원칙에 따라 ‘좋은 프롬프트’로 재작성하세요.
 2. 개선 전/후 결과를 비교하고, 개선 포인트 2가지를 기록하세요.
+
+## 참고 자료
+
+- Anthropic. (2023). Claude Prompt Design. https://docs.anthropic.com/claude/docs/introduction-to-prompt-design
+- Brown, T., et al. (2020). Language Models are Few-Shot Learners. arXiv preprint arXiv:2005.14165.
+- Liu, J., et al. (2023). Lost in the Middle: How Language Models Use Long Contexts. arXiv preprint arXiv:2307.03172.
+- Prompt Engineering Guide. (2023). https://www.promptingguide.ai/
+
+---
+
+---
+
+[^1]: Few-shot learning(퓨샷 러닝)은 AI에게 몇 가지 예시만 제공하여 패턴을 인식시키고 유사한 형식으로 새로운 문제를 해결하게 하는 학습 방법입니다. 대규모 언어 모델이 적은 수의 예시만으로도 새로운 작업을 수행할 수 있는 능력을 활용합니다.
+[^2]: 컨텍스트 창(context window)은 모델이 한 번에 처리하고 기억할 수 있는 입력 토큰의 최대 길이를 의미합니다. 창을 초과하는 정보는 잘리거나 활용도가 크게 떨어질 수 있습니다.
+
+ 

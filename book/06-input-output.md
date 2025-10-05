@@ -123,16 +123,8 @@
 
 다음 **[7장. 프로세스 설계: 협업 워크플로우 만들기](07-process-workflow.md)**에서는 이 구조화된 입출력을 ‘산출물 인터페이스’라는 에이전트 간의 공식적인 소통 규약으로 발전시키고, 이를 기반으로 복잡한 다중 에이전트 시스템을 설계하는 구체적인 방법을 배우게 됩니다.
 
-## 참고 자료
-
-- Brown, T., et al. (2020). Language Models are Few-Shot Learners. arXiv:2005.14165. https://arxiv.org/abs/2005.14165
-- JSON Schema. (2020). JSON Schema: A Media Type for Describing JSON Documents. https://json-schema.org/specification.html
-- OpenAI. (2023). Function Calling and Structured Outputs. https://platform.openai.com/docs/guides/function-calling
-- Anthropic. (2023). Tool Use (Function Calling). https://docs.anthropic.com/claude/docs/tool-use
-
----
-
----
+ 
+ 
 
 ## 6장 실습 체크리스트
 
@@ -251,6 +243,13 @@
 3. 모든 정보가 확인된 후에만 실제 요약 작업 수행
 ```
 
+## 참고 자료
+
+- Brown, T., et al. (2020). Language Models are Few-Shot Learners. arXiv:2005.14165. https://arxiv.org/abs/2005.14165
+- JSON Schema. (2020). JSON Schema: A Media Type for Describing JSON Documents. https://json-schema.org/specification.html
+- OpenAI. (2023). Function Calling and Structured Outputs. https://platform.openai.com/docs/guides/function-calling
+- Anthropic. (2023). Tool Use (Function Calling). https://docs.anthropic.com/claude/docs/tool-use
+
 ---
 
 [^1]: **Garbage In, Garbage Out (GIGO):** 컴퓨터 시스템에서 입력의 질이 출력의 질을 결정한다는 원칙. 아무리 뛰어난 시스템이라도, 부정확하거나 의미 없는 입력을 받으면 무의미한 출력을 내놓을 수밖에 없다는 의미를 담고 있다.
@@ -261,13 +260,4 @@
 
 [^4]: **파싱(Parsing):** 컴퓨터가 데이터의 구조를 분석하여 의미 있는 정보로 변환하는 과정. 예: JSON 문자열을 읽어 객체로 변환하거나, CSV 파일을 읽어 표 형식의 데이터로 변환하는 것.
 
-## 실습 체크리스트
-
-### 이 장을 완료하셨다면 다음을 확인하세요:
-- [ ] 입력 명세(컨텍스트/데이터/전제/도메인 지식)를 문서화할 수 있다
-- [ ] 출력 명세(형식/구조/성공 기준/검증 방법)를 정의할 수 있다
-- [ ] JSON Schema 등 구조화된 출력을 활용해 후속 처리 가능성을 높일 수 있다
-
-### 실습 과제
-1. 실제 사용하는 작업 1개를 골라 입력·출력 명세를 작성하세요. 출력은 JSON Schema를 포함합니다.
-2. 명세 기반으로 샘플 입력/출력을 1쌍 만들어, 후속 에이전트가 파싱 가능한지 점검하세요.
+ 

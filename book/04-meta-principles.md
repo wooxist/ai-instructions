@@ -158,25 +158,60 @@
 - **[6장. 입력과 출력 설계](06-input-output.md):** 에이전트가 사용할 '재료(입력)'와 만들어낼 '완성품(출력)'의 명확한 명세를 정의합니다.
 - **[7장. 워크플로우 설계](07-process-workflow.md):** 설계된 여러 에이전트들을 유기적으로 연결하여 복잡한 업무를 자동화하는 '협력 방식'을 정의합니다.
 
+## 4.6 메타 원칙 관계도 (요약)
+
+아래 관계도는 메타 원칙들이 서로 어떻게 연결되어 실제 설계·운영 전반에 영향을 주는지 한눈에 보여줍니다.
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
+graph LR
+  GI["3장: 좋은 인스트럭션<br/>5원칙"]:::principle
+
+  SSOT[SSOT]:::principle
+  SoC[SoC]:::principle
+  MECE[MECE]:::principle
+  ATO[Atomicity]:::principle
+  OD[Output-Driven]:::principle
+  FB[Feedback Loop]:::principle
+  TR[Transparency & Traceability]:::principle
+  EB[Ethical Boundaries]:::principle
+
+  IO[6장: 입력/출력 설계]
+  WF[7장: 워크플로우]
+  AG[5장: 에이전트 설계]
+  EV[9장: 평가와 검증]
+  GOV[10.6 거버넌스]
+  TOOLS[12장: 도구]
+  EVO[14장: 진화]
+
+  GI --> OD
+  SoC --> WF
+  ATO --> WF
+  SSOT --> TR
+  OD --> IO
+  TR --> EV
+  FB -->|개선 주기| EVO
+  EB --> TOOLS
+  GOV --> EVO
+  SoC --> AG
+  MECE --> AG
+
+  classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+```
+
 ## 실무 예제로 이어보기
 
 이 장에서 배운 개념들을 종합하여 실제 파일 기반 인스트럭션 시스템으로 구축하는 전체 과정은 [11장. 상황별 설계 패턴 예제](11-1-single-agent.md)에서 자세히 다룹니다.
-
-## 참고 자료
-
-- Fowler, M. (2002). Patterns of enterprise application architecture. Addison-Wesley Professional.
-- Martin, R. C. (2009). Clean code: A handbook of agile software craftsmanship. Pearson Education.
-- Evans, E. (2004). Domain-driven design: Tackling complexity in the heart of software. Addison-Wesley Professional.
-- Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). Design patterns: Elements of reusable object-oriented software. Pearson Education.
-- Rasmusson, J. (2010). The agile samurai: How agile masters deliver great software. Pragmatic Bookshelf.
-- Papoulis, A., & Pillai, S. U. (2002). *Probability, Random Variables, and Stochastic Processes* (4th ed.). McGraw-Hill.
-- Minto, B. (2009). *The Pyramid Principle: Logic in Writing and Thinking*. Pearson Education.
-- Google. Machine Learning Glossary. https://developers.google.com/machine-learning/glossary (지속적으로 업데이트됨)
-- IEEE. Ethically Aligned Design: A Vision for Prioritizing Human Well-being with Autonomous and Intelligent Systems. https://standards.ieee.org/industry-connections/ec/autonomous-systems.html
-
----
-
----
 
 ## 4장 실습 체크리스트
 
@@ -248,7 +283,35 @@
 
 체크리스트 결과를 바탕으로 최종적으로 적용할 메타 원칙 목록을 작성하세요.
 
+## 실습 체크리스트
+
+### 이 장을 완료하셨다면 다음을 확인하세요:
+- [ ] SSOT로 공통 규칙/스키마를 중앙화하고 중복을 제거할 수 있다
+- [ ] SoC/원자성으로 역할·단계를 분리해 변경 영향도를 낮출 수 있다
+- [ ] MECE로 중복 없이 빠짐없이 분해한 체크리스트를 만들 수 있다
+- [ ] 산출물 중심(Output-Driven)과 피드백 루프를 설계에 반영할 수 있다
+
+### 실습 과제
+1. 현재 문서/프롬프트에서 중복되는 규칙 2개를 찾아 SSOT 파일로 분리·참조 구조를 설계하세요.
+2. 하나의 복합 작업을 3단계로 ‘원자화’하고, 각 단계의 성공 기준을 정의하세요.
+비판적 검토 포함.
+
+## 참고 자료
+
+- Fowler, M. (2002). Patterns of enterprise application architecture. Addison-Wesley Professional.
+- Martin, R. C. (2009). Clean code: A handbook of agile software craftsmanship. Pearson Education.
+- Evans, E. (2004). Domain-driven design: Tackling complexity in the heart of software. Addison-Wesley Professional.
+- Gamma, E., Helm, R., Johnson, R., & Vlissides, J. (1994). Design patterns: Elements of reusable object-oriented software. Pearson Education.
+- Rasmusson, J. (2010). The agile samurai: How agile masters deliver great software. Pragmatic Bookshelf.
+- Papoulis, A., & Pillai, S. U. (2002). *Probability, Random Variables, and Stochastic Processes* (4th ed.). McGraw-Hill.
+- Minto, B. (2009). *The Pyramid Principle: Logic in Writing and Thinking*. Pearson Education.
+- Google. Machine Learning Glossary. https://developers.google.com/machine-learning/glossary (지속적으로 업데이트됨)
+- IEEE. Ethically Aligned Design: A Vision for Prioritizing Human Well-being with Autonomous and Intelligent Systems. https://standards.ieee.org/industry-connections/ec/autonomous-systems.html
+
 ---
+
+---
+
 
 [^1]: Single Source of Truth: 한 조직/프로젝트에서 공식적으로 인정한 단일한 지식·정의·템플릿의 원천.
 DRY(Don't Repeat Yourself) 원칙과 연결됨.
@@ -273,15 +336,4 @@ DRY(Don't Repeat Yourself) 원칙과 연결됨.
 
 [^10]: Ethical Boundaries: 개인정보·저작권 등의 경계를 설정하고 최소 권한(Least Privilege)을 적용하는 원칙.
 
-## 실습 체크리스트
-
-### 이 장을 완료하셨다면 다음을 확인하세요:
-- [ ] SSOT로 공통 규칙/스키마를 중앙화하고 중복을 제거할 수 있다
-- [ ] SoC/원자성으로 역할·단계를 분리해 변경 영향도를 낮출 수 있다
-- [ ] MECE로 중복 없이 빠짐없이 분해한 체크리스트를 만들 수 있다
-- [ ] 산출물 중심(Output-Driven)과 피드백 루프를 설계에 반영할 수 있다
-
-### 실습 과제
-1. 현재 문서/프롬프트에서 중복되는 규칙 2개를 찾아 SSOT 파일로 분리·참조 구조를 설계하세요.
-2. 하나의 복합 작업을 3단계로 ‘원자화’하고, 각 단계의 성공 기준을 정의하세요.
-비판적 검토 포함.
+ 

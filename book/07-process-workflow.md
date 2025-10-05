@@ -7,6 +7,17 @@
 파이프라인은 가장 직관적인 협업 방식으로, 여러 에이전트가 작업을 순차적으로 처리하는 모델입니다. 마치 공장의 컨베이어 벨트처럼, 한 에이전트의 작업 결과(output)가 다음 에이전트의 입력(input)으로 전달됩니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 graph TD
     A[데이터 수집 에이전트] --> B[데이터 정제 에이전트]
     B --> C[핵심 정보 추출 에이전트]
@@ -27,6 +38,17 @@ graph TD
 '생성-검증' 패턴은 한 에이전트가 결과물을 만들면(Generate), 다른 에이전트가 그 결과물을 검증하고 피드백을 주는(Verify) 협업 모델입니다. 이 패턴은 결과물의 품질을 높이는 데 매우 중요한 역할을 하며, '피드백 루프(Feedback Loop)'를 만드는 가장 기본적인 방법입니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 graph TD
     subgraph "생성-검증 루프"
         A[생성 에이전트] -- "초안 전달" --> B[검증 에이전트]
@@ -51,6 +73,17 @@ graph TD
 가장 흔한 라우팅 방식으로, 들어온 작업의 내용을 보고 어떤 에이전트가 처리해야 할지 결정하는 패턴입니다. 마치 우체국에서 편지의 주소를 보고 담당 지역으로 보내거나, 고객센터에서 문의 유형에 따라 담당 팀으로 연결하는 것과 같습니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 graph TD
     A[입력<br/>고객 지원 티켓] --> B{라우팅 에이전트<br/>분류 담당자}
     B -- "환불/결제 문의" --> C[결제팀 에이전트]
@@ -72,6 +105,17 @@ graph TD
 이전 단계의 결과에 따라 다음 행동을 결정하는 패턴입니다. 주로 `생성-검증` 패턴과 함께 사용되며, 검증 결과가 '성공'인지 '실패'인지에 따라 워크플로우를 분기시킵니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 graph TD
     A[초안 작성 에이전트] --> B[검증 에이전트]
     B --> C{라우팅 에이전트<br/>팀장}

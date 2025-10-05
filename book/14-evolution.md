@@ -124,12 +124,6 @@ AI 기술은 무서운 속도로 발전합니다. 어제의 최고 모델이 오
 - 표준 준수: 스키마 검증 실패율(6장), 템플릿 일탈 건수(3장)
 - 거버넌스: 변경 요청( RFC ) 처리 SLA, 소유자 지정율, 보안 이슈(프롬프트 인젝션) 건수(5장)
 
-## 참고 자료
-
-- Kotter, J. P. (2012). *Leading change*. Harvard Business Review Press.
-- Rogers, E. M. (2003). *Diffusion of innovations*. Simon and Schuster.
-- Senge, P. M. (2006). *The fifth discipline: The art and practice of the learning organization*. Broadway Business.
-
 ## 실습 체크리스트
 
 ### 이 장을 완료하셨다면 다음을 확인하세요:
@@ -140,3 +134,9 @@ AI 기술은 무서운 속도로 발전합니다. 어제의 최고 모델이 오
 ### 실습 과제
 1. 전사 표준 인스트럭션 1개를 선정해 업데이트 주기/소유자/검증 체크리스트를 정의하세요.
 2. 분기별 회귀 테스트 계획과 실패 시 롤백/수정 절차를 문서화하세요.
+
+## 참고 자료
+
+- Kotter, J. P. (2012). Leading change. Harvard Business Review Press.
+- Rogers, E. M. (2003). Diffusion of innovations. Simon and Schuster.
+- Senge, P. M. (2006). The fifth discipline: The art and practice of the learning organization. Broadway Business.

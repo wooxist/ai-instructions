@@ -101,21 +101,7 @@ AI 사용은 유료 구독 플랜의 메시지 한도나 API 크레딧 등 우�
 
 이 장에서 배운 성능 최적화 전략과 트레이드오프 개념은 [11장. 상황별 설계 패턴 예제](11-1-single-agent.md)에서 다양한 시나리오를 통해 어떻게 적용되는지 확인할 수 있습니다. 특히, 비용과 품질 사이의 균형을 맞추기 위해 여러 에이전트를 조합하는 패턴들을 유심히 살펴보시기 바랍니다.
 
-## 참고 자료
-
-- Chen, S., et al. (2023). A Survey on Large Language Model (LLM) Inference and Serving. *arXiv preprint arXiv:2312.15233*.
-- Xu, Z., et al. (2024). CASCADES: A Cost-efficient Cascade of Large Language Models. *arXiv preprint arXiv:2405.05836*.
-- GPTCache: Semantic Cache for LLM Applications. (https://gptcache.readthedocs.io/en/latest/)
-
----
-
-[^1]: **Time to First Token (TTFT):** 사용자가 요청을 보낸 후, 응답의 첫 번째 단어(토큰)가 생성되어 사용자에게 도달하기까지 걸리는 시간. 시스템의 초기 반응 속도를 나타내는 핵심 지표다.
-
-[^2]: **스트리밍(Streaming):** LLM이 답변 전체를 완성한 후 한 번에 보내는 것이 아니라, 생성되는 즉시 단어 또는 토큰 단위로 순차적으로 사용자에게 전송하는 기술. 사용자의 체감 대기 시간을 크게 줄여준다.
-
-[^3]: **결과 캐싱(Result Caching):** 동일하거나 의미적으로 유사한 요청에 대해 LLM을 재호출하는 대신, 이전에 생성된 결과를 저장해두었다가 즉시 반환하는 최적화 기법. 비용과 속도를 모두 개선하는 데 효과적이다.
-
----
+ 
 
 ## 🎯 실습 체크리스트
 
@@ -218,6 +204,23 @@ AI 사용은 유료 구독 플랜의 메시지 한도나 API 크레딧 등 우�
 - 모델별 성능 비교: [Artificial Analysis](https://artificialanalysis.ai/)
 - RAG 실습 가이드: 12장 "도구와 통합" 참고
 - 캐싱 전략: GPTCache 문서 읽기
+ 
+---
+
+## 참고 자료
+
+- Chen, S., et al. (2023). A Survey on Large Language Model (LLM) Inference and Serving. arXiv preprint arXiv:2312.15233.
+- Xu, Z., et al. (2024). CASCADES: A Cost-efficient Cascade of Large Language Models. arXiv preprint arXiv:2405.05836.
+- GPTCache: Semantic Cache for LLM Applications. https://gptcache.readthedocs.io/en/latest/
+
+---
+
+[^1]: Time to First Token (TTFT): 사용자가 요청을 보낸 후, 응답의 첫 번째 단어(토큰)가 생성되어 사용자에게 도달하기까지 걸리는 시간. 시스템의 초기 반응 속도를 나타내는 핵심 지표다.
+
+[^2]: 스트리밍(Streaming): LLM이 답변 전체를 완성한 후 한 번에 보내는 것이 아니라, 생성되는 즉시 단어 또는 토큰 단위로 순차적으로 사용자에게 전송하는 기술. 사용자의 체감 대기 시간을 크게 줄여준다.
+
+[^3]: 결과 캐싱(Result Caching): 동일하거나 의미적으로 유사한 요청에 대해 LLM을 재호출하는 대신, 이전에 생성된 결과를 저장해두었다가 즉시 반환하는 최적화 기법. 비용과 속도를 모두 개선하는 데 효과적이다.
+
 
 ## 실습 체크리스트
 

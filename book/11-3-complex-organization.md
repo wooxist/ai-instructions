@@ -35,6 +35,17 @@
 메타 에이전트들에 의해 사전에 다음과 같은 조직이 구성되어 있습니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 graph TD
     subgraph "사전 구성된 조직"
         M1["마케팅 메타 에이전트"] -- "관리" --> Marketing_Team
@@ -63,6 +74,17 @@ graph TD
 CMO의 지시가 각 아키텍트에게 전달되면, 세 팀은 각자의 전문성에 맞춰 병렬적으로 작업을 수행합니다.
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
 graph TD
     subgraph "전체 캠페인 워크플로우"
         CMO["인간 CMO<br/>'캠페인 시작' 지시"]
