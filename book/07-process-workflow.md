@@ -21,9 +21,18 @@
   }
 }}%%
 graph TD
-    A[데이터 수집 에이전트] --> B[데이터 정제 에이전트]
-    B --> C[핵심 정보 추출 에이전트]
-    C --> D[보고서 생성 에이전트]
+    A("데이터 수집 에이전트") --> B("데이터 정제 에이전트")
+    B --> C("핵심 정보 추출 에이전트")
+    C --> D("보고서 생성 에이전트")
+
+    %% 클래스 정의 및 적용 (WRITER 부록 A 기준)
+    classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+    classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+    classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+    classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+    classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+    classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+    class A,B,C,D agent;
 ```
 
 이 패턴은 다음과 같은 단계로 구성된 작업에 매우 효과적입니다.
@@ -53,10 +62,19 @@ graph TD
 }}%%
 graph TD
     subgraph "생성-검증 루프"
-        A[생성 에이전트] -- "초안 전달" --> B[검증 에이전트]
+        A("생성 에이전트") -- "초안 전달" --> B("검증 에이전트")
         B -- "수정 요청" --> A
     end
     B -- 최종 승인 --> C[완료]
+
+    %% 클래스 정의 및 적용 (WRITER 부록 A 기준)
+    classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+    classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+    classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+    classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+    classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+    classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+    class A,B agent;
 ```
 
 예를 들어, 다음과 같은 시나리오에 적용할 수 있습니다.
@@ -87,10 +105,20 @@ graph TD
   }
 }}%%
 graph TD
-    A[입력<br/>고객 지원 티켓] --> B{라우팅 에이전트<br/>분류 담당자}
-    B -- "환불/결제 문의" --> C[결제팀 에이전트]
-    B -- "기술적 오류" --> D[기술지원팀 에이전트]
-    B -- "기타" --> E[일반문의팀 에이전트]
+    A[("입력<br/>고객 지원 티켓")] --> B{라우팅 에이전트<br/>분류 담당자}
+    B -- "환불/결제 문의" --> C("결제팀 에이전트")
+    B -- "기술적 오류" --> D("기술지원팀 에이전트")
+    B -- "기타" --> E("일반문의팀 에이전트")
+
+    %% 클래스 정의 및 적용 (WRITER 부록 A 기준)
+    classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+    classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+    classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+    classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+    classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+    classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+    class B decision;
+    class C,D,E agent;
 ```
 
 **예시: 고객 지원 티켓 분류**
@@ -119,10 +147,20 @@ graph TD
   }
 }}%%
 graph TD
-    A[초안 작성 에이전트] --> B[검증 에이전트]
+    A("초안 작성 에이전트") --> B("검증 에이전트")
     B --> C{라우팅 에이전트<br/>팀장}
-    C -- "결과: 승인" --> D[최종 발행 에이전트]
+    C -- "결과: 승인" --> D("최종 발행 에이전트")
     C -- "결과: 수정 필요" --> A
+
+    %% 클래스 정의 및 적용 (WRITER 부록 A 기준)
+    classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+    classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+    classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+    classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+    classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+    classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+    class A,B,D agent;
+    class C decision;
 ```
 
 **예시: 보고서 승인 프로세스**
@@ -145,20 +183,76 @@ graph TD
 다음은 `workflow.yaml` 파일에 파이프라인 패턴을 정의한 간단한 예시입니다.
 
 ```yaml
+# workflow.yaml — 파이프라인 예시 (Pipeline)
 name: "콘텐츠 생성 파이프라인"
 workflow:
-  - agent: "리서치 에이전트"
+  - id: research
+    agent: "리서치 에이전트"
+    # 지시 요약: 최신 동향 조사 → 텍스트 산출
     prompt: "AI 에이전트 협업의 최신 동향을 조사해줘."
     output: "research_result.txt"
 
-  - agent: "초안 작성 에이전트"
-    prompt: "research_result.txt 파일을 기반으로 블로그 포스트 초안을 작성해줘."
+  - id: draft
+    agent: "초안 작성 에이전트"
+    # 입력 파일을 기반으로 초안 작성
     input: "research_result.txt"
+    prompt: "research_result.txt 파일을 기반으로 블로그 포스트 초안을 작성해줘."
     output: "draft.md"
 
-  - agent: "검수 에이전트"
-    prompt: "draft.md 파일의 문법과 사실 관계를 확인하고, 개선점을 제안해줘."
+  - id: human_review
+    type: human-approval  # Human-in-the-Loop 지점
     input: "draft.md"
+    instructions: "초안을 검토하고 승인 여부를 선택하세요."
+    output: "draft_approved.md"
+
+  - id: edit
+    agent: "검수 에이전트"
+    # 승인본을 기반으로 최종 교정
+    input: "draft_approved.md"
+    prompt: "문법/사실 관계를 확인하고 개선점을 반영해 최종 원고를 제출해줘."
+    output: "final.md"
+```
+
+추가로, 생성-검증 + 조건부 라우팅을 YAML로 표현한 예시는 다음과 같습니다.
+
+```yaml
+# workflow.yaml — 생성-검증 + 조건부 라우팅 예시
+name: "보고서 생성-검증 루프"
+workflow:
+  - id: generate
+    agent: "생성 에이전트"
+    prompt: "요구사항에 맞춰 초안 보고서를 작성해줘."
+    output: "draft.md"
+
+  - id: verify
+    agent: "검증 에이전트"
+    input: "draft.md"
+    prompt: "초안을 평가하고, 승인/수정 필요 중 하나의 결과와 피드백을 JSON으로 출력해줘."
+    output: "review.json"  # { "status": "approved"|"revise", "feedback": "..." }
+
+  - id: route
+    type: router
+    input: ["draft.md", "review.json"]
+    rules:
+      - if: "$.review.status == 'approved'"
+        then:
+          next: publish
+      - if: "$.review.status == 'revise'"
+        then:
+          next: revise
+
+  - id: revise
+    agent: "생성 에이전트"
+    input: ["draft.md", "review.json"]
+    prompt: "review.json의 피드백을 반영해 초안을 수정해줘."
+    output: "draft.md"
+    next: verify  # 루프
+
+  - id: publish
+    agent: "발행 에이전트"
+    input: "draft.md"
+    prompt: "최종본을 포맷팅해 출판용 문서로 변환해줘."
+    output: "report_final.pdf"
 ```
 
 이처럼 워크플로우를 코드가 아닌 데이터로 정의함으로써, 전체 시스템의 유연성과 확장성을 크게 높일 수 있습니다.

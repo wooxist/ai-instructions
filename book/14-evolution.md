@@ -124,6 +124,38 @@ AI 기술은 무서운 속도로 발전합니다. 어제의 최고 모델이 오
 - 표준 준수: 스키마 검증 실패율(6장), 템플릿 일탈 건수(3장)
 - 거버넌스: 변경 요청( RFC ) 처리 SLA, 소유자 지정율, 보안 이슈(프롬프트 인젝션) 건수(5장)
 
+### 회귀 테스트/거버넌스 프로세스 (다이어그램)
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#1f77b4',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#1f77b4',
+    'lineColor': '#6c757d',
+    'noteBkgColor': '#f8f9fa',
+    'noteTextColor': '#212529',
+    'background': 'transparent',
+    'edgeLabelBackground': '#2ca02c'
+  }
+}}%%
+graph TD
+  RFC((변경 요청<br/>RFC)):::human --> REV("거버넌스 리뷰"):::human
+  REV --> EXP("실험 분기 생성")
+  EXP --> REG[["회귀 테스트 스위트 실행"]]:::artifact
+  REG --> DEC{승인 기준 충족?}:::decision
+  DEC -- 예 --> DEPLOY["배포 및 기준 업데이트"]
+  DEC -- 아니오 --> ROLL["롤백/수정 후 재실험"] --> EXP
+
+  classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+  classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+  classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+  classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+  classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+  classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+```
+
 ## 실습 체크리스트
 > 참고: 심화 과제는 [실습 과제 모음](practice-guide.md)을 참고하세요.
 

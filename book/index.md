@@ -122,4 +122,4 @@ AI 에이전트 작업 지침:
 ---
 ### 부록
 * [실습 과제 모음](practice-guide.md)
-* [시각 자료 스타일 가이드](visual-style-guide.md)
+* [시각 자료 스타일 가이드](visual-style-guide.md) — 안내 문서(정식 기준 SSOT: WRITER의 "부록 A) 시각 자료 스타일 가이드")

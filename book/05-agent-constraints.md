@@ -208,6 +208,73 @@ flowchart TD
   class Q1,Q2,Q3,Q4,Q5 decision;
 ```
 
+## 5.5 역할·제약 스니펫 (JSON/YAML)
+
+아래는 역할과 제약을 명확히 기술한 최소 스펙 예시입니다. 6장에서는 출력 스키마(JSON Schema)까지 포함해 보다 정교한 명세를 다룹니다.
+
+### JSON 예시
+
+```json
+{
+  "role": "code-reviewer",
+  "purpose": "Review code changes for defects and style",
+  "inputs": {
+    "diff": "unified-diff",
+    "context": "markdown"
+  },
+  "outputs": {
+    "review": {
+      "format": "markdown",
+      "sections": ["summary", "issues", "suggestions"]
+    }
+  },
+  "constraints": {
+    "time_budget_minutes": 10,
+    "disallowed": ["secrets", "PII"],
+    "style_guide": "book/WRITER.md#부록-a"
+  },
+  "evaluation": {
+    "required_checks": [
+      "compiles_or_lints",
+      "tests_pass",
+      "security_sensitive_areas_reviewed"
+    ]
+  }
+}
+```
+
+### YAML 예시
+
+```yaml
+role: code-reviewer
+purpose: Review code changes for defects and style
+inputs:
+  diff: unified-diff
+  context: markdown
+outputs:
+  review:
+    format: markdown
+    sections:
+      - summary
+      - issues
+      - suggestions
+constraints:
+  time_budget_minutes: 10
+  disallowed:
+    - secrets
+    - PII
+  style_guide: book/WRITER.md#부록-a
+evaluation:
+  required_checks:
+    - compiles_or_lints
+    - tests_pass
+    - security_sensitive_areas_reviewed
+```
+
+권장 사항
+- `constraints.disallowed` 등 금지 항목을 명시해 보안·윤리 경계를 확실히 합니다.
+- `evaluation.required_checks`로 검증 기준을 구조화해 재현 가능성을 높입니다.
+
 ## 실무 예제로 이어보기
 
 지금까지 우리는 단일 작업을 수행하는 전문가, 즉 **'워커 에이전트'**를 설계하는 법을 배웠습니다. 이어지는 장들에서는 이러한 워커들을 이끌고 외부의 프로젝트 지시를 수행하는 **'아키텍트 에이전트'**와, 심지어 필요에 따라 이 아키텍트와 워커로 이루어진 팀 전체를 **생성하고 관리**하는 **'메타 에이전트'**의 개념으로 확장해 나갈 것입니다.

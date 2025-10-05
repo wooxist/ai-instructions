@@ -61,6 +61,62 @@
 }
 ```
 
+#### 도구 명세 스키마(권장) + 권한/가드레일 예시
+
+도구는 입출력 스키마뿐 아니라, 권한과 안전장치(가드레일)를 함께 정의해야 합니다. 아래는 권장 필드를 포함한 예시입니다.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/tool-spec.schema.json",
+  "title": "ToolSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "input_schema": { "type": "object" },
+    "output_schema": { "type": "object" },
+    "permissions": {
+      "type": "object",
+      "properties": {
+        "filesystem": { "type": "string", "enum": ["none", "read-only", "read-write"] },
+        "network": { "type": "boolean" },
+        "scopes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "guards": {
+      "type": "object",
+      "properties": {
+        "requires_approval": { "type": "boolean" },
+        "allowed_domains": { "type": "array", "items": { "type": "string" } },
+        "max_runtime_seconds": { "type": "integer", "minimum": 1 },
+        "rate_limit_per_min": { "type": "integer", "minimum": 1 }
+      }
+    }
+  },
+  "required": ["name", "description", "input_schema"],
+  "examples": [
+    {
+      "name": "execute_python_code",
+      "description": "안전한 샌드박스에서 Python 코드를 실행합니다.",
+      "input_schema": {
+        "type": "object",
+        "properties": { "code": { "type": "string" } },
+        "required": ["code"]
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": { "stdout": { "type": "string" }, "stderr": { "type": "string" } },
+        "required": ["stdout", "stderr"]
+      },
+      "permissions": { "filesystem": "read-only", "network": false, "scopes": [] },
+      "guards": { "requires_approval": true, "max_runtime_seconds": 10, "rate_limit_per_min": 5 }
+    }
+  ]
+}
+```
+
 ### 지식 출처 한정과 Grounded Retrieval([RAG](glossary.md#rag-retrieval-augmented-generation))
 
 4장에서 정의한 [SSOT](glossary.md#ssot-single-source-of-truth)의 "지식 출처 한정" 원칙은 도구 설계로 구현할 때 가장 효과적입니다. 핵심은 두 가지입니다.

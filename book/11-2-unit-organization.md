@@ -51,17 +51,26 @@
 }}%%
 graph TD
     subgraph "단위 조직: 소셜 미디어 팀"
-        Architect["소셜 미디어 아키텍트 (팀장)"]
-        
+        Architect("소셜 미디어 아키텍트 (팀장)")
+
         subgraph "워커 에이전트 그룹"
             direction LR
-            P["콘텐츠 기획 워커"]
-            C["카피라이터 워커"]
-            E["에디터 워커"]
+            P("콘텐츠 기획 워커")
+            C("카피라이터 워커")
+            E("에디터 워커")
         end
 
         Architect -- "지시/감독" --> P & C & E
     end
+
+    %% 클래스 정의 및 적용 (WRITER 부록 A 기준)
+    classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+    classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+    classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+    classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+    classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+    classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+    class Architect,P,C,E agent;
 ```
 
 #### 워크플로우 설계 (작업 흐름)
@@ -82,12 +91,31 @@ graph TD
 }}%%
 graph TD
     subgraph "콘텐츠 발행 워크플로우"
-        A["1단계 기획 워커"] -- "아이디어 3개 제안" --> B["2단계 인간 관리자 선택"]
-        B -- "아이디어 1개 선택" --> C["3단계 카피라이터 워커"]
-        C -- "초안 작성" --> D["4단계 에디터 워커"]
+        A("1단계 기획 워커") -- "아이디어 3개 제안" --> B(("2단계 인간 관리자 선택"))
+        B -- "아이디어 1개 선택" --> C("3단계 카피라이터 워커")
+        C -- "초안 작성" --> D("4단계 에디터 워커")
         D -- "최종본 완성" --> E["완료"]
     end
+
+    %% 클래스 정의 및 적용 (WRITER 부록 A 기준)
+    classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+    classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+    classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+    classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+    classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+    classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+    class A,C,D agent;
+    class B human;
 ```
+
+Human-in-the-Loop 승인 기준 예시
+- 타깃 적합성: 대상 독자/채널과 메시지가 일치하는가
+- 차별성: 기존 콘텐츠 대비 새로움과 구체성이 충분한가
+- 실행 가능성: 제작 리소스와 일정 내 구현 가능한가(제약 준수)
+- 브랜드 톤: WRITER 스타일 가이드에 부합하는가
+
+반려 시 조치
+- 반려 사유와 개선 포인트를 불릿 3개로 구체적으로 남기고, 생성 단계로 회귀시킵니다.
 
 #### 최종 인스트럭션 시스템 예시
 

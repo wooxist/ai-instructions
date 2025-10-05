@@ -59,6 +59,33 @@
 ### 6.3.1 출력 설계 기법
 
 - **구조화된 형식 강제:** 가장 기본적이면서 강력한 기법입니다. 이는 마치 회사에서 보고서를 제출할 때 정해진 양식(템플릿)에 맞춰 작성하도록 하는 것과 같습니다. AI가 자유롭게 서술하게 두는 대신, `JSON`이나 `YAML`과 같은 구조화된 형식으로 답변하도록 강제하면, 기계가 그 결과를 자동으로 처리하기 매우 쉬워집니다. 특히 [JSON Schema](glossary.md#json-schema)[^2]를 함께 제공하면, AI는 스키마에 정의된 필드와 데이터 타입에 맞춰 정확하게 결과물을 생성합니다. 이는 에이전트 간의 데이터 교환 시 안정성을 보장하는 핵심입니다.
+  
+  > 예시: 티켓 분류 결과물의 JSON Schema
+  >
+  > ```json
+  > {
+  >   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  >   "$id": "https://example.com/schemas/ticket-classification.json",
+  >   "title": "TicketClassification",
+  >   "type": "object",
+  >   "additionalProperties": false,
+  >   "properties": {
+  >     "ticket_id": { "type": "string" },
+  >     "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+  >     "category": { "type": "string", "examples": ["payment", "bug", "general"] },
+  >     "urgency_score": { "type": "integer", "minimum": 1, "maximum": 10 }
+  >   },
+  >   "required": ["ticket_id", "priority", "category", "urgency_score"],
+  >   "examples": [
+  >     {
+  >       "ticket_id": "T-001",
+  >       "priority": "high",
+  >       "category": "payment",
+  >       "urgency_score": 9
+  >     }
+  >   ]
+  > }
+  > ```
 - **Few-Shot 예시 제공:** 백 마디 설명보다 한두 개의 좋은 예시가 더 효과적일 수 있습니다. 인스트럭션 내에 우리가 원하는 결과물의 구체적인 예시(입력-출력 쌍)를 1~2개 포함하면, AI는 그 패턴을 학습하여 유사한 형태로 결과물을 생성합니다. 이를 '퓨샷(Few-shot) 프롬프팅'[^3]이라고 합니다.
 - **성공 기준 및 평가 지표 명시:** "이 요약문의 품질은 다음 3가지 기준으로 평가됩니다: 1) 핵심 내용 포함 여부, 2) 300단어 미만, 3) 중학생도 이해할 수 있는 평이한 언어 사용."과 같이 평가 기준을 명시하면, AI는 스스로 결과물을 개선하며 기준을 맞추려고 노력합니다.
 

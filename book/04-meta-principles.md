@@ -170,6 +170,8 @@
     'primaryTextColor': '#ffffff',
     'primaryBorderColor': '#1f77b4',
     'lineColor': '#6c757d',
+    'noteBkgColor': '#f8f9fa',
+    'noteTextColor': '#212529',
     'background': 'transparent',
     'edgeLabelBackground': '#2ca02c'
   }

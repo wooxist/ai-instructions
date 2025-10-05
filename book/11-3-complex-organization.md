@@ -48,25 +48,34 @@
 }}%%
 graph TD
     subgraph "사전 구성된 조직"
-        M1["마케팅 메타 에이전트"] -- "관리" --> Marketing_Team
-        M2["콘텐츠 메타 에이전트"] -- "관리" --> Content_Team
-        M3["디자인 메타 에이전트"] -- "관리" --> Design_Team
+        M1("마케팅 메타 에이전트") -- "관리" --> Marketing_Team
+        M2("콘텐츠 메타 에이전트") -- "관리" --> Content_Team
+        M3("디자인 메타 에이전트") -- "관리" --> Design_Team
 
         subgraph Marketing_Team [마케팅 부서]
             direction LR
-            Marketing_A["마케팅 아키텍트"] -- "지휘" --> Marketing_W["워커들"]
+            Marketing_A("마케팅 아키텍트") -- "지휘" --> Marketing_W["워커들"]
         end
 
         subgraph Content_Team [콘텐츠 부서]
             direction LR
-            Content_A["콘텐츠 아키텍트"] -- "지휘" --> Content_W["워커들"]
+            Content_A("콘텐츠 아키텍트") -- "지휘" --> Content_W["워커들"]
         end
 
         subgraph Design_Team [디자인 부서]
             direction LR
-            Design_A["디자인 아키텍트"] -- "지휘" --> Design_W["워커들"]
+            Design_A("디자인 아키텍트") -- "지휘" --> Design_W["워커들"]
         end
     end
+
+    %% 클래스 정의 및 적용 (WRITER 부록 A 기준)
+    classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+    classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+    classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+    classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+    classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+    classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+    class M1,M2,M3,Marketing_A,Content_A,Design_A agent;
 ```
 
 #### 워크플로우 설계 (프로젝트 실행 흐름)
@@ -87,29 +96,40 @@ CMO의 지시가 각 아키텍트에게 전달되면, 세 팀은 각자의 전�
 }}%%
 graph TD
     subgraph "전체 캠페인 워크플로우"
-        CMO["인간 CMO<br/>'캠페인 시작' 지시"]
+        CMO(("인간 CMO<br/>'캠페인 시작' 지시"))
 
         subgraph "마케팅팀 (병렬 실행)"
-            M_A["마케팅 아키텍트"] --> M_W1["1. 소셜미디어 홍보 전략 수립"]
+            M_A("마케팅 아키텍트") --> M_W1["1. 소셜미디어 홍보 전략 수립"]
             M_A --> M_W2["2. 광고 채널별 카피 작성"]
         end
 
         subgraph "콘텐츠팀 (병렬 실행)"
-            C_A["콘텐츠 아키텍트"] --> C_W1["1. 제품 소개 블로그 포스트 작성"]
+            C_A("콘텐츠 아키텍트") --> C_W1["1. 제품 소개 블로그 포스트 작성"]
         end
         
         subgraph "디자인팀 (병렬 실행)"
-            D_A["디자인 아키텍트"] --> D_W1["1. 캠페인 대표 이미지 생성"]
+            D_A("디자인 아키텍트") --> D_W1["1. 캠페인 대표 이미지 생성"]
         end
 
         CMO -- "지시" --> M_A
         CMO -- "지시" --> C_A
         CMO -- "지시" --> D_A
 
-        M_W2 --> Final["결과물 취합 및 보고"]
+        M_W2 --> Final[["결과물 취합 및 보고"]]
         C_W1 --> Final
         D_W1 --> Final
     end
+
+    %% 클래스 정의 및 적용 (WRITER 부록 A 기준)
+    classDef principle fill:#1f77b4,stroke:#1f77b4,color:#ffffff;
+    classDef decision fill:#ffffff,stroke:#495057,stroke-width:2px,color:#212529;
+    classDef agent fill:#6f42c1,stroke:#6f42c1,color:#ffffff;
+    classDef artifact fill:#17a2b8,stroke:#17a2b8,color:#ffffff;
+    classDef data fill:#2ca02c,stroke:#2ca02c,color:#ffffff;
+    classDef human fill:#e83e8c,stroke:#e83e8c,color:#ffffff;
+    class CMO human;
+    class M_A,C_A,D_A agent;
+    class Final artifact;
 ```
 
 #### 최종 인스트럭션 시스템 예시 (일부)
@@ -132,6 +152,38 @@ graph TD
 # 4. (필요시) 팀에 '데이터 분석 워커'가 없으면, '마케팅 메타 에이전트'에게 생성을 요청한다.
 # 5. 모든 결과물을 취합하여 외부 지시자에게 보고한다.
 ```
+
+#### 팀 간 공통 산출물 스키마 예시
+
+여러 팀이 병렬로 작업하더라도, 최종 취합을 위해서는 공통 인터페이스가 필요합니다. 아래는 각 팀이 제출하는 `campaign_artifact`의 공통 스키마 예시입니다.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/campaign_artifact.schema.json",
+  "title": "CampaignArtifact",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": { "type": "string", "enum": ["copy", "blog_post", "image"] },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "owner_team": { "type": "string", "enum": ["marketing", "content", "design"] },
+    "handoff_to": { "type": "string", "enum": ["marketing", "content", "design", "final"] },
+    "data_path": { "type": "string" },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": { "type": "string", "format": "date-time" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "required": ["artifact_type", "title", "owner_team", "handoff_to", "data_path"]
+}
+```
+
+이 공통 스키마를 사용하면, 각 팀의 산출물은 동일한 키/형식을 따르므로 최종 단계에서 자동 취합이 용이해집니다.
 
 #### 설계 분석
 - **실행과 생성의 완벽한 분리:** **메타 에이전트**는 사전에 조직을 구성하는 '생성'의 역할만 수행합니다. 실제 프로젝트 **실행**은 **외부(CMO)**의 지시를 받은 **아키텍트**들이 각자 책임집니다. 이는 10장의 최종 모델과 완벽하게 일치합니다.
