@@ -35,7 +35,7 @@ AI 에이전트 작업 지침:
   * [실습 체크리스트](03-good-instructions.md#실습-체크리스트)
 
 ---
-### Part 2: 인스트럭션 시스템 설계와 평가
+### Part 2: 설계 원칙과 구성 요소
 * [4장. 인스트럭션 설계의 메타 원칙](04-meta-principles.md)
   * [4.1 구조적 원칙](04-meta-principles.md#41-구조적-원칙-설계의-뼈대-세우기)
   * [4.2 실행 원칙](04-meta-principles.md#42-실행-원칙-ai와-함께-일하는-방식-정의하기)
@@ -53,6 +53,7 @@ AI 에이전트 작업 지침:
   * [6.2 무엇을 설계해야 하는가?](06-input-output.md#62-무엇을-설계해야-하는가-입력과-출력의-명세화)
   * [6.3 어떻게 설계하는가?](06-input-output.md#63-어떻게-설계하는가-결과물-중심-접근법과-구체적-기법)
   * [실습 체크리스트](06-input-output.md#실습-체크리스트)
+### Part 3: 워크플로우, 성능과 평가
 * [7장. 기본 워크플로우 패턴과 처리](07-process-workflow.md)
   * [7.1 파이프라인(Pipeline) 패턴](07-process-workflow.md#71-파이프라인pipeline-패턴)
   * [7.2 생성-검증(Generate-and-Verify) 패턴](07-process-workflow.md#72-생성-검증generate-and-verify-패턴)
@@ -69,6 +70,7 @@ AI 에이전트 작업 지침:
   * [9.2 무엇을 보고 개선할까?](09-productivity.md#92-무엇을-보고-개선할까-나만의-평가-지표-찾기)
   * [9.3 어떻게 개선할까?](09-productivity.md#93-어떻게-개선할까-나만의-작은-실험실)
   * [실습 체크리스트](09-productivity.md#실습-체크리스트)
+### Part 4: 아키텍처와 설계 패턴
 * [10장. 고급 협업 아키텍처와 시스템 설계](10-advanced-collaboration-architectures.md)
   * [10.1 문제 해결 방식의 진화: ‘협업’의 필요성](10-advanced-collaboration-architectures.md#101-문제-해결-방식의-진화-협업의-필요성)
   * [10.2 협업의 전제 조건: 산출물 인터페이스](10-advanced-collaboration-architectures.md#102-협업의-전제-조건-산출물-인터페이스)
@@ -92,7 +94,7 @@ AI 에이전트 작업 지침:
       * [실습 체크리스트](11-3-complex-organization.md#실습-체크리스트)
 
 ---
-### Part 3: 인스트럭션 시스템의 확장과 운영
+### Part 5: 시스템 확장과 운영
 * [12장. 도구(Tools)와 플러그인 활용](12-tools.md)
   * [12.1 왜 도구가 필요한가?](12-tools.md#121-왜-도구가-필요한가-뇌에-손과-발을-달아주기)
   * [12.2 도구의 종류와 역할](12-tools.md#122-도구의-종류와-역할)
@@ -115,4 +117,8 @@ AI 에이전트 작업 지침:
   * [14.8 운영 체크포인트 (월간)](14-evolution.md#148-운영-체크포인트-월간)
   * [실습 체크리스트](14-evolution.md#실습-체크리스트)
 
-## [15장. 결론: AI 시대의 새로운 일잘법](15-conclusion.md)
+* [15장. 결론: AI 시대의 새로운 일잘법](15-conclusion.md)
+
+---
+### 부록
+* [실습 과제 모음](practice-guide.md)
