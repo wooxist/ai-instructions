@@ -430,6 +430,12 @@ workflow:
 
 - Fowler, M. (2010). *Domain-Specific Languages*. Addison-Wesley Professional.
 - Parr, T. (2009). *Language Implementation Patterns: Create Your Own Domain-Specific and General Programming Languages*. Pragmatic Bookshelf.
+
+## 다음 단계
+
+이 장에서는 DSL의 개념과 필요성을 살펴보았습니다.
+실제 DSL 설계와 구현 방법(예: `workflow.yaml` 설계 가이드, 스키마 검증, 오류 처리)은 향후 확장 예정입니다.
+초판에서는 개념적 이해를 우선하고, 실습 세부 내용은 개정판에서 보강합니다.
 - Ben-Ari, M. (2006). *Understanding Programming Languages*. Weizmann Institute of Science.
 - YAML Official Specification: https://yaml.org/spec/
 

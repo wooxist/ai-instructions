@@ -81,7 +81,7 @@
 ### RAG (Retrieval-Augmented Generation)
 - **정의**: 외부 지식을 검색하여 답변 생성을 보강하는 기술
 - **첫 등장**: [5장 각주](05-agent-constraints.md)
-- **적용 사례**: [11.5 사내 Q&A 봇](11-2-organizational-standards.md#115-사례-5-조직-표준-표준전문)
+- **적용 참고**: [12장 12.3절](12-tools.md#123-에이전트에게-도구를-부여하는-방법)
 
 ### JSON Schema
 - **정의**: JSON 데이터의 구조를 정의하고 검증하기 위한 표준 규격
@@ -119,7 +119,7 @@
 
 ### 재귀적 협업 구조 (Recursive Collaboration Architecture)
 - **정의**: 에이전트 시스템이 `메타->아키텍트->워커` 구조를 반복하며 더 큰 조직을 형성하는 유연한 구조. 특정 스코프(Scope)를 가진 메타 에이전트가 더 큰 시스템의 아키텍트가 될 수 있다.
-- **첫 등장**: [10장 10.3.5절](10-advanced-collaboration-architectures.md#1035-심화-실제-조직과-같은-재귀적-구조)
+- **첫 등장**: [10장 10.3절](10-advanced-collaboration-architectures.md#103-계층적-협업-아키텍처-시스템의-시작과-동적-실행)
 - **특징**: 유연성, 확장성, 스코프 기반 역할 정의
 
 ---
@@ -167,9 +167,9 @@
 
 ### 조직 표준 시스템
 - **정의**: 개인이나 팀의 인스트럭션을 조직 전체가 공유하고 재사용하는 시스템
-- **첫 등장**: [11장 2부](11-2-organizational-standards.md)
+- **첫 등장**: [11장 2부](11-2-unit-organization.md)
 - **특징**: 다수 사용자 공유, 표준화된 템플릿, 버전 관리
-- **사례**: 11.4 (회의록 요약), 11.5 (사내 Q&A), 11.6 (고객 리뷰 분석)
+- **사례**: [11.2.1 소셜 미디어 콘텐츠 발행](11-2-unit-organization.md#1121-사례-4-표준전문-소셜-미디어-콘텐츠-발행), [11.3.1 신제품 출시 캠페인 자동화](11-3-complex-organization.md#1131-사례-5-복잡중요-신제품-출시-캠페인-자동화)
 
 ---
 
@@ -177,14 +177,14 @@
 
 ### ㄱ
 - 간단/일상 → [4장 매트릭스](04-meta-principles.md#45-상황별-원칙-적용-가이드)
-- 계층적 협업 → [10장 10.3절](#계층적-협업-아키텍처)
+- 계층적 협업 → [10장 10.3절](10-advanced-collaboration-architectures.md#103-계층적-협업-아키텍처-시스템의-시작과-동적-실행)
 - 구조화된 출력 → [6장 6.3절](06-input-output.md#63-어떻게-설계하는가-결과물-중심-접근법과-구체적-기법)
 
 ### ㄷ
-- 도구 (Tools) → [12장](#도구-명세-tool-specification)
+- 도구 (Tools) → [12장 12.3절](12-tools.md#123-에이전트에게-도구를-부여하는-방법)
 
 ### ㅁ
-- 메타 에이전트 → [10장 10.3.4절](10-advanced-collaboration-architectures.md#1034-메타-에이전트-meta-agent-시스템-총괄-설계자)
+- 메타 에이전트 → [10장 10.3.1절](10-advanced-collaboration-architectures.md#1031-시스템의-시작점-태초의-메타-에이전트)
 - 멱등성 → [#멱등성-idempotency](#멱등성-idempotency)
 
 ### ㅂ
@@ -201,7 +201,7 @@
 - 원자성 → [4장 4.1절](04-meta-principles.md#41-구조적-원칙-설계의-뼈대-세우기)
 
 ### ㅈ
-- 복합 조직 시스템 → [11장 2부](11-2-organizational-standards.md)
+- 복합 조직 시스템 → [11장 3부](11-3-complex-organization.md)
 
 ### ㅍ
 - 파이프라인 → [#파이프라인-pipeline-패턴](#파이프라인-pipeline-패턴)

@@ -96,3 +96,14 @@ AI 기술은 무서운 속도로 발전합니다. 어제의 최고 모델이 오
 - Kotter, J. P. (2012). *Leading change*. Harvard Business Review Press.
 - Rogers, E. M. (2003). *Diffusion of innovations*. Simon and Schuster.
 - Senge, P. M. (2006). *The fifth discipline: The art and practice of the learning organization*. Broadway Business.
+
+## 실습 체크리스트
+
+### 이 장을 완료하셨다면 다음을 확인하세요:
+- [ ] 조직 성장/기술 발전 두 축에 따른 진화 전략을 설명할 수 있다
+- [ ] 인스트럭션 부패(Instruction Decay)를 방지하기 위한 모니터링·버전 관리·소유권 체계를 설계했다
+- [ ] 정기 회귀 테스트와 거버넌스 프로세스를 수립했다
+
+### 실습 과제
+1. 전사 표준 인스트럭션 1개를 선정해 업데이트 주기/소유자/검증 체크리스트를 정의하세요.
+2. 분기별 회귀 테스트 계획과 실패 시 롤백/수정 절차를 문서화하세요.

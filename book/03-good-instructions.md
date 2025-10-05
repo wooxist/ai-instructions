@@ -212,3 +212,14 @@
 - Reynolds, G. (2011). *Presentation Zen: Simple Ideas on Presentation Design and Delivery*. New Riders.
 - Strunk Jr., W., & White, E. B. (2000). *The Elements of Style*. Longman.
 - Yates, J., & Orlikowski, W. (1992). Genres of organizational communication: A structurational approach to studying communication and media. *Academy of management review*.
+
+## 실습 체크리스트
+
+### 이 장을 완료하셨다면 다음을 확인하세요:
+- [ ] 좋은 인스트럭션의 5가지 원칙(명확성·구체성·단계성·제약·안티패턴)을 설명할 수 있다
+- [ ] 8가지 핵심 구성 요소(역할, 목표, 입력, 출력, 제약, 처리 방법, 성공 기준, 톤/스타일)를 템플릿으로 적용할 수 있다
+- [ ] 검증 가능한 성공 기준을 포함해 결과 품질을 재현 가능하게 만들 수 있다
+
+### 실습 과제
+1. 자주 수행하는 업무 1개를 골라 ‘표준 인스트럭션’ 초안을 작성하세요. 8가지 구성 요소를 모두 포함합니다.
+2. ‘실패하는 지시’ 안티패턴 2가지를 찾아 초안에서 제거/개선하세요.

@@ -88,3 +88,14 @@ A/B 테스트는 두 가지 대안(A와 B) 중 어느 것이 더 나은지 비�
 - Kohavi, R., et al. (2009). Controlled experiments on the web: survey and practical guide. *Data mining and knowledge discovery*.
 - Microsoft Research. (2023). Human-AI Guidelines. https://www.microsoft.com/en-us/research/project/guidelines-for-human-ai-interaction/
 - Nielsen, J. (1994). *Usability engineering*. Morgan Kaufmann.
+
+## 실습 체크리스트
+
+### 이 장을 완료하셨다면 다음을 확인하세요:
+- [ ] 나만의 평가 지표(재작업 비율, 만족도, 채택률 등)를 정의했다
+- [ ] A/B 테스트 방법을 숙지하고 동일 과제의 두 버전을 공정하게 비교할 수 있다
+- [ ] 회귀를 방지하기 위한 ‘오답 노트’ 운영 방식을 설계했다
+
+### 실습 과제
+1. 최근 사용한 인스트럭션 1개를 골라 A/B 실험을 설계·실행하고, 지표 2개로 비교하세요.
+2. 실패 사례 3개를 ‘오답 노트’로 정리하고, 수정 후 회귀 여부를 재검증하세요.

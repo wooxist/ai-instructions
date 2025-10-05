@@ -140,3 +140,13 @@
 - PromptLayer Documentation. (2023). https://promptlayer.com/docs
 - Weights & Biases Documentation. (2023). https://docs.wandb.ai/
 
+## 실습 체크리스트
+
+### 이 장을 완료하셨다면 다음을 확인하세요:
+- [ ] 도구 명세(이름/설명/입출력 스키마)를 작성해 에이전트가 ‘언제’ 사용해야 하는지 명확히 했다
+- [ ] 위험 작업에 대한 Human-in-the-Loop, 최소 권한, 샌드박싱 전략을 설계했다
+- [ ] MCP 등 상호운용성 관점에서 도구 설계를 이해했다
+
+### 실습 과제
+1. `web_search` 또는 `execute_python_code` 중 하나의 도구 명세를 JSON Schema로 작성하세요.
+2. 도구 호출이 포함된 인스트럭션 1개를 작성하고, 안전장치(승인/권한/샌드박스)를 명시하세요.
