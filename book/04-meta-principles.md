@@ -61,17 +61,17 @@
 
 | 카테고리 | 원칙 | 핵심 내용 | 적용 예시 |
 |---|---|---|---|
-| **구조적 원칙** | SSOT | 핵심 정의·템플릿을 단일 출처에서 관리하고 중복 제거 | 공통 출력 스키마를 `schemas/common.json` 파일로 분리하여 참조 |
-| | SoC | 각 부분이 하나의 책임만 갖도록 분리하고 재사용 가능한 단위로 구성 | '코드 생성 에이전트'와 '코드 리뷰 에이전트'를 별도로 설계 |
-| | MECE | 중복 없이, 빠짐없이 구성 | 고객 리뷰를 '제품', '배송', 'CS' 카테고리로 중복 없이 분류 |
+| **구조적 원칙** | [SSOT](glossary.md#ssot-single-source-of-truth) | 핵심 정의·템플릿을 단일 출처에서 관리하고 중복 제거 | 공통 출력 스키마를 `schemas/common.json` 파일로 분리하여 참조 |
+| | [SoC](glossary.md#soc-separation-of-concerns) | 각 부분이 하나의 책임만 갖도록 분리하고 재사용 가능한 단위로 구성 | '코드 생성 에이전트'와 '코드 리뷰 에이전트'를 별도로 설계 |
+| | [MECE](glossary.md#mece-mutually-exclusive-collectively-exhaustive) | 중복 없이, 빠짐없이 구성 | 고객 리뷰를 '제품', '배송', 'CS' 카테고리로 중복 없이 분류 |
 | | 원자성 | 각 작업을 더 이상 나눌 수 없는 최소 단위로 구성 | '보고서 작성'을 '데이터 추출 → 분석 → 초안 작성'으로 분리 |
-| **실행 원칙** | 산출물 중심 | 과정보다 최종 결과물 요건을 먼저 정의하고, 같은 입력에 같은 출력 보장 | "출력은 반드시 지정된 JSON 스키마를 따라야 한다"고 명시 |
+| **실행 원칙** | [산출물 중심](glossary.md#산출물-중심-output-driven) | 과정보다 최종 결과물 요건을 먼저 정의하고, 같은 입력에 같은 출력 보장 | "출력은 반드시 지정된 JSON 스키마를 따라야 한다"고 명시 |
 | | 피드백 루프 | 작업 전 의도를 명확히 하고, 작업 후 결과를 검증하는 순환 과정 | "지시가 모호하면, 실행 전에 반드시 사용자에게 질문하라"고 지시 |
 | | 점진적 개선 | 초안→피드백→개선의 짧은 주기를 반복해 품질을 끌어올리는 방식 | 완벽한 첫 결과물보다 빠른 초안을 받고, 3회에 걸쳐 수정 지시 |
 | | 컨텍스트 명시성 | 필요한 모든 정보를 명시적으로 제공 | "대상 독자는 개발 경험이 없는 기획자다"라고 명시 |
 | **검증·책임 원칙** | 투명성·추적성 | 모든 결정과 결과물의 근거를 명확히 기록 | "모든 주장의 근거가 된 문서명과 페이지를 함께 인용하라"고 지시 |
 | | 윤리적 경계 | 개인정보·저작권 등 경계를 명확히 하고 필요 최소 권한만 부여 | "절대 개인 식별 정보(PII)를 출력에 포함하지 마라"고 제약 설정 |
-| | Human-in-the-Loop | 중요 의사결정에 사람의 검토를 포함하고, 오류 시 안전한 상태로 복귀 | "최종 이메일 발송 전, 반드시 나의 최종 승인을 받아라"고 명시 |
+| | [Human-in-the-Loop](glossary.md#human-in-the-loop) | 중요 의사결정에 사람의 검토를 포함하고, 오류 시 안전한 상태로 복귀 | "최종 이메일 발송 전, 반드시 나의 최종 승인을 받아라"고 명시 |
 
 이 표는 인스트럭션을 설계하거나 검토할 때 체크리스트로 활용할 수 있습니다.
 
@@ -105,9 +105,9 @@
 
 | 에이전트 수 ＼ 복잡도 | 간단/일상<br>(낮은 위험, 단순 작업) | 표준/전문<br>(중간 복잡도, 전문 지식) | 복잡/중요<br>(높은 위험, 법적 책임) |
 |---|---|---|---|
-| **단일 에이전트**<br>(1개) | **구조적**: -<br>**실행**: 산출물 중심<br>**검증**: - | **구조적**: SSOT<br>**실행**: 산출물 중심, 컨텍스트 명시성<br>**검증**: 투명성·추적성 | **구조적**: SSOT, MECE<br>**실행**: 산출물 중심, 피드백 루프<br>**검증**: 투명성·추적성, 윤리적 경계, Human-in-the-Loop |
-| **단위 조직**<br>(2-5개) | **구조적**: SSOT, SoC<br>**실행**: 산출물 중심, 점진적 개선<br>**검증**: 투명성·추적성 | **구조적**: SSOT, SoC, MECE<br>**실행**: 산출물 중심, 피드백 루프, 점진적 개선<br>**검증**: 투명성·추적성 | **구조적**: SSOT, SoC, MECE, 원자성<br>**실행**: 모두<br>**검증**: 모두 |
-| **복합 조직**<br>(6개+, 다수 사용자) | **구조적**: SSOT, SoC<br>**실행**: 산출물 중심, 점진적 개선, 컨텍스트 명시성<br>**검증**: 투명성·추-적성 | **구조적**: SSOT, SoC, MECE, 원자성<br>**실행**: 모두<br>**검증**: 투명성·추적성, Human-in-the-Loop | **구조적**: 모두<br>**실행**: 모두<br>**검증**: 모두 |
+| **단일 에이전트**<br>(1개) | **구조적**: -<br>**실행**: [산출물 중심](glossary.md#산출물-중심-output-driven)<br>**검증**: - | **구조적**: [SSOT](glossary.md#ssot-single-source-of-truth)<br>**실행**: [산출물 중심](glossary.md#산출물-중심-output-driven), 컨텍스트 명시성<br>**검증**: 투명성·추적성 | **구조적**: [SSOT](glossary.md#ssot-single-source-of-truth), [MECE](glossary.md#mece-mutually-exclusive-collectively-exhaustive)<br>**실행**: [산출물 중심](glossary.md#산출물-중심-output-driven), 피드백 루프<br>**검증**: 투명성·추적성, 윤리적 경계, [Human-in-the-Loop](glossary.md#human-in-the-loop) |
+| **단위 조직**<br>(2-5개) | **구조적**: [SSOT](glossary.md#ssot-single-source-of-truth), [SoC](glossary.md#soc-separation-of-concerns)<br>**실행**: [산출물 중심](glossary.md#산출물-중심-output-driven), 점진적 개선<br>**검증**: 투명성·추적성 | **구조적**: [SSOT](glossary.md#ssot-single-source-of-truth), [SoC](glossary.md#soc-separation-of-concerns), [MECE](glossary.md#mece-mutually-exclusive-collectively-exhaustive)<br>**실행**: [산출물 중심](glossary.md#산출물-중심-output-driven), 피드백 루프, 점진적 개선<br>**검증**: 투명성·추적성 | **구조적**: [SSOT](glossary.md#ssot-single-source-of-truth), [SoC](glossary.md#soc-separation-of-concerns), [MECE](glossary.md#mece-mutually-exclusive-collectively-exhaustive), 원자성<br>**실행**: 모두<br>**검증**: 모두 |
+| **복합 조직**<br>(6개+, 다수 사용자) | **구조적**: [SSOT](glossary.md#ssot-single-source-of-truth), [SoC](glossary.md#soc-separation-of-concerns)<br>**실행**: [산출물 중심](glossary.md#산출물-중심-output-driven), 점진적 개선, 컨텍스트 명시성<br>**검증**: 투명성·추적성 | **구조적**: [SSOT](glossary.md#ssot-single-source-of-truth), [SoC](glossary.md#soc-separation-of-concerns), [MECE](glossary.md#mece-mutually-exclusive-collectively-exhaustive), 원자성<br>**실행**: 모두<br>**검증**: 투명성·추적성, [Human-in-the-Loop](glossary.md#human-in-the-loop) | **구조적**: 모두<br>**실행**: 모두<br>**검증**: 모두 |
 
 **범례:**
 - **모두**: 해당 카테고리의 모든 원칙 적용

@@ -48,9 +48,9 @@ ai-instructions/
 ```
 
 **작업 항목:**
-- [ ] 에이전트 디렉토리 구조 설계 및 생성 (agents/creator, agents/evaluator)
-- [ ] 지침 작성 템플릿 생성 (templates/ 디렉토리)
-- [ ] 좋은 지침 예시 및 개선 사례 추가 (examples/ 디렉토리)
+- [x] 에이전트 디렉토리 구조 설계 및 생성 (agents/creator, agents/evaluator)
+- [x] 지침 작성 템플릿 생성 (templates/ 디렉토리)
+- [x] 좋은 지침 예시 및 개선 사례 추가 (examples/ 디렉토리)
 
 ## 📅 Phase 3: 지침 생성 에이전트 개발
 

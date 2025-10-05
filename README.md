@@ -35,7 +35,21 @@ ai-instructions/
 ├── README.md                # 프로젝트 개요
 ├── ROADMAP.md               # 프로젝트 로드맵
 ├── .instructions.md         # 모든 AI 에이전트가 따라야 할 집필 지침(SSOT)
-└── book/                    # 모든 원고와 자료 관리
+├── agents/                  # 에이전트 정의 (Phase 2)
+│   ├── creator/
+│   │   ├── agent.md
+│   │   └── prompts/
+│   └── evaluator/
+│       ├── agent.md
+│       └── prompts/
+├── templates/               # 지침 작성 템플릿 (Phase 2)
+│   ├── simple-task.md
+│   ├── medium-complexity.md
+│   └── complex-workflow.md
+└── examples/                # 실제 사용 예시 (Phase 2)
+    ├── good/
+    └── improved/
+    └── book/                    # 모든 원고와 자료 관리
     ├── 00-preface.md          # 서문 (v1-released)
     ├── 01-introduction.md     # 1장: 프롬프트와 인스트럭션 이해하기 (v1-released)
     ├── 02-questions.md        # 2장: 질문 설계하기 (v1-released)
@@ -56,7 +70,7 @@ ai-instructions/
     ├── 15-conclusion.md       # 15장: 결론: AI 시대의 새로운 일잘법 (v1-released)
     ├── glossary.md            # 용어집 (v1-released)
     ├── practice-guide.md      # 부록: 실습 과제 모음
-    ├── visual-style-guide.md  # 부록: 시각 자료 스타일 가이드(Mermaid)
+    ├── visual-style-guide.md  # 부록: 시각 자료 스타일 가이드(Mermaid) - WRITER 부록 A 참조
     └── index.md               # 전체 목차 (v1-released)
 ```
 
