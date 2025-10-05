@@ -340,4 +340,3 @@ DRY(Don't Repeat Yourself) 원칙과 연결됨.
 
 [^10]: Ethical Boundaries: 개인정보·저작권 등의 경계를 설정하고 최소 권한(Least Privilege)을 적용하는 원칙.
 
- 

@@ -122,7 +122,7 @@
 - **8. 기초 지식:** 상관관계를 인과관계로 해석하지 말 것. 모든 분석은 제공된 데이터에만 근거할 것.
 
 이처럼 8가지 구성 요소를 체계적으로 정의하면, 누가 언제 실행하더라도 일관되고 예측 가능한 고품질의 결과물을 얻을 수 있습니다. 이어지는 장들에서는 이 8가지 요소를 각각 어떻게 더 깊이 있게 설계하는지 구체적인 방법론을 배우게 됩니다.
- 
+
 ---
 
 ## 3장 실습 체크리스트
@@ -226,4 +226,3 @@
 - Strunk Jr., W., & White, E. B. (2000). *The Elements of Style*. Longman.
 - Yates, J., & Orlikowski, W. (1992). Genres of organizational communication: A structurational approach to studying communication and media. *Academy of management review*.
 
- 

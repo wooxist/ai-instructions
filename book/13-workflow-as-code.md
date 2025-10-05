@@ -97,7 +97,7 @@ workflow:
       topic: "${user_input.topic}"
     outputs:
       - "research_notes.md"
-    
+
   # 단계 2: 초안 작성
   - step_id: "draft"
     agent: "writer-agent"
@@ -107,7 +107,7 @@ workflow:
     outputs:
       - "draft_post.md"
     depends_on: ["research"]
-    
+
   # 단계 3: 검수
   - step_id: "review"
     agent: "editor-agent"
@@ -154,11 +154,11 @@ workflow:
       - step_id: "sentiment_analysis"
         agent: "sentiment-agent"
         # ... 세부 정의
-      
+
       - step_id: "keyword_extraction"
         agent: "keyword-agent"
         # ... 세부 정의
-    
+
     # 모든 병렬 작업 완료 후 실행
     on_complete: "merge_results"
 ```
@@ -171,7 +171,7 @@ workflow:
     agent: "qa-agent"
     outputs:
       - "qa_result.json"
-  
+
   - step_id: "routing_decision"
     type: "conditional"
     condition: "${qa_result.status}"
@@ -206,7 +206,7 @@ workflow:
 # 역할: 전문 리서처
 
 ## 목적
-주어진 주제에 대한 최신 정보와 신뢰할 수 있는 출처를 조사하여 
+주어진 주제에 대한 최신 정보와 신뢰할 수 있는 출처를 조사하여
 구조화된 리서치 노트를 작성한다.
 
 ## 입력
@@ -410,7 +410,7 @@ workflow:
     agent: "analyzer"
     outputs:
       - "result.json"
-  
+
   - step_id: "analysis"  # 오류: 중복 ID
     agent: "reporter"
     inputs:
