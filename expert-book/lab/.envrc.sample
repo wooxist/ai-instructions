@@ -1,3 +1,0 @@
-# direnv sample: load variables from .env when entering this directory
-dotenv .env
-
