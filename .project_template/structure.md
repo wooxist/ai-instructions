@@ -9,6 +9,8 @@
 ```
 your-project/
 │
+├── ROADMAP.md                    # 프로젝트 로드맵 (root)
+│
 ├── .session/                      # 세션 관리 (일기)
 │   ├── 2025-10-06.md             # 오늘 세션
 │   ├── 2025-10-05.md             # 어제 세션
@@ -17,7 +19,6 @@ your-project/
 │
 ├── .work/                         # 작업 관리
 │   │
-│   ├── ROADMAP.md                # 프로젝트 로드맵
 │   ├── TODO.md                   # 할 일 목록
 │   │
 │   ├── tasks/                    # 복잡한 작업 폴더

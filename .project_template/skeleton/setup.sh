@@ -94,14 +94,16 @@ else
 EOF
 fi
 
-# 2. ROADMAP.md 생성
+# 2. ROADMAP.md 처리 (root에 있어야 함)
 echo ""
-echo "📋 ROADMAP.md 생성..."
+echo "📋 ROADMAP.md 확인..."
 
-if [ -n "$TEMPLATE_BASE" ] && [ -f "$TEMPLATE_BASE/docs/ROADMAP.template.md" ]; then
-    cp "$TEMPLATE_BASE/docs/ROADMAP.template.md" .work/ROADMAP.md
-else
-    cat > .work/ROADMAP.md << 'EOF'
+if [ ! -f "ROADMAP.md" ]; then
+    echo "⚠️  ROADMAP.md가 없습니다. 생성합니다..."
+    if [ -n "$TEMPLATE_BASE" ] && [ -f "$TEMPLATE_BASE/docs/ROADMAP.template.md" ]; then
+        cp "$TEMPLATE_BASE/docs/ROADMAP.template.md" ROADMAP.md
+    else
+        cat > ROADMAP.md << 'EOF'
 # 프로젝트 로드맵
 
 **프로젝트**: [프로젝트명]
@@ -139,17 +141,20 @@ else
 
 ## 📋 TODO 연동
 
-각 Phase의 세부 작업은 [TODO.md](TODO.md)에서 관리됩니다.
+각 Phase의 세부 작업은 [TODO.md](.work/TODO.md)에서 관리됩니다.
 EOF
-fi
+    fi
 
-# 프로젝트명과 날짜 치환 (OS 호환성)
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i '' "s/\[프로젝트명\]/$PROJECT_NAME/g" .work/ROADMAP.md
-    sed -i '' "s/YYYY-MM-DD/$TODAY/g" .work/ROADMAP.md
+    # 프로젝트명과 날짜 치환 (OS 호환성)
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' "s/\[프로젝트명\]/$PROJECT_NAME/g" ROADMAP.md
+        sed -i '' "s/YYYY-MM-DD/$TODAY/g" ROADMAP.md
+    else
+        sed -i "s/\[프로젝트명\]/$PROJECT_NAME/g" ROADMAP.md
+        sed -i "s/YYYY-MM-DD/$TODAY/g" ROADMAP.md
+    fi
 else
-    sed -i "s/\[프로젝트명\]/$PROJECT_NAME/g" .work/ROADMAP.md
-    sed -i "s/YYYY-MM-DD/$TODAY/g" .work/ROADMAP.md
+    echo "✅ ROADMAP.md가 이미 존재합니다."
 fi
 
 # 3. TODO.md 생성
@@ -219,13 +224,13 @@ echo ""
 echo "================================"
 echo "🎉 프로젝트 초기 설정이 완료되었습니다!"
 echo ""
-echo "📁 생성된 파일:"
+echo "📁 생성/확인된 파일:"
 echo "  - $SESSION_FILE (첫 세션)"
-echo "  - .work/ROADMAP.md"
+echo "  - ROADMAP.md (root)"
 echo "  - .work/TODO.md"
 echo ""
 echo "🚀 다음 단계:"
-echo "  1. .work/ROADMAP.md를 열어 Phase 계획을 작성하세요"
+echo "  1. ROADMAP.md를 열어 Phase 계획을 확인/수정하세요"
 echo "  2. .work/TODO.md를 열어 이번 주 작업을 추가하세요"
 echo "  3. AI와 대화를 시작하세요: '세션 시작' 또는 '이어서'"
 echo ""

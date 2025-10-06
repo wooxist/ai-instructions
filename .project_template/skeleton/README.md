@@ -10,9 +10,9 @@
 
 ```
 your-project/
+├── ROADMAP.md        # 프로젝트 로드맵 (root)
 ├── .session/          # 작업 세션 일기
 ├── .work/            # 작업 관리
-│   ├── ROADMAP.md    # 프로젝트 로드맵
 │   ├── TODO.md       # 할 일 목록
 │   └── tasks/        # 복잡한 작업들
 ├── .instructions.md  # AI 협업 지침
@@ -56,7 +56,7 @@ AI: [자동으로 오늘 날짜 세션 파일 생성 및 작업 시작]
 
 ## 📚 참고 문서
 
-- [ROADMAP](.work/ROADMAP.md) - 프로젝트 전체 로드맵
+- [ROADMAP](ROADMAP.md) - 프로젝트 전체 로드맵
 - [TODO](.work/TODO.md) - 현재 할 일
 - [워크플로우 가이드](../.project_template/workflows/integration.md)
 
