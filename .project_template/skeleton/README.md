@@ -19,23 +19,33 @@ your-project/
 └── [프로젝트 파일들]
 ```
 
-## 🚀 시작하기
+## 🚀 시작하기 (2가지 방법)
 
-### 1. 초기 설정
+### 방법 1: 자동 설정 (setup.sh 사용)
 
 ```bash
-# 새 프로젝트 디렉토리에 skeleton 파일들을 복사한 후:
+# skeleton 복사 후 setup.sh 실행
+chmod +x setup.sh
+./setup.sh
+# → 프로젝트명 입력하면 자동 설정 완료!
+```
+
+### 방법 2: 수동 설정 (setup.sh 없이)
+
+```bash
+# 1. skeleton 폴더 복사
 cp -r .project_template/skeleton/* .
 cp -r .project_template/skeleton/.* . 2>/dev/null || true
 
-# setup.sh 실행
-./setup.sh
+# 2. 템플릿 파일들 수정
+# - [프로젝트명] → 실제 프로젝트명으로 변경
+# - YYYY-MM-DD → 오늘 날짜로 변경
+
+# 3. 첫 세션 생성
+cp .session/_template.md .session/$(date +%Y-%m-%d).md
 ```
 
-이 명령어는:
-- 첫 세션 파일 생성
-- ROADMAP/TODO 초기화
-- 기본 구조 확인
+**둘 다 똑같이 작동합니다!**
 
 ### 2. AI와 첫 세션 시작
 
