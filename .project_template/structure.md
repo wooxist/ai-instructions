@@ -13,7 +13,7 @@ your-project/
 │   ├── 2025-10-06.md             # 오늘 세션
 │   ├── 2025-10-05.md             # 어제 세션
 │   ├── 2025-10-04.md             # 그저께 세션
-│   └── active.md                 # → 최신 세션 (심볼릭 링크)
+│   └── _template.md              # 세션 템플릿
 │
 ├── .work/                         # 작업 관리
 │   │
@@ -24,15 +24,12 @@ your-project/
 │   │   ├── task-001-feature-x/
 │   │   │   ├── context.md       # 배경, 목표
 │   │   │   ├── plan.md          # 상세 계획
-│   │   │   ├── progress.json    # 진행 상황
 │   │   │   └── artifacts/       # 산출물
 │   │   │
 │   │   └── task-002-bug-fix/
 │   │       └── ...
 │   │
-│   └── templates/                # 작업 템플릿
-│       ├── task.template.md
-│       └── ...
+│   └── [작업 폴더들...]
 │
 ├── .instructions.md              # AI 협업 지침 (SSOT)
 │
@@ -64,15 +61,15 @@ your-project/
 **특징**:
 - 하루 1파일
 - 삭제하지 않음 (히스토리 보존)
-- active.md는 항상 최신 세션
+- _template.md는 새 세션 생성용 템플릿
 
 **사용 예시**:
 ```bash
 # 새 세션 시작
-cp .session/templates/session.template.md .session/2025-10-06.md
+cp .session/_template.md .session/2025-10-06.md
 
-# 최신 세션 확인
-cat .session/active.md
+# 최신 세션 확인 (AI가 자동으로 수행)
+ls -t .session/*.md | head -1
 ```
 
 ---
@@ -107,8 +104,6 @@ cat .session/active.md
 task-XXX-작업명/
 ├── context.md           # 왜 필요한지, 배경
 ├── plan.md             # 어떻게 할지, 단계
-├── progress.json       # 진행 상황 (자동화용)
-├── decisions.md        # 중요 결정사항
 └── artifacts/          # 산출물
     ├── design.md
     ├── code/
@@ -223,24 +218,19 @@ cp -r .project_template/structure/* your-project/
 ```bash
 mkdir -p .session
 mkdir -p .work/tasks
-mkdir -p .work/templates
 ```
 
 ### 3. 파일 복사
 ```bash
-cp .project_template/sessions/session.template.md .session/templates/
+cp .project_template/skeleton/.session/_template.md .session/
 cp .project_template/tasks/TODO.template.md .work/TODO.md
-cp .project_template/tasks/task.template.md .work/templates/
 cp .project_template/docs/ROADMAP.template.md .work/ROADMAP.md
 ```
 
 ### 4. 초기 파일 작성
 ```bash
 # 첫 세션 생성
-cp .session/templates/session.template.md .session/$(date +%Y-%m-%d).md
-
-# active.md 링크
-ln -s $(date +%Y-%m-%d).md .session/active.md
+cp .session/_template.md .session/$(date +%Y-%m-%d).md
 ```
 
 ---

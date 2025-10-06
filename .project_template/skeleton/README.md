@@ -24,6 +24,11 @@ your-project/
 ### 1. 초기 설정
 
 ```bash
+# 새 프로젝트 디렉토리에 skeleton 파일들을 복사한 후:
+cp -r .project_template/skeleton/* .
+cp -r .project_template/skeleton/.* . 2>/dev/null || true
+
+# setup.sh 실행
 ./setup.sh
 ```
 

@@ -1,6 +1,7 @@
 # .project_template 정비 지침
 
 > **✅ Phase 1 완료!** skeleton 정리 완료 (2025-10-06)
+> **✅ Phase 2 완료!** .project_template 자체 정비 완료 (2025-10-06)
 
 ---
 
@@ -182,14 +183,21 @@ cd .project_template/skeleton
 - [x] .gitkeep 파일 추가 완료
 - [x] 정리 후 구조 검증 완료
 
-### Phase 2: Root 프로젝트 적용 (다음 세션)
+### ✅ Phase 2: .project_template 자체 정비 (완료!)
+- [x] structure.md 업데이트 - 현재 구조와 일치
+- [x] setup.sh 개선 - OS 호환성, 템플릿 찾기 강화
+- [x] skeleton/README.md 경로 문제 해결
+- [x] .project_template/README.md 버전 이력 업데이트
+- [x] 템플릿 파일들 점검 완료
+
+### Phase 3: Root 프로젝트 적용 (다음 세션)
 - [ ] 현재 root 구조 분석
 - [ ] .project_template 적용 여부 판단
 - [ ] 기존 파일들과 통합 전략 수립
 - [ ] .instructions.md 커스터마이징
 - [ ] 첫 세션 생성 테스트
 
-### Phase 3: 검증 (다음 세션)
+### Phase 4: 검증 (다음 세션)
 - [ ] AI가 .session 파일 읽고 컨텍스트 복원하는지 테스트
 - [ ] ROADMAP → TODO → Session 흐름 작동 확인
 - [ ] 새 창 열어도 작업 이어지는지 확인
@@ -247,5 +255,6 @@ cd .project_template/skeleton
 
 **작성일:** 2025-10-06  
 **Phase 1 완료:** 2025-10-06  
+**Phase 2 완료:** 2025-10-06  
 **작성자:** Claude (Sonnet 4.5)  
 **목적:** .project_template 정비 및 root 프로젝트 구조 변경 가이드
