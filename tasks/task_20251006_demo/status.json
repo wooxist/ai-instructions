@@ -1,0 +1,28 @@
+{
+  "task_id": "task_20251006_demo",
+  "title": "간단한 할일 관리 웹앱 개발",
+  "current_stage": "checklist",
+  "workflow_progress": {
+    "instruction": "completed",
+    "analysis": "completed",
+    "plan": "completed",
+    "checklist": "completed",
+    "execution": "pending",
+    "completed": "pending"
+  },
+  "execution_progress": {
+    "total_items": 30,
+    "completed_items": 0,
+    "in_progress_items": 0,
+    "percentage": 0
+  },
+  "last_updated": "2025-10-06T00:00:00Z",
+  "next_action": "Phase 1 컴포넌트 구조 설계부터 시작",
+  "blockers": [],
+  "context_files": [
+    "instruction.md",
+    "analysis.md",
+    "plan.md",
+    "checklist.md"
+  ]
+}
