@@ -152,7 +152,7 @@
 - [ ] **book/ 디렉토리 파일명 통일**
   - 새 패턴: `vol-{volume_number}-part-{part_number}-chapter-{chapter_number}{-subchapter(optional)}.md`
   - 예시:
-    - `01-prompt-basics.md` → `vol-1-part-1chapter-01.md`
+    - `01-prompt-basics.md` → `vol-1-part-1-chapter-01.md`
     - `10-single-agent.md` → `vol-1-part-1-chapter-10.md`
     - `11b-unit-organization.md` → `vol-2-part-5-chapter-13.md` (또는 `vol-2-part-5-chapter-13-b.md`)
 - [ ] **모든 링크 업데이트**
