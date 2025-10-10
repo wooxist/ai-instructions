@@ -1,0 +1,26 @@
+name: roadmap
+description: roadmap
+version: v1
+createdAt: 2023-01-01T00:00:00Z
+updatedAt: 2023-01-01T00:00:00Z
+
+phases:
+  phase1:
+    name: phase1
+    description: phase1
+    startedAt: 2023-01-01T00:00:00Z
+    endedAt: 2023-01-31T23:59:59Z
+    status: planned|in_progress|completed
+    plans: 
+      - ./plan/plan3.yaml
+      - ./plan/plan2.yaml
+
+  phase2:
+    name: phase2
+    description: phase2
+    startedAt: 2023-01-01T00:00:00Z
+    endedAt: 2023-01-31T23:59:59Z
+    plans: 
+      - plan1
+      - plan2
+      - plan3
