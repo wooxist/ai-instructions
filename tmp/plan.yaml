@@ -1,0 +1,31 @@
+name: plan1
+pahse: phase1
+description: plan1
+version: v1
+createdAt: 2023-01-01T00:00:00Z
+updatedAt: 2023-01-01T00:00:00Z
+
+
+
+jobs:
+  job1:
+    name: job1
+    description: job1
+    startedAt: 2023-01-01T00:00:00Z
+    endedAt: 2023-01-31T23:59:59Z
+    status: planned|in_progress|completed
+  job2:
+    name: job2
+    description: job2
+  job3:
+    name: job3
+    description: job3
+
+if:
+else:
+do:
+while if:
+switch:
+case:
+default:
+
