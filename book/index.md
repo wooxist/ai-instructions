@@ -21,92 +21,92 @@ AI 에이전트 작업 지침:
 - 실무 경험이 있는 분: Part 2부터 시작 가능
 - 실전 패턴만 빠르게 보려는 분: Part 4 먼저 확인 후 필요시 이전 장 참고
 
-## [00장. 서문: AI에게 '제대로' 일 시키는 법](00-preface.md)
+## [00장. 서문: AI에게 '제대로' 일 시키는 법](vol-1-part-0-preface.md)
 
 ---
 ### Part 1: 프롬프트와 인스트럭션의 기초
 
 **난이도**: ★☆☆~★★☆ | **학습 목표**: AI와의 기본 대화부터 구조화된 인스트럭션까지
 
-* [1장. 프롬프트와 인스트럭션 이해하기](01-introduction.md) **★☆☆**
-  * [1.1 프롬프트란?](01-introduction.md#11-프롬프트란)
-  * [1.2 프롬프트를 잘 사용하려면](01-introduction.md#12-프롬프트를-잘-사용하려면)
-  * [1.3 프롬프트의 한계 및 인스트럭션의 필요성](01-introduction.md#13-프롬프트의-한계-및-인스트럭션의-필요성)
-  * [실습 체크리스트](01-introduction.md#실습-체크리스트)
-* [2장. 질문 설계하기](02-questions.md) **★☆☆**
-  * [2.1 폐쇄형 질문](02-questions.md#21-폐쇄형-질문-closed-ended)
-  * [2.2 개방형 질문](02-questions.md#22-개방형-질문-open-ended)
-  * [2.3 탐색형 질문](02-questions.md#23-탐색형-질문-exploratory)
-  * [2.4 비교형 질문](02-questions.md#24-비교형-질문-comparative)
-  * [2.5 맥락 의존형 질문](02-questions.md#25-맥락-의존형-질문-context-dependent)
-  * [2.6 메타 질문](02-questions.md#26-메타-질문-meta-questions)
-  * [실습 체크리스트](02-questions.md#실습-체크리스트)
-* [3장. 좋은 인스트럭션](03-good-instructions.md) **★★☆**
-  * [3.1 인스트럭션: 일회성 프롬프트를 넘어서](03-good-instructions.md#31-인스트럭션-일회성-프롬프트를-넘어서)
-  * [3.2 명확성 (Clear)](03-good-instructions.md#32-명확성-clear)
-  * [3.3 구체성 (Specific)](03-good-instructions.md#33-구체성-specific)
-  * [3.4 단계성 (Step-wise)](03-good-instructions.md#34-단계성-step-wise)
-  * [3.5 제약 조건(Constraints)과 한계 설정](03-good-instructions.md#35-제약-조건constraints과-한계-설정)
-  * [3.6 실패하는 지시의 특징 (안티패턴)](03-good-instructions.md#36-실패하는-지시의-특징-안티패턴)
-  * [3.7 표준 인스트럭션 템플릿: 8가지 핵심 구성 요소](03-good-instructions.md#37-표준-인스트럭션-템플릿-8가지-핵심-구성-요소)
-  * [실습 체크리스트](03-good-instructions.md#실습-체크리스트)
+* [1장. 프롬프트와 인스트럭션 이해하기](vol-1-part-1-chapter-01.md) **★☆☆**
+  * [1.1 프롬프트란?](vol-1-part-1-chapter-01.md#11-프롬프트란)
+  * [1.2 프롬프트를 잘 사용하려면](vol-1-part-1-chapter-01.md#12-프롬프트를-잘-사용하려면)
+  * [1.3 프롬프트의 한계 및 인스트럭션의 필요성](vol-1-part-1-chapter-01.md#13-프롬프트의-한계-및-인스트럭션의-필요성)
+  * [실습 체크리스트](vol-1-part-1-chapter-01.md#실습-체크리스트)
+* [2장. 질문 설계하기](vol-1-part-1-chapter-02.md) **★☆☆**
+  * [2.1 폐쇄형 질문](vol-1-part-1-chapter-02.md#21-폐쇄형-질문-closed-ended)
+  * [2.2 개방형 질문](vol-1-part-1-chapter-02.md#22-개방형-질문-open-ended)
+  * [2.3 탐색형 질문](vol-1-part-1-chapter-02.md#23-탐색형-질문-exploratory)
+  * [2.4 비교형 질문](vol-1-part-1-chapter-02.md#24-비교형-질문-comparative)
+  * [2.5 맥락 의존형 질문](vol-1-part-1-chapter-02.md#25-맥락-의존형-질문-context-dependent)
+  * [2.6 메타 질문](vol-1-part-1-chapter-02.md#26-메타-질문-meta-questions)
+  * [실습 체크리스트](vol-1-part-1-chapter-02.md#실습-체크리스트)
+* [3장. 좋은 인스트럭션](vol-1-part-1-chapter-03.md) **★★☆**
+  * [3.1 인스트럭션: 일회성 프롬프트를 넘어서](vol-1-part-1-chapter-03.md#31-인스트럭션-일회성-프롬프트를-넘어서)
+  * [3.2 명확성 (Clear)](vol-1-part-1-chapter-03.md#32-명확성-clear)
+  * [3.3 구체성 (Specific)](vol-1-part-1-chapter-03.md#33-구체성-specific)
+  * [3.4 단계성 (Step-wise)](vol-1-part-1-chapter-03.md#34-단계성-step-wise)
+  * [3.5 제약 조건(Constraints)과 한계 설정](vol-1-part-1-chapter-03.md#35-제약-조건constraints과-한계-설정)
+  * [3.6 실패하는 지시의 특징 (안티패턴)](vol-1-part-1-chapter-03.md#36-실패하는-지시의-특징-안티패턴)
+  * [3.7 표준 인스트럭션 템플릿: 8가지 핵심 구성 요소](vol-1-part-1-chapter-03.md#37-표준-인스트럭션-템플릿-8가지-핵심-구성-요소)
+  * [실습 체크리스트](vol-1-part-1-chapter-03.md#실습-체크리스트)
 
 ---
 ### Part 2: 설계 원칙과 구성 요소
 
 **난이도**: ★★☆ | **학습 목표**: 인스트럭션 설계 원칙과 에이전트 구조화 방법 습득
 
-* [4장. 인스트럭션 설계의 메타 원칙](04-meta-principles.md) **★★☆**
-  * [4.1 구조적 원칙](04-meta-principles.md#41-구조적-원칙-설계의-뼈대-세우기)
-  * [4.2 실행 원칙](04-meta-principles.md#42-실행-원칙-ai와-함께-일하는-방식-정의하기)
-  * [4.3 검증 및 책임 원칙](04-meta-principles.md#43-검증-및-책임-원칙-신뢰와-안전성-확보하기)
-  * [4.4 메타 원칙 요약표](04-meta-principles.md#44-메타-원칙-요약표)
-  * [4.5 상황별 원칙 적용 가이드](04-meta-principles.md#45-상황별-원칙-적용-가이드)
-  * [실습 체크리스트](04-meta-principles.md#실습-체크리스트)
-* [5장. 역할(Agent)과 제약(Constraint) 설계](05-agent-constraints.md) **★★☆**
-  * [5.1 왜 '에이전트'를 설계해야 하는가?](05-agent-constraints.md#51-왜-에이전트를-설계해야-하는가)
-  * [5.2 해결 원칙과 방법론](05-agent-constraints.md#52-해결-원칙과-방법론-단일-책임을-갖는-에이전트로-분할하라)
-  * [5.3 에이전트 범위 설계를 위한 실용 가이드](05-agent-constraints.md#53-에이전트-범위-설계를-위한-실용-가이드)
-  * [실습 체크리스트](05-agent-constraints.md#실습-체크리스트)
-* [6장. 입력과 출력 설계](06-input-output.md) **★★☆**
-  * [6.1 왜 입력과 출력 설계가 중요한가?](06-input-output.md#61-왜-입력과-출력-설계가-중요한가)
-  * [6.2 무엇을 설계해야 하는가?](06-input-output.md#62-무엇을-설계해야-하는가-입력과-출력의-명세화)
-  * [6.3 어떻게 설계하는가?](06-input-output.md#63-어떻게-설계하는가-결과물-중심-접근법과-구체적-기법)
-  * [실습 체크리스트](06-input-output.md#실습-체크리스트)
+* [4장. 인스트럭션 설계의 메타 원칙](vol-1-part-2-chapter-04.md) **★★☆**
+  * [4.1 구조적 원칙](vol-1-part-2-chapter-04.md#41-구조적-원칙-설계의-뼈대-세우기)
+  * [4.2 실행 원칙](vol-1-part-2-chapter-04.md#42-실행-원칙-ai와-함께-일하는-방식-정의하기)
+  * [4.3 검증 및 책임 원칙](vol-1-part-2-chapter-04.md#43-검증-및-책임-원칙-신뢰와-안전성-확보하기)
+  * [4.4 메타 원칙 요약표](vol-1-part-2-chapter-04.md#44-메타-원칙-요약표)
+  * [4.5 상황별 원칙 적용 가이드](vol-1-part-2-chapter-04.md#45-상황별-원칙-적용-가이드)
+  * [실습 체크리스트](vol-1-part-2-chapter-04.md#실습-체크리스트)
+* [5장. 역할(Agent)과 제약(Constraint) 설계](vol-1-part-2-chapter-05.md) **★★☆**
+  * [5.1 왜 '에이전트'를 설계해야 하는가?](vol-1-part-2-chapter-05.md#51-왜-에이전트를-설계해야-하는가)
+  * [5.2 해결 원칙과 방법론](vol-1-part-2-chapter-05.md#52-해결-원칙과-방법론-단일-책임을-갖는-에이전트로-분할하라)
+  * [5.3 에이전트 범위 설계를 위한 실용 가이드](vol-1-part-2-chapter-05.md#53-에이전트-범위-설계를-위한-실용-가이드)
+  * [실습 체크리스트](vol-1-part-2-chapter-05.md#실습-체크리스트)
+* [6장. 입력과 출력 설계](vol-1-part-2-chapter-06.md) **★★☆**
+  * [6.1 왜 입력과 출력 설계가 중요한가?](vol-1-part-2-chapter-06.md#61-왜-입력과-출력-설계가-중요한가)
+  * [6.2 무엇을 설계해야 하는가?](vol-1-part-2-chapter-06.md#62-무엇을-설계해야-하는가-입력과-출력의-명세화)
+  * [6.3 어떻게 설계하는가?](vol-1-part-2-chapter-06.md#63-어떻게-설계하는가-결과물-중심-접근법과-구체적-기법)
+  * [실습 체크리스트](vol-1-part-2-chapter-06.md#실습-체크리스트)
 
 ---
 ### Part 3: 워크플로우, 성능과 평가
 
 **난이도**: ★★☆ | **학습 목표**: 워크플로우 패턴, 성능 최적화, 평가 방법 습득
 
-* [7장. 기본 워크플로우 패턴과 처리](07-process-workflow.md) **★★☆**
-  * [7.1 파이프라인(Pipeline) 패턴](07-process-workflow.md#71-파이프라인pipeline-패턴)
-  * [7.2 생성-검증(Generate-and-Verify) 패턴](07-process-workflow.md#72-생성-검증generate-and-verify-패턴)
-  * [7.3 라우팅 패턴](07-process-workflow.md#73-라우팅-패턴)
-  * [7.4 워크플로우 정의 (`workflow.yaml`)](07-process-workflow.md#74-워크플로우-정의-workflowyaml)
-  * [실습 체크리스트](07-process-workflow.md#실습-체크리스트)
-* [8장. 성능 최적화: 품질, 비용, 속도의 균형 맞추기](08-performance.md) **★★☆**
-  * [8.1 왜 성능 최적화가 필요한가?](08-performance.md#81-왜-성능-최적화가-필요한가)
-  * [8.2 무엇이 성능에 영향을 미치는가?](08-performance.md#82-무엇이-성능에-영향을-미치는가-사용자가-제어할-수-있는-요인)
-  * [8.3 어떻게 최적화하는가?](08-performance.md#83-어떻게-최적화하는가-사용자를-위한-실용적인-트레이드오프-전략)
-  * [실습 체크리스트](08-performance.md#실습-체크리스트)
-* [9장. 인스트럭션의 평가와 검증](09-productivity.md) **★★☆**
-  * [9.1 왜 '감'이 아닌 '기준'이 필요할까?](09-productivity.md#91-왜-감이-아닌-기준이-필요할까)
-  * [9.2 무엇을 보고 개선할까?](09-productivity.md#92-무엇을-보고-개선할까-나만의-평가-지표-찾기)
-  * [9.3 어떻게 개선할까?](09-productivity.md#93-어떻게-개선할까-나만의-작은-실험실)
-  * [실습 체크리스트](09-productivity.md#실습-체크리스트)
+* [7장. 기본 워크플로우 패턴과 처리](vol-1-part-3-chapter-07.md) **★★☆**
+  * [7.1 파이프라인(Pipeline) 패턴](vol-1-part-3-chapter-07.md#71-파이프라인pipeline-패턴)
+  * [7.2 생성-검증(Generate-and-Verify) 패턴](vol-1-part-3-chapter-07.md#72-생성-검증generate-and-verify-패턴)
+  * [7.3 라우팅 패턴](vol-1-part-3-chapter-07.md#73-라우팅-패턴)
+  * [7.4 워크플로우 정의 (`workflow.yaml`)](vol-1-part-3-chapter-07.md#74-워크플로우-정의-workflowyaml)
+  * [실습 체크리스트](vol-1-part-3-chapter-07.md#실습-체크리스트)
+* [8장. 성능 최적화: 품질, 비용, 속도의 균형 맞추기](vol-1-part-3-chapter-08.md) **★★☆**
+  * [8.1 왜 성능 최적화가 필요한가?](vol-1-part-3-chapter-08.md#81-왜-성능-최적화가-필요한가)
+  * [8.2 무엇이 성능에 영향을 미치는가?](vol-1-part-3-chapter-08.md#82-무엇이-성능에-영향을-미치는가-사용자가-제어할-수-있는-요인)
+  * [8.3 어떻게 최적화하는가?](vol-1-part-3-chapter-08.md#83-어떻게-최적화하는가-사용자를-위한-실용적인-트레이드오프-전략)
+  * [실습 체크리스트](vol-1-part-3-chapter-08.md#실습-체크리스트)
+* [9장. 인스트럭션의 평가와 검증](vol-1-part-3-chapter-09.md) **★★☆**
+  * [9.1 왜 '감'이 아닌 '기준'이 필요할까?](vol-1-part-3-chapter-09.md#91-왜-감이-아닌-기준이-필요할까)
+  * [9.2 무엇을 보고 개선할까?](vol-1-part-3-chapter-09.md#92-무엇을-보고-개선할까-나만의-평가-지표-찾기)
+  * [9.3 어떻게 개선할까?](vol-1-part-3-chapter-09.md#93-어떻게-개선할까-나만의-작은-실험실)
+  * [실습 체크리스트](vol-1-part-3-chapter-09.md#실습-체크리스트)
 
 ---
 ### Part 4: 실전 패턴 가이드
 
 **난이도**: ★★☆ | **학습 목표**: 실무에서 바로 활용 가능한 단일 에이전트 설계 패턴 습득
 
-* [10장. 실전 패턴: 단일 에이전트 설계](10-single-agent.md) **★★☆** 🎯
-  * [10장 전체 사례 맵](10-single-agent.md#10장-전체-사례-맵)
-  * [10.1 [사례 1] 간단/일상: 이메일 요약](10-single-agent.md#101-사례-1-간단일상-이메일-요약)
-  * [10.2 [사례 2] 표준/전문: 마케팅 문구 생성](10-single-agent.md#102-사례-2-표준전문-마케팅-문구-생성)
-  * [10.3 [사례 3] 복잡/중요: 회의록 기반 할 일 추출](10-single-agent.md#103-사례-3-복잡중요-회의록-기반-할-일-추출)
-  * [실습 체크리스트](10-single-agent.md#실습-체크리스트)
+* [10장. 실전 패턴: 단일 에이전트 설계](vol-1-part-4-chapter-10.md) **★★☆** 🎯
+  * [10장 전체 사례 맵](vol-1-part-4-chapter-10.md#10장-전체-사례-맵)
+  * [10.1 [사례 1] 간단/일상: 이메일 요약](vol-1-part-4-chapter-10.md#101-사례-1-간단일상-이메일-요약)
+  * [10.2 [사례 2] 표준/전문: 마케팅 문구 생성](vol-1-part-4-chapter-10.md#102-사례-2-표준전문-마케팅-문구-생성)
+  * [10.3 [사례 3] 복잡/중요: 회의록 기반 할 일 추출](vol-1-part-4-chapter-10.md#103-사례-3-복잡중요-회의록-기반-할-일-추출)
+  * [실습 체크리스트](vol-1-part-4-chapter-10.md#실습-체크리스트)
 
 ---
 
