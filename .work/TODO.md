@@ -146,9 +146,30 @@
 
 ---
 
-### 중간 (Medium Priority) - Phase 3.5 이후
+### 중간 (Medium Priority) - Phase 2.5 이후
 
-#### 2권 재구성 전략
+#### 파일명 표준화 (Phase 2.7)
+- [ ] **book/ 디렉토리 파일명 통일**
+  - 새 패턴: `vol-{volume_number}-chapter-{chapter_number}{-subchapter(optional)}.md`
+  - 예시:
+    - `01-prompt-basics.md` → `vol-1-chapter-01.md`
+    - `10-single-agent.md` → `vol-1-chapter-10.md`
+    - `11b-unit-organization.md` → `vol-2-chapter-13.md` (또는 `vol-2-chapter-13-b.md`)
+- [ ] **모든 링크 업데이트**
+  - index.md / vol1-index.md
+  - 각 장 내부 링크
+  - 부록 및 참조 링크
+- [ ] **검증 및 테스트**
+  - 모든 링크 클릭 테스트
+  - 파일 구조 최종 확인
+- **우선순위**: P1 (Phase 2.5 완료 후)
+- **예상 소요**: 2-3시간
+- **참조**: 파일명 일관성 확보 (07a, 11a/b/c 경험 활용)
+- **효과**: 1권/2권 구분 명확, 확장성 확보, 유지보수 용이
+
+---
+
+#### 2권 재구성 전략 (Phase 3.5)
 - [ ] **Phase 3.5**: 2권 재구성 계획 수립
   - 10장, 14장 재프레이밍 (사고 중심)
   - AI 사고 생태계 모델 통합
