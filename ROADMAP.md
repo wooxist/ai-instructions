@@ -227,12 +227,12 @@ tasks:
 #### Phase 2.5: 1권 완성을 위한 핵심 작업 ✅
 ```yaml
 tasks:
-  - id: vol1-index
-    내용: index.md를 vol1-index.md로 분리
+  - id: vol-1-index
+    내용: index.md를 vol-1-index.md로 분리
     우선순위: P0 (최우선)
     실제시간: 1시간
     상태: ✅ 완료
-    산출물: vol1-index.md (독립적인 1권 목차)
+    산출물: vol-1-index.md (독립적인 1권 목차)
     
   - id: vol1-preface
     내용: 1권 서문 보강 (1권/2권 구분, 2권 예고)
@@ -557,7 +557,7 @@ metrics:
 
 ### 2025-10-11
 - ✅ **Phase 2.5 완료**: 1권 독립성 확보 🎉
-  - vol1-index.md 생성 (출판 정보, 1권 마무리, 2권 예고)
+  - vol-1-index.md 생성 (출판 정보, 1권 마무리, 2권 예고)
   - 00-preface.md 보강 (1권/2권 구분, 학습 경로)
   - 10-single-agent.md 결론 강화 (전체 요약, 실무 가이드, 체크리스트)
   - 문서 동기화 완료 (TODO/SESSION)

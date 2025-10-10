@@ -81,7 +81,7 @@
 | `practice-guide.md` | 유지 | 실습 가이드 |
 | `visual-style-guide.md` | 유지 | 시각 스타일 가이드 |
 | `index.md` | 유지 | 전체 목차 |
-| `vol1-index.md` | 유지 | 1권 목차 |
+| `vol-1-index.md` | 유지 | 1권 목차 |
 | `index-temp.md` | 삭제 검토 | 임시 파일? |
 
 ---
@@ -99,7 +99,7 @@
 
 ### Step 2: 링크 업데이트
 1. ✅ `index.md` - 전체 목차
-2. ✅ `vol1-index.md` - 1권 목차
+2. ✅ `vol-1-index.md` - 1권 목차
 3. ✅ 각 장 내부 링크
 4. ✅ `practice-guide.md` 링크
 5. ✅ `glossary.md` 링크

@@ -201,7 +201,7 @@ app-service-dev/
 
 ## 🔗 연관 학습 자료
 
-- **가이드북**: `/book/vol1-index.md`
+- **가이드북**: `/book/vol-1-index.md`
 - **실습 가이드**: `/book/practice-guide.md`
 - **용어집**: `/book/glossary.md`
 
