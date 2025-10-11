@@ -209,6 +209,9 @@ else
     sed -i "s/YYYY-MM-DD/$TODAY/g" .work/TODO.md
 fi
 
+# 3-1. 유지보수용 폴더 준비
+mkdir -p .work/archive/todo .work/roadmap .session/archive
+
 # 4. README.md 업데이트
 if [ -f "README.md" ]; then
     echo "📄 README.md 업데이트..."

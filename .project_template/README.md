@@ -100,6 +100,7 @@ cat .session/2025-10-06.md  # 첫 세션 기록
 ### 필수 문서
 - [structure.md](structure.md) - 디렉토리 구조 설명
 - [workflows/integration.md](workflows/integration.md) - ROADMAP-TODO-Session 연동 방법
+- [workflows/maintenance.md](workflows/maintenance.md) - 커지는 파일 정리/아카이브 운영
 
 ### skeleton 내부 파일들
 - `.instructions.md` - AI가 읽는 협업 규칙
@@ -200,6 +201,28 @@ cd my-analysis && ./setup.sh
 # .gitignore 권장
 .session/*.md    # 개인 작업 일기
 ```
+
+---
+
+## 🧰 유지보수 도구(대형화 방지)
+
+파일이 커지면 다음 스크립트를 프로젝트 루트에서 실행하세요.
+
+```bash
+# 완료된 TODO를 주간 아카이브로 이동
+./.project_template/tools/rollover.sh todo
+
+# 14일 지난 세션을 월별 폴더로 이동하고 INDEX 생성
+./.project_template/tools/rollover.sh sessions --days 14
+
+# ROADMAP Phase를 파일로 분리하고 색인 생성
+./.project_template/tools/rollover.sh roadmap
+
+# 간단한 크기 점검
+./.project_template/tools/rollover.sh check
+```
+
+자세한 정책은 [workflows/maintenance.md](workflows/maintenance.md) 참고.
 
 ---
 
