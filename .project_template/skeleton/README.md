@@ -66,6 +66,6 @@ AI: [자동으로 오늘 날짜 세션 파일 생성 및 작업 시작]
 
 - **세션 관리**: 매일의 작업을 `.session/` 에 기록
 - **작업 추적**: `.work/TODO.md` 로 할 일 관리
-- **전략 계획**: `.work/ROADMAP.md` 로 전체 로드맵 관리
+- **전략 계획**: `ROADMAP.md` 로 전체 로드맵 관리
 
 자세한 내용은 [.instructions.md](.instructions.md)를 참고하세요.
