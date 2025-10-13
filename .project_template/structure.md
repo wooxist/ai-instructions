@@ -12,9 +12,8 @@ your-project/
 ├── ROADMAP.md                    # 프로젝트 로드맵 (root)
 │
 ├── .session/                      # 세션 관리 (일기)
-│   ├── 2025-10-06.md             # 오늘 세션
-│   ├── 2025-10-05.md             # 어제 세션
-│   ├── 2025-10-04.md             # 그저께 세션
+│   ├── YYYY-MM-DD-HHMM.md        # 세션
+│   ├── YYYY-MM-DD-HHMM.md        # 지난 세션
 │   └── _template.md              # 세션 템플릿
 │
 ├── .work/                         # 작업 관리
