@@ -11,17 +11,6 @@
 1 Quarter = 3 Phase (각 1개월)
 1 Phase = 4 Sprint (각 1주)  
 1 Sprint = 최대 5 Story (각 1일)
-
-Quarter (3개월)
-├── Phase-01 (1개월)
-│   ├── Sprint-01 (1주)
-│   ├── Sprint-02 (1주)
-│   ├── Sprint-03 (1주)
-│   └── Sprint-04 (1주)
-├── Phase-02 (1개월)
-│   └── [4개 Sprint]
-└── Phase-03 (1개월)
-    └── [4개 Sprint]
 ```
 
 ## 디렉토리 구조
@@ -36,12 +25,15 @@ Quarter (3개월)
 │   │   └── templates/
 │   └── workflows/
 │       └── templates/
-└── 00001-Q/
-    └── phase-01/
-        └── sprint-01/
-            ├── story-01.md
-            ├── tasks/     # Story별 고유
-            └── workflows/ # Story별 고유
+├── 00001-Q/           # 현재 Quarter
+│   ├── index.md       # 간단한 계획
+│   └── phase-01/
+│       └── sprint-01/
+│           ├── story-01.md
+│           ├── tasks/     # Story별 고유
+│           └── workflows/ # Story별 고유
+└── 00002-Q/           # 다음 Quarter (계획)
+    └── index.md       # 간단한 계획만
 ```
 
 ## 작업 순서
@@ -50,3 +42,9 @@ Quarter (3개월)
 3. 완료 시 PROGRESS.md 체크
 4. Commit: [Q#-P#-S#-S#] 타입: 제목
 5. 분기 완료 시 → ARCHIVE.md로 이동
+
+## Quarter 관리
+- 여러 Quarter 미리 생성 가능
+- 각 Quarter/index.md에 간단한 계획만
+- 진행률은 PROGRESS.md에서만 관리
+- Quarter 시작 시 Phase/Sprint/Story 구조 생성
