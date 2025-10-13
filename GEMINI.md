@@ -1,7 +1,5 @@
 # Gemini AI 지침
 
-**Gemini는 아래 링크의 지침을 참조하세요:**
+👉 **모든 지침은 [.instructions.md](.instructions.md)에 통합되어 있습니다.**
 
-👉 [.instructions.md](.instructions.md)
-
-위 파일에 모든 집필 지침이 통합되어 있습니다.
+위 파일을 참조하여 기술 서적 작가 역할을 수행하세요.
