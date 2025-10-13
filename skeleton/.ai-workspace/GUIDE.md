@@ -6,7 +6,25 @@
 - **MECE**: 구조는 중복/누락 없이
 - **점진적**: 한 Story씩만 작업
 
-## 구조
+## 구조 규칙
+```
+1 Quarter = 3 Phase (각 1개월)
+1 Phase = 4 Sprint (각 1주)  
+1 Sprint = 최대 5 Story (각 1일)
+
+Quarter (3개월)
+├── Phase-01 (1개월)
+│   ├── Sprint-01 (1주)
+│   ├── Sprint-02 (1주)
+│   ├── Sprint-03 (1주)
+│   └── Sprint-04 (1주)
+├── Phase-02 (1개월)
+│   └── [4개 Sprint]
+└── Phase-03 (1개월)
+    └── [4개 Sprint]
+```
+
+## 디렉토리 구조
 ```
 .ai-workspace/
 ├── PROGRESS.md         # 현재 진행만
@@ -30,5 +48,5 @@
 1. PROGRESS.md → "← 작업중" 찾기
 2. 해당 파일 열고 Task 실행
 3. 완료 시 PROGRESS.md 체크
-4. Commit: [Q1-P1-S1-S2] 타입: 제목
+4. Commit: [Q#-P#-S#-S#] 타입: 제목
 5. 분기 완료 시 → ARCHIVE.md로 이동
