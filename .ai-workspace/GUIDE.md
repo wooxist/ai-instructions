@@ -25,12 +25,15 @@
 │   │   └── templates/
 │   └── workflows/
 │       └── templates/
-└── 00001-Q/
-    └── phase-01/
-        └── sprint-01/
-            ├── story-01.md
-            ├── tasks/     # Story별 고유
-            └── workflows/ # Story별 고유
+├── 00001-Q/           # 현재 Quarter
+│   ├── index.md       # 간단한 계획
+│   └── phase-01/
+│       └── sprint-01/
+│           ├── story-01.md
+│           ├── tasks/     # Story별 고유
+│           └── workflows/ # Story별 고유
+└── 00002-Q/           # 다음 Quarter (계획)
+    └── index.md       # 간단한 계획만
 ```
 
 ## 작업 순서
@@ -39,3 +42,9 @@
 3. 완료 시 PROGRESS.md 체크
 4. Commit: [Q#-P#-S#-S#] 타입: 제목
 5. 분기 완료 시 → ARCHIVE.md로 이동
+
+## Quarter 관리
+- 여러 Quarter 미리 생성 가능
+- 각 Quarter/index.md에 간단한 계획만
+- 진행률은 PROGRESS.md에서만 관리
+- Quarter 시작 시 Phase/Sprint/Story 구조 생성
