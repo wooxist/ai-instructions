@@ -14,11 +14,14 @@
 ├── COMMIT-RULES.md    # 커밋 규칙
 ├── library/           # 재사용 가능
 │   ├── tasks/
+│   │   └── templates/
 │   └── workflows/
+│       └── templates/
 └── 00001-Q/
     └── phase-01/
         └── sprint-01/
             ├── story-01.md
+            ├── story-02.md
             ├── tasks/     # Story별 고유
             └── workflows/ # Story별 고유
 ```
