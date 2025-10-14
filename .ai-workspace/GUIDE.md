@@ -9,6 +9,14 @@
 
 ---
 
+## Story → Workflow → Task
+
+**Story**: 목표, 배경, 기대효과, Workflow 참조만  
+**Workflow**: Task 목록 + 흐름 + 완료 기준  
+**Task**: 목표 + 실행 방법 + 도구 + 체크리스트 + 산출물 (단위 작업, 더 이상 나누지 않음)
+
+---
+
 ## 구조 규칙
 
 ```
@@ -26,23 +34,29 @@
 
 ```
 .ai-workspace/
-├── PROGRESS.md
-├── ARCHIVE.md
-├── GUIDE.md
-├── COMMIT-RULES.md
-├── library/
-│   ├── workflows/templates/  # 재사용 Workflow
-│   └── tasks/templates/      # 재사용 Task
-├── 00001-Q/
-│   └── phase-01/
-│       └── sprint-01/
-│           ├── story-01.md        # 목표
-│           ├── workflows/
-│           │   └── workflow-01.md # Task 흐름
-│           └── tasks/
-│               ├── task-01.md     # 실행 단위
-│               ├── task-02.md
-│               └── task-03.md
+├── PROGRESS.md              # 현재 작업 위치 (Story + Task)
+├── GUIDE.md                 # 이 파일 (작업 가이드)
+├── COMMIT-RULES.md          # 커밋 메시지 규칙
+├── ARCHIVE.md               # 완료된 작업 기록
+├── library/                 # 재사용 가능한 템플릿 모음
+│   ├── workflows/           # 재사용 Workflow 모음
+│   │   └── templates/       # Workflow 템플릿
+│   └── tasks/               # 재사용 Task 모음
+│       └── templates/       # Task 템플릿
+├── 00001-Q/                 # Quarter 1 (3개월)
+│   ├── index.md             # Quarter 계획
+│   └── phase-01/            # Phase 1 (1개월)
+│       ├── index.md         # Phase 계획
+│       └── sprint-01/       # Sprint 1 (1주)
+│           ├── index.md     # Sprint 계획
+│           ├── story-01.md  # Story (목표)
+│           ├── workflows/   # Story별 Workflow
+│           │   └── workflow-01.md
+│           └── tasks/       # Story별 Task
+│               ├── task-01.md
+│               └── task-02.md
+├── 00002-Q/                 # Quarter 2
+└── 00003-Q/                 # Quarter 3
 ```
 
 ---
@@ -50,11 +64,11 @@
 ## 작업 순서
 
 1. PROGRESS.md → 현재 위치 확인
-2. Story → Workflow 확인
-3. Workflow → Task 입출력 확인
+2. Story → 목표 이해
+3. Workflow → Task 흐름 파악
 4. Task 실행
 5. PROGRESS.md 업데이트
-6. Commit: `[Q#-P#-S#-S#-T#] 타입: 제목`
+6. COMMIT-RULES.md 참고하여 Commit
 
 ---
 

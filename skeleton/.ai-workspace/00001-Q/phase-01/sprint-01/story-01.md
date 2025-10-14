@@ -1,27 +1,31 @@
-# Story 1: {STORY_NAME}
+<!--
+AI 에이전트 작업 지침:
+이 파일은 Story 템플릿입니다.
+- Story는 목표, 배경, 기대효과만 포함합니다.
+- Tasks 목록이나 완료 기준을 포함하지 마세요.
+- Workflow 파일 참조만 추가하세요.
+- 상세 실행 내용은 Workflow와 Task에 작성합니다.
+-->
 
-**상태**: 🔄 진행중
-**날짜**: {DATE}
+# Story {NUMBER}: {STORY_NAME}
 
-## Tasks
+**목표:** {무엇을 달성할 것인가}
 
-### Task 1: {TASK_NAME}
-**파일**: `tasks/task-01.md`
-- [ ] 작성
-- [ ] 실행
-- [ ] 완료
+**배경:**
+- {왜 이 작업이 필요한가}
+- {현재 상황}
+- {문제점}
 
-### Task 2: {TASK_NAME}  
-**파일**: `tasks/task-02.md`
-- [ ] 작성
-- [ ] 실행
-- [ ] 완료
+**기대 효과:**
+- {이 작업으로 얻을 수 있는 것}
+- {개선되는 점}
 
-## Workflow (선택사항)
-**파일**: `workflows/workflow-01.md`
+---
+
+## Workflow
+
+📋 **[Workflow {NUMBER}: {WORKFLOW_NAME}](workflows/workflow-{NUMBER}.md)**
+
 또는
-**재사용**: `../../../../library/workflows/workflow-{name}.md`
 
-## 산출물
-- `src/{output}`
-- `doc/{output}`
+📋 **재사용**: `../../../../library/workflows/{workflow-name}.md`
