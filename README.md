@@ -7,7 +7,7 @@ AI 지침:
 
 # AI Instructions
 
-**AI 작업 규칙**: [.instructions.md](.instructions.md)
+> AI 인스트럭션 설계 가이드북 프로젝트
 
 ## 🎯 프로젝트 목표
 AI와의 효과적인 협업을 위한 체계적인 인스트럭션 설계 방법론을 정립하고, 이를 가이드북으로 문서화하여 배포
@@ -20,6 +20,7 @@ AI와의 효과적인 협업을 위한 체계적인 인스트럭션 설계 방�
 
 ```
 ai-instructions/
+├── .instructions.md        # AI 에이전트 작업 지침 엔트리 포인트
 ├── doc/
 │   ├── book1/              # 1권: 기본편
 │   └── book2/              # 2권: 조직편
@@ -28,12 +29,21 @@ ai-instructions/
 └── .ai-workspace/          # 이 프로젝트의 작업 진행 관리
     ├── PROGRESS.md         # 현재 작업 위치
     ├── GUIDE.md            # 작업 가이드
+    ├── ROADMAP.md          # 분기 계획
     ├── COMMIT-RULES.md     # 커밋 규칙
     └── ARCHIVE.md          # 완료 기록
 ```
 
 ## 🚀 시작하기
 
-- **가이드북 읽기**: `doc/index.md` (1권), `doc/book2/vol-2-index.md` (2권)
-- **템플릿 사용**: `skeleton/` 디렉토리를 새 프로젝트에 복사
-- **작업 규칙**: `.ai-workspace/GUIDE.md` 참조
+### 가이드북 읽기
+- **1권**: `doc/index.md`
+- **2권**: `doc/book2/vol-2-index.md`
+
+### 프로젝트 템플릿 사용
+- `skeleton/` 디렉토리를 새 프로젝트에 복사
+- `.ai-workspace/GUIDE.md`에서 작업 방식 확인
+
+### AI 에이전트 작업
+- `.instructions.md`가 작업 지침 엔트리 포인트
+- `.ai-workspace/PROGRESS.md`로 현재 작업 추적
