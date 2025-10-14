@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: `00001-Q/phase-01/sprint-02/story-02.md`  
-**Task**: Task 03 - 메인 목차 업데이트
+**Story**: `00001-Q/phase-01/sprint-03/story-04.md`  
+**Task**: Task 01 - 가이드 작성
