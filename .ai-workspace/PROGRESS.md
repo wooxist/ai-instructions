@@ -8,4 +8,4 @@ AI 지침:
 # PROGRESS
 
 **Story**: `00001-Q/phase-02/sprint-01/story-07.md`  
-**Task**: Task 02 - 16.1 작성 (완료) ← 현재
+**Task**: Task 03 - 16.2 작성 (완료) ← 현재
