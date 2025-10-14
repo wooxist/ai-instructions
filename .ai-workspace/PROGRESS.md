@@ -8,4 +8,4 @@ AI 지침:
 # PROGRESS
 
 **Story**: `00001-Q/phase-01/sprint-04/story-06.md`  
-**Task**: Task 01 - 현재 실습 현황 파악
+**Task**: Task 02 - 실습 과제 설계 (완료) ← 현재

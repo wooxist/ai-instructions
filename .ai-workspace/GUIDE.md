@@ -16,15 +16,7 @@ AI 지침:
 
 ---
 
-## Story → Workflow → Task
-
-**Story**: 목표, 배경, 기대효과, Workflow 참조만  
-**Workflow**: Task 목록 + 흐름 + 완료 기준  
-**Task**: 목표 + 실행 방법 + 도구 + 체크리스트 + 산출물 (단위 작업, 더 이상 나누지 않음)
-
----
-
-## 구조 규칙
+## 구조
 
 ```
 1 Quarter = 3 Phase (각 1개월)
@@ -34,6 +26,37 @@ AI 지침:
 ```
 
 **핵심**: Task는 재사용 가능하도록 독립적 작성. Workflow는 Task들을 조합.
+
+---
+
+## 작업 흐름
+
+### 계획 시 (Top-Down)
+1. **ROADMAP.md 확인/업데이트**
+   - 기존 분기에 포함되는가?
+   - 새 분기가 필요한가?
+
+2. **하향식 작성**
+   - Quarter/index.md (필요시)
+   - Phase/index.md (필요시)
+   - Sprint/index.md (필요시)
+   - Story → Workflow → Task
+
+3. **계획 수정 시**
+   - 상위부터: ROADMAP → Quarter → Phase → Sprint → Story
+
+### 실행 시 (Bottom-Up)
+1. PROGRESS.md → 현재 위치 확인
+2. Story → 목표 이해
+3. Workflow → Task 흐름 파악
+4. Task 실행
+5. PROGRESS.md 업데이트
+6. COMMIT-RULES.md 참고하여 Commit
+
+### 파일 역할
+- **Story**: 목표, 배경, 기대효과, Workflow 참조만
+- **Workflow**: Task 목록 + 흐름 + 완료 기준
+- **Task**: 목표 + 실행 방법 + 도구 + 체크리스트 + 산출물
 
 ---
 
@@ -66,17 +89,6 @@ AI 지침:
 ├── 00002-Q/                 # Quarter 2
 └── 00003-Q/                 # Quarter 3
 ```
-
----
-
-## 작업 순서
-
-1. PROGRESS.md → 현재 위치 확인
-2. Story → 목표 이해
-3. Workflow → Task 흐름 파악
-4. Task 실행
-5. PROGRESS.md 업데이트
-6. COMMIT-RULES.md 참고하여 Commit
 
 ---
 
