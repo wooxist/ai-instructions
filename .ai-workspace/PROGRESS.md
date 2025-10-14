@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: `00001-Q/phase-02/sprint-01/story-07.md`  
-**Task**: Task 03 - 16.2 작성 (완료) ← 현재
+**Story**: `00001-Q/phase-02/sprint-02/story-09.md`  
+**Task**: Task 01 - 전체 목차 및 구조 검토 ← 현재
