@@ -43,6 +43,7 @@ AI 지침:
 .ai-workspace/
 ├── PROGRESS.md              # 현재 작업 위치 (Story + Task)
 ├── GUIDE.md                 # 이 파일 (작업 가이드)
+├── ROADMAP.md               # 전체 분기 계획 모음
 ├── COMMIT-RULES.md          # 커밋 메시지 규칙
 ├── ARCHIVE.md               # 완료된 작업 기록
 ├── library/                 # 재사용 가능한 템플릿 모음
@@ -82,6 +83,7 @@ AI 지침:
 ## Quarter 관리
 
 - 여러 Quarter 미리 생성 가능
-- 각 Quarter/index.md에 간단한 계획만
+- ROADMAP.md에 전체 분기 계획 나열
+- 각 Quarter/index.md에 상세 계획
 - 진행률은 PROGRESS.md에서만 관리
 - Quarter 시작 시 Phase/Sprint/Story 구조 생성
