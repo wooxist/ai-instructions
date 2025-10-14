@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: `00001-Q/phase-01/sprint-04/story-06.md`  
-**Task**: Task 03 - 실습 과제 작성 (진행 중: Ch 12-13 완료, Ch 14 시작) ← 현재
+**Story**: `00001-Q/phase-02/sprint-01/story-07.md`  
+**Task**: Task 02 - 16.1 작성 (완료) ← 현재
