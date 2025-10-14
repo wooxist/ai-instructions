@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: `00001-Q/phase-01/sprint-03/story-05.md`  
-**Task**: Task 04 - 6계층 모델 연결 명시
+**Story**: `00001-Q/phase-01/sprint-04/story-06.md`  
+**Task**: Task 01 - 현재 실습 현황 파악
