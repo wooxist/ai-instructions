@@ -8,4 +8,4 @@ AI 지침:
 # PROGRESS
 
 **Story**: `00001-Q/phase-02/sprint-02/story-09.md`  
-**Task**: Task 04 - 용어 일관성 검토 ← 현재
+**Task**: Task 06 - 실습 과제 완성도 검토 ← 현재
