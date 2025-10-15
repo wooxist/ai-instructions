@@ -98,6 +98,57 @@ thinking_cluster:
         - "길이 (200자 이내)"
 ```
 
+**사고 클러스터 기본 구조 다이어그램**
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e1ffe1',
+    'primaryTextColor': '#000',
+    'primaryBorderColor': '#2ca02c',
+    'lineColor': '#6c757d',
+    'secondaryColor': '#6f42c1',
+    'tertiaryColor': '#17a2b8'
+  }
+}}%%
+graph TB
+    Goal["목표<br/>소셜 미디어 콘텐츠 발행"]
+    
+    Goal --> TC["사고 클러스터<br/>콘텐츠 생성 프로세스"]
+    
+    TC --> Coord["사고 조율자<br/>(인간)"]
+    
+    Coord --> S1["Stage 1: 기획<br/>무엇에 대해 쓸 것인가?"]
+    Coord --> S2["Stage 2: 작성<br/>어떻게 쓸 것인가?"]
+    Coord --> S3["Stage 3: 편집<br/>품질을 어떻게 보장할 것인가?"]
+    
+    S1 --> W1["기획 워커<br/>(AI)"]
+    S2 --> W2["작성 워커<br/>(AI)"]
+    S3 --> W3["편집 워커<br/>(AI)"]
+    
+    W1 --> O1["산출물:<br/>아이디어 3개"]
+    W2 --> O2["산출물:<br/>콘텐츠 초안"]
+    W3 --> O3["산출물:<br/>최종 콘텐츠"]
+    
+    O1 -.->|"인간 선택"| S2
+    O2 -.->|"입력"| S3
+    
+    classDef goalStyle fill:#e1ffe1,stroke:#2ca02c,color:#000;
+    classDef clusterStyle fill:#6f42c1,stroke:#6f42c1,color:#fff;
+    classDef coordStyle fill:#dc3545,stroke:#dc3545,color:#fff;
+    classDef stageStyle fill:#17a2b8,stroke:#17a2b8,color:#fff;
+    classDef workerStyle fill:#ffc107,stroke:#ffc107,color:#000;
+    classDef outputStyle fill:#f8f9fa,stroke:#6c757d,color:#000;
+    
+    class Goal goalStyle;
+    class TC clusterStyle;
+    class Coord coordStyle;
+    class S1,S2,S3 stageStyle;
+    class W1,W2,W3 workerStyle;
+    class O1,O2,O3 outputStyle;
+```
+
 ### 11.1.2 인간과 AI의 역할
 
 사고 클러스터에서 인간과 AI는 명확한 역할 분담을 합니다.
@@ -244,6 +295,64 @@ decision_points:
     question: "발행 준비가 되었는가?"
     human_role: "최종 승인"
     ai_role: "체크리스트 검증"
+```
+
+**인간-AI 역할 분담 다이어그램**
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#dc3545',
+    'primaryTextColor': '#fff',
+    'primaryBorderColor': '#dc3545',
+    'lineColor': '#6c757d',
+    'secondaryColor': '#ffc107',
+    'tertiaryColor': '#6f42c1'
+  }
+}}%%
+graph LR
+    subgraph "인간: 사고 조율자"
+        H1["전략적 사고<br/>(What/Why)"]
+        H2["가치 기반 판단"]
+        H3["사고 흐름 설계"]
+        H4["예외 상황 처리"]
+    end
+    
+    subgraph "협업 지점"
+        C1["목표 정의"]
+        C2["의사결정"]
+        C3["품질 검증"]
+        C4["피드백"]
+    end
+    
+    subgraph "AI: 실행 워커"
+        A1["실행적 사고<br/>(How/When)"]
+        A2["규칙 기반 추론"]
+        A3["패턴 인식"]
+        A4["반복 작업 수행"]
+    end
+    
+    H1 --> C1
+    H2 --> C2
+    H3 --> C3
+    H4 --> C4
+    
+    C1 --> A1
+    C2 --> A2
+    C3 --> A3
+    C4 --> A4
+    
+    A4 -.->|"결과 보고"| C4
+    C4 -.->|"개선 지시"| H4
+    
+    classDef humanStyle fill:#dc3545,stroke:#dc3545,color:#fff;
+    classDef aiStyle fill:#ffc107,stroke:#ffc107,color:#000;
+    classDef collabStyle fill:#6f42c1,stroke:#6f42c1,color:#fff;
+    
+    class H1,H2,H3,H4 humanStyle;
+    class A1,A2,A3,A4 aiStyle;
+    class C1,C2,C3,C4 collabStyle;
 ```
 
 ### 11.1.3 사고 vs 실행 항목
