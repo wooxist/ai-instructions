@@ -8,4 +8,4 @@ AI 지침:
 # PROGRESS
 
 **Story**: `00001-Q/phase-02/sprint-02/story-09.md`  
-**Task**: Task 01 - 전체 목차 및 구조 검토 ← 현재
+**Task**: Task 02 - Part별 내용 검토 ← 현재
