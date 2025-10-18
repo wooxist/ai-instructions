@@ -1,19 +1,67 @@
-# Workflow 01: Directory Split for Technical Docs
+<!--
+AI 에이전트 작업 지침:
+이 파일은 Workflow 템플릿입니다.
+- Workflow는 Task 목록, 흐름, 입출력, 의존성, 완료 기준을 포함합니다.
+- Task의 실행 방법은 포함하지 마세요. (그것은 Task 파일의 역할)
+- Task 간 흐름과 관계를 명확히 하세요.
+- 완료 기준은 체크박스 형태로 작성하세요.
+-->
 
-**Objective:** To clarify the content structure by splitting the `doc/book` directory into `book1` and `book2`.
+# Workflow 01: 챕터 검토 프로세스
 
-**Process Flow:**
+**Story**: Story 01 - 1권 Preface 검토
 
-This workflow executes a series of tasks in a specific order to achieve the objective.
+---
 
-1.  **Preparation Phase**
-    -   **Description:** Create the necessary target directories before moving files.
-    -   **Task:** [Task 01: Prepare Directories](../tasks/task-01-prepare.md)
+## Task 목록 및 흐름
 
-2.  **Execution Phase**
-    -   **Description:** Migrate all files from the source directory to their new destinations.
-    -   **Task:** [Task 02: Execute File Migration](../tasks/task-02-execute.md)
+### Task 01: 인간 검토
+**입력**: 대상 챕터 파일
+**출력**: 검토 피드백 (문제점, 개선 제안)
+**다음 조건**: 개선이 필요한 경우 Task 02로, 불필요하면 완료
 
-3.  **Finalization Phase**
-    -   **Description:** Clean up the workspace by removing the now-empty source directory.
-    -   **Task:** [Task 03: Cleanup Source Directory](../tasks/task-03-cleanup.md)
+### Task 02: AI 개선 계획 수립
+**입력**: Task 01의 피드백
+**출력**: 개선 계획 (문제 분석, 해결 방안, 영향 범위)
+**의존**: Task 01
+**다음 조건**: 인간 승인 필요 (Task 03)
+
+### Task 03: 인간 승인
+**입력**: Task 02의 개선 계획
+**출력**: 승인/수정 요청
+**의존**: Task 02
+**다음 조건**: 승인 시 Task 04로, 수정 필요 시 Task 02로
+
+### Task 04: AI 개선 실행
+**입력**: 승인된 개선 계획
+**출력**: 수정된 챕터 파일
+**의존**: Task 03 승인
+**다음 조건**: Task 05로
+
+### Task 05: 인간 최종 확인
+**입력**: 수정된 챕터 파일
+**출력**: 확인 완료/추가 수정 요청
+**의존**: Task 04
+**다음 조건**: 확인 시 완료, 추가 수정 시 Task 02로
+
+---
+
+## 완료 기준
+
+- [ ] 인간 검토 완료
+- [ ] 개선 사항 반영 완료 (필요 시)
+- [ ] 최종 확인 완료
+- [ ] 파일 저장 및 커밋 완료
+
+---
+
+## 예외 처리
+
+### Task 01에서 개선 불필요 판단 시
+- 바로 완료 처리
+
+### Task 03에서 반려 시
+- Task 02로 돌아가 계획 재수립
+
+### Task 05에서 추가 수정 요청 시
+- Task 02로 돌아가 수정 계획 수립

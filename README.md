@@ -36,14 +36,25 @@ ai-instructions/
 
 ## 🚀 시작하기
 
+### AI 작업자용
+
+1. **작업 전**: `.instructions.md` 읽기 (프로젝트 규칙)
+2. **작업 방식**: `.ai-workspace/GUIDE.md` 참조 (일하는 방식)
+3. **현재 위치**: `.ai-workspace/PROGRESS.md` 확인
+4. **커밋 시**: `.ai-workspace/COMMIT-RULES.md` 참조
+
+### 사람 작업자용
+
+- **전체 계획**: `.ai-workspace/ROADMAP.md`
+- **현재 진행**: `.ai-workspace/PROGRESS.md`
+- **완료 기록**: `.ai-workspace/ARCHIVE.md`
+
 ### 가이드북 읽기
+
 - **1권**: `doc/index.md`
 - **2권**: `doc/book2/vol-2-index.md`
 
 ### 프로젝트 템플릿 사용
+
 - `skeleton/` 디렉토리를 새 프로젝트에 복사
 - `.ai-workspace/GUIDE.md`에서 작업 방식 확인
-
-### AI 에이전트 작업
-- `.instructions.md`가 작업 지침 엔트리 포인트
-- `.ai-workspace/PROGRESS.md`로 현재 작업 추적

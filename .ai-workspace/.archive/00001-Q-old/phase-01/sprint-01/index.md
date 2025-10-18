@@ -7,14 +7,15 @@ AI 에이전트 작업 지침:
 - 상세 내용은 각 Story에 작성합니다.
 -->
 
-# Sprint 01: Preface, Part 1 도입
+# Sprint 01: 현황 파악
 
-**목표**: 1권 서문 및 Part 1 도입부 검토
+**기간:** 2025-10-01 ~ 2025-10-07 (1주)
+
+**목표:** 2권의 현재 파일 구조를 분석하고 이해
 
 ---
 
 ## Story 목록
 
-### Story 01: 1권 Preface 검토
-**목표**: `vol-1-part-0-preface.md` 검토 및 개선
-**파일**: `doc/book1/vol-1-part-0-preface.md`
+### Story 01: 2권 파일 분석
+**목표:** doc/book2/ 내 모든 파일 분석 및 구조 파악

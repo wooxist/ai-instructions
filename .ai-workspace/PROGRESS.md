@@ -7,7 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Phase 03**: 전체 검토 진행  
-**현재 Story**: 대기 중  
-**다음 Story**: Story-V1-001 (V1 Preface)  
-**진행률**: 0/72 (0%)
+**Story**: `00001-Q/phase-01/sprint-01/story-01.md`  
+**Task**: Task 01 - 인간 검토
