@@ -25,4 +25,4 @@ AI 에이전트 작업 지침:
 
 ## Workflow
 
-📋 **[Workflow 01: 챕터 검토 프로세스](workflows/workflow-01.md)**
+📋 **재사용**: `../../../../library/workflows/chapter-review-workflow.md`

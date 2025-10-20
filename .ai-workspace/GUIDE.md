@@ -24,8 +24,8 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 
 **실행 단위:**
 - **Story**: 목표, 배경, 기대효과, Workflow 참조
-- **Workflow**: Task 목록 + 흐름 + 완료 기준
-- **Task**: 실행 방법 + 산출물 (더 이상 나누지 않음)
+- **Workflow**: Task 목록 + 흐름 + 완료 기준 (library에서 재사용 가능)
+- **Task**: 실행 방법 + 산출물 (Workflow 내 설명으로 충분, 별도 파일 선택적)
 
 ---
 
@@ -51,9 +51,8 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - 완료 기준
 
 → `Task` 실행
-- 목표 확인
+- Workflow 내 Task 설명 참조
 - 실행 방법 따라 작업
-- 체크리스트 확인
 - 산출물 생성
 
 **4단계: 마무리**
@@ -80,15 +79,16 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 
 **4단계: Story 도출** → `Sprint/index.md`
 - Sprint 목표를 달성하기 위한 Story 나열
-- 최대 5개, 각 Story는 1일 분량
+- 권장 5개 이하, 실제 작업량에 맞게 조정 가능
 
-**5단계: Workflow 설계** → `Story/workflows/`
-- Story 목표 달성을 위한 Task 흐름 설계
-- Task 입출력, 의존성, 완료 기준 정의
+**5단계: Workflow 설계**
+- **재사용 가능한 경우**: `library/workflows/`에 생성 후 Story에서 참조
+- **Story 전용인 경우**: `Story/workflows/`에 생성
+- Task 흐름, 입출력, 의존성, 완료 기준 정의
 
-**6단계: Task 분해** → `Story/tasks/`
-- Workflow에서 조합할 Task 작성
-- 더 이상 나누지 않는 실행 단위
+**6단계: Task 정의**
+- **기본**: Workflow 내에 Task 설명 포함
+- **선택적 파일 생성**: Task가 복잡하거나 재사용될 경우만 `Story/tasks/` 또는 `library/tasks/`에 별도 파일 생성
 
 ---
 
@@ -105,6 +105,32 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 **Quarter 목표 변경** (전체 재검토)
 - Phase/Sprint/Story 전체 영향도 검토
 - ROADMAP.md 업데이트 필수
+
+---
+
+## 파일 구조 최적화
+
+### Workflow 재사용 원칙
+- **반복되는 프로세스**: `library/workflows/`에 생성
+- **Story 전용 프로세스**: `Story/workflows/`에 생성
+- **참조 방식**: Story에서 상대 경로로 Workflow 참조
+
+### Task 파일 생성 기준
+- **생성 불필요**: Workflow 내 설명으로 충분한 경우 (대부분)
+- **생성 권장**: 
+  - Task가 매우 복잡하여 별도 문서가 필요한 경우
+  - 여러 Workflow에서 재사용되는 경우
+  - 상세한 체크리스트나 도구 설명이 필요한 경우
+
+### 디렉토리 간소화
+```
+sprint-01/
+├── index.md           # Sprint 계획
+├── story-01.md        # Story (Workflow 참조)
+├── story-02.md        # Story (Workflow 참조)
+└── (workflows/)       # 선택적: Story 전용 Workflow
+└── (tasks/)           # 선택적: 복잡한 Task만
+```
 
 ---
 
@@ -127,7 +153,7 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - **용도**: 재사용 가능한 Workflow/Task 모음
 - **언제**: 
   - 비슷한 작업이 반복될 때
-  - 다른 Story에서 같은 Task가 필요할 때
+  - 다른 Story에서 같은 Workflow가 필요할 때
   - Story 작성 시 재사용 Workflow 참조할 때
 
 ---
@@ -142,8 +168,8 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 ├── COMMIT-RULES.md          # 커밋 규칙
 ├── ARCHIVE.md               # 완료 기록
 ├── library/                 # 재사용 템플릿
-│   ├── workflows/
-│   └── tasks/
+│   ├── workflows/           # 공통 Workflow
+│   └── tasks/               # 공통 Task (선택적)
 └── 00001-Q/                 # Quarter 1
     ├── index.md             # Quarter 계획
     └── phase-01/            # Phase 1
@@ -151,8 +177,9 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
         └── sprint-01/       # Sprint 1
             ├── index.md     # Sprint 계획
             ├── story-01.md  # Story
-            ├── workflows/   # Workflow
-            └── tasks/       # Task
+            └── story-02.md  # Story
+            (workflows/)     # Story 전용 (선택적)
+            (tasks/)         # 복잡한 Task만 (선택적)
 ```
 
 ---

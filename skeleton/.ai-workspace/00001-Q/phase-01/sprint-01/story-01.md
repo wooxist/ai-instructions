@@ -2,9 +2,7 @@
 AI 에이전트 작업 지침:
 이 파일은 Story 템플릿입니다.
 - Story는 목표, 배경, 기대효과만 포함합니다.
-- Tasks 목록이나 완료 기준을 포함하지 마세요.
-- Workflow 파일 참조만 추가하세요.
-- 상세 실행 내용은 Workflow와 Task에 작성합니다.
+- Workflow 참조 방식을 선택하세요 (재사용 또는 전용)
 -->
 
 # Story {NUMBER}: {STORY_NAME}
@@ -24,8 +22,14 @@ AI 에이전트 작업 지침:
 
 ## Workflow
 
-📋 **[Workflow {NUMBER}: {WORKFLOW_NAME}](workflows/workflow-{NUMBER}.md)**
+**재사용 Workflow 참조:**
+📋 `../../../../library/workflows/{workflow-name}.md`
 
-또는
+**또는 Story 전용 Workflow:**
+📋 `workflows/workflow-{NUMBER}.md`
 
-📋 **재사용**: `../../../../library/workflows/{workflow-name}.md`
+---
+
+**참고**: 
+- 반복되는 프로세스는 library/workflows/ 사용
+- Story 고유 프로세스는 workflows/ 사용

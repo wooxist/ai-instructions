@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: `00001-Q/phase-01/sprint-01/story-01.md`  
+**Story**: `00001-Q/phase-01/sprint-01/story-02.md`  
 **Task**: Task 01 - 인간 검토
