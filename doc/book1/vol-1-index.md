@@ -82,7 +82,7 @@ AI 에이전트 작업 지침:
   * [2.5 맥락 의존형 질문](vol-1-part-1-chapter-02.md#25-맥락-의존형-질문-context-dependent)
   * [2.6 메타 질문](vol-1-part-1-chapter-02.md#26-메타-질문-meta-questions)
   * [실습 체크리스트](vol-1-part-1-chapter-02.md#실습-체크리스트)
-* [3장. 좋은 인스트럭션](vol-1-part-1-chapter-03.md) **★★☆**
+* [3장. 효과적인 지시 작성의 기본 원칙](vol-1-part-1-chapter-03.md) **★★☆**
   * [3.1 인스트럭션: 일회성 프롬프트를 넘어서](vol-1-part-1-chapter-03.md#31-인스트럭션-일회성-프롬프트를-넘어서)
   * [3.2 명확성 (Clear)](vol-1-part-1-chapter-03.md#32-명확성-clear)
   * [3.3 구체성 (Specific)](vol-1-part-1-chapter-03.md#33-구체성-specific)
@@ -97,11 +97,11 @@ AI 에이전트 작업 지침:
 
 **난이도**: ★★☆ | **학습 목표**: 인스트럭션 설계 원칙과 에이전트 구조화 방법 습득
 
-* [4장. 인스트럭션 설계의 메타 원칙](vol-1-part-2-chapter-04.md) **★★☆**
+* [4장. 인스트럭션 시스템 설계 원칙](vol-1-part-2-chapter-04.md) **★★☆**
   * [4.1 구조적 원칙](vol-1-part-2-chapter-04.md#41-구조적-원칙-설계의-뼈대-세우기)
   * [4.2 실행 원칙](vol-1-part-2-chapter-04.md#42-실행-원칙-ai와-함께-일하는-방식-정의하기)
   * [4.3 검증 및 책임 원칙](vol-1-part-2-chapter-04.md#43-검증-및-책임-원칙-신뢰와-안전성-확보하기)
-  * [4.4 메타 원칙 요약표](vol-1-part-2-chapter-04.md#44-메타-원칙-요약표)
+  * [4.4 시스템 설계 원칙 요약표](vol-1-part-2-chapter-04.md#44-시스템-설계-원칙-요약표)
   * [4.5 상황별 원칙 적용 가이드](vol-1-part-2-chapter-04.md#45-상황별-원칙-적용-가이드)
   * [실습 체크리스트](vol-1-part-2-chapter-04.md#실습-체크리스트)
 * [5장. 역할(Agent)과 제약(Constraint) 설계](vol-1-part-2-chapter-05.md) **★★☆**
