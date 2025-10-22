@@ -24,14 +24,17 @@ AI 에이전트 작업 지침:
 
 ---
 
-## Phase 2: 2권 검토 (Ch 11-16)
+## Phase 2: 전체 장 구조 정리
 
-**목표**: 2권 전체 챕터 검토 및 개선
+**목표**: 1권과 2권 전체 장의 구조를 일관되게 정리
 
-- Sprint 1: Preface, Part 4 도입, Ch 11
-- Sprint 2: Ch 12-13
-- Sprint 3: Ch 14, Ch 16
-- Sprint 4: Part 5 (Ch 15, 결론)
+- Sprint 1: 1권 Preface + Part 1 (Ch 1-3) 구조 정리
+- Sprint 2: 1권 Part 2 (Ch 4-6) 구조 정리
+- Sprint 3: 1권 Part 3 (Ch 7-9) 구조 정리
+- Sprint 4: 1권 Part 4 (Ch 10) + 2권 Preface + Part 4 도입 구조 정리
+- Sprint 5: 2권 Ch 11-12 구조 정리
+- Sprint 6: 2권 Ch 13-14 구조 정리
+- Sprint 7: 2권 Ch 15-16 + Part 5 구조 정리
 
 ---
 
