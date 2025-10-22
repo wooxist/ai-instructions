@@ -21,10 +21,10 @@ AI 에이전트 작업 지침:
 **목표**: Ch 1 전체 검토 및 개선  
 **파일**: `doc/book1/vol-1-part-1-chapter-01.md`
 
-### Story 03: Ch 2 검토
-**목표**: Ch 2 전체 검토 및 개선  
+### Story 03: Ch 2 검토 ✅
+**상태**: 완료  
 **파일**: `doc/book1/vol-1-part-1-chapter-02.md`
 
-### Story 04: Ch 3 검토
-**목표**: Ch 3 전체 검토 및 개선  
+### Story 04: Ch 3 검토 ✅
+**상태**: 완료  
 **파일**: `doc/book1/vol-1-part-1-chapter-03.md`
