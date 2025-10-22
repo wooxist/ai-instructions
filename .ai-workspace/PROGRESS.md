@@ -8,4 +8,4 @@ AI 지침:
 # PROGRESS
 
 **Story**: `00001-Q/phase-01/sprint-02/story-05.md`  
-**Task**: Task 01 - 인간 검토
+**Task**: Task 05 - 인간 최종 확인
