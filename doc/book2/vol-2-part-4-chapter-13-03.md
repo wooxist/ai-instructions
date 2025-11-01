@@ -547,280 +547,45 @@ loop_transitions:
 
 ---
 
-## 13.3.3 상태 추적 유틸리티
+## 13.3.3 상태 추적 방법
 
-사고 상태를 프로그래밍 방식으로 관리할 수 있는 Python 유틸리티를 제공합니다.
+사고 클러스터의 상태를 추적하고 관리하는 방법을 살펴봅니다.
 
-### Python 코드: `state_tracker.py`
+### 상태 파일 관리하기
 
-```python
-# /shared/libraries/state_tracker.py
-import json
-from datetime import datetime
-from typing import Dict, List, Optional
-from pathlib import Path
+`thinking_state.json` 파일을 직접 생성하고 업데이트할 수 있습니다. AI에게 다음과 같이 요청할 수 있습니다:
 
-class ThinkingStateTracker:
-    """사고 클러스터 상태 추적 유틸리티"""
-    
-    VALID_STAGES = ["planning", "reasoning", "experimenting", "reflecting", "completed"]
-    VALID_STATUSES = ["not_started", "in_progress", "blocked", "completed"]
-    
-    def __init__(self, cluster_path: str):
-        """
-        Args:
-            cluster_path: 사고 클러스터 디렉토리 경로 (예: /workspace/thinking_clusters/TC001_content)
-        """
-        self.cluster_path = Path(cluster_path)
-        self.state_file = self.cluster_path / "thinking_state.json"
-    
-    def initialize(self, cluster_id: str, cluster_name: str, goal: str) -> Dict:
-        """새 클러스터 초기화"""
-        state = {
-            "cluster_id": cluster_id,
-            "cluster_name": cluster_name,
-            "goal": goal,
-            "current_stage": "planning",
-            "status": "in_progress",
-            "progress": 0,
-            "created_at": datetime.now().isoformat() + "Z",
-            "last_updated": datetime.now().isoformat() + "Z",
-            "stage_history": [],
-            "next_actions": [],
-            "blockers": [],
-            "notes": ""
-        }
-        self._save_state(state)
-        return state
-    
-    def get_state(self) -> Dict:
-        """현재 상태 조회"""
-        if not self.state_file.exists():
-            raise FileNotFoundError(f"State file not found: {self.state_file}")
-        
-        with open(self.state_file, 'r') as f:
-            return json.load(f)
-    
-    def update_stage(self, new_stage: str, outputs: Optional[List[str]] = None) -> Dict:
-        """Stage 변경 및 이력 기록"""
-        if new_stage not in self.VALID_STAGES:
-            raise ValueError(f"Invalid stage: {new_stage}. Must be one of {self.VALID_STAGES}")
-        
-        state = self.get_state()
-        old_stage = state["current_stage"]
-        
-        # 이전 Stage 완료 처리
-        if state["stage_history"] and state["stage_history"][-1]["completed_at"] is None:
-            state["stage_history"][-1]["completed_at"] = datetime.now().isoformat() + "Z"
-            if outputs:
-                state["stage_history"][-1]["outputs"] = outputs
-        
-        # 새 Stage 시작
-        state["current_stage"] = new_stage
-        state["stage_history"].append({
-            "stage": new_stage,
-            "started_at": datetime.now().isoformat() + "Z",
-            "completed_at": None,
-            "outputs": []
-        })
-        
-        # 진행률 업데이트
-        stage_progress = {
-            "planning": 25,
-            "reasoning": 50,
-            "experimenting": 75,
-            "reflecting": 90,
-            "completed": 100
-        }
-        state["progress"] = stage_progress[new_stage]
-        
-        if new_stage == "completed":
-            state["status"] = "completed"
-            state["completed_at"] = datetime.now().isoformat() + "Z"
-        
-        state["last_updated"] = datetime.now().isoformat() + "Z"
-        
-        self._save_state(state)
-        print(f"✅ Stage transition: {old_stage} → {new_stage} (Progress: {state['progress']}%)")
-        return state
-    
-    def add_blocker(self, issue: str, severity: str = "medium", owner: Optional[str] = None) -> Dict:
-        """블로커 추가"""
-        state = self.get_state()
-        state["status"] = "blocked"
-        state["blockers"].append({
-            "issue": issue,
-            "severity": severity,
-            "reported_at": datetime.now().isoformat() + "Z",
-            "owner": owner,
-            "resolved": False
-        })
-        state["last_updated"] = datetime.now().isoformat() + "Z"
-        self._save_state(state)
-        print(f"⚠️ Blocker added: {issue} (Severity: {severity})")
-        return state
-    
-    def resolve_blocker(self, issue: str) -> Dict:
-        """블로커 해결"""
-        state = self.get_state()
-        for blocker in state["blockers"]:
-            if blocker["issue"] == issue and not blocker["resolved"]:
-                blocker["resolved"] = True
-                blocker["resolved_at"] = datetime.now().isoformat() + "Z"
-        
-        # 모든 블로커 해결 시 상태 복구
-        if all(b["resolved"] for b in state["blockers"]):
-            state["status"] = "in_progress"
-            print("✅ All blockers resolved. Status: in_progress")
-        
-        state["last_updated"] = datetime.now().isoformat() + "Z"
-        self._save_state(state)
-        return state
-    
-    def set_next_actions(self, actions: List[str]) -> Dict:
-        """다음 작업 설정"""
-        state = self.get_state()
-        state["next_actions"] = actions
-        state["last_updated"] = datetime.now().isoformat() + "Z"
-        self._save_state(state)
-        return state
-    
-    def add_note(self, note: str) -> Dict:
-        """메모 추가"""
-        state = self.get_state()
-        if state["notes"]:
-            state["notes"] += "\n\n" + note
-        else:
-            state["notes"] = note
-        state["last_updated"] = datetime.now().isoformat() + "Z"
-        self._save_state(state)
-        return state
-    
-    def _save_state(self, state: Dict):
-        """상태 파일 저장"""
-        with open(self.state_file, 'w') as f:
-            json.dump(state, f, indent=2, ensure_ascii=False)
+**클러스터 시작 시**:
+- "TC001_content_generation 디렉토리에 thinking_state.json 파일을 만들어주세요"
+- "cluster_id는 TC001, goal은 '소셜 미디어 콘텐츠 발행'으로 설정해주세요"
 
+**Stage 전환 시**:
+- "thinking_state.json에서 current_stage를 'reasoning'으로 변경하고, progress를 50으로 업데이트해주세요"
+- "stage_history에 planning 완료 시각을 기록해주세요"
 
-# 사용 예시
-if __name__ == "__main__":
-    # 1. 클러스터 초기화
-    tracker = ThinkingStateTracker("/workspace/thinking_clusters/TC001_content_generation")
-    tracker.initialize(
-        cluster_id="TC001",
-        cluster_name="content_generation",
-        goal="소셜 미디어에 AI 협업 콘텐츠 발행"
-    )
-    
-    # 2. 다음 작업 설정
-    tracker.set_next_actions([
-        "타겟 분석 완료",
-        "아이디어 10개 브레인스토밍",
-        "리서치 문서 작성"
-    ])
-    
-    # 3. Stage 전이: planning → reasoning
-    tracker.update_stage("reasoning", outputs=[
-        "/thinking/planning/ideas.json",
-        "/thinking/planning/research.md"
-    ])
-    
-    # 4. 블로커 추가
-    tracker.add_blocker(
-        issue="타겟 데이터 접근 권한 없음",
-        severity="high",
-        owner="user@example.com"
-    )
-    
-    # 5. 블로커 해결
-    tracker.resolve_blocker("타겟 데이터 접근 권한 없음")
-    
-    # 6. 현재 상태 조회
-    current_state = tracker.get_state()
-    print(f"\n📊 현재 상태: {current_state['current_stage']} ({current_state['progress']}%)")
-```
+**블로커 추가 시**:
+- "thinking_state.json의 blockers 배열에 '타겟 데이터 접근 권한 없음' 이슈를 추가해주세요"
+- "severity는 'high'로 설정해주세요"
 
-### Python 코드: `get_cluster_status.py`
+### 여러 클러스터 상태 확인하기
 
-```python
-# /shared/libraries/cluster_status.py
-import json
-from pathlib import Path
-from typing import Dict, List
+여러 사고 클러스터를 동시에 진행하는 경우, AI에게 전체 상태를 요약해달라고 요청할 수 있습니다:
 
-def get_all_clusters_status(workspace_path: str = "/workspace") -> List[Dict]:
-    """모든 클러스터 상태 요약"""
-    workspace = Path(workspace_path)
-    clusters_dir = workspace / "thinking_clusters"
-    
-    clusters = []
-    for cluster_path in clusters_dir.iterdir():
-        if cluster_path.is_dir():
-            state_file = cluster_path / "thinking_state.json"
-            if state_file.exists():
-                with open(state_file, 'r') as f:
-                    state = json.load(f)
-                    clusters.append({
-                        "id": state["cluster_id"],
-                        "name": state["cluster_name"],
-                        "stage": state["current_stage"],
-                        "status": state["status"],
-                        "progress": state["progress"],
-                        "last_updated": state["last_updated"]
-                    })
-    
-    return clusters
+**요청 예시**:
+- "thinking_clusters 디렉토리의 모든 클러스터 상태를 표로 정리해주세요"
+- "각 클러스터의 ID, 이름, 현재 Stage, 진행률을 보여주세요"
 
-def print_dashboard():
-    """클러스터 대시보드 출력"""
-    clusters = get_all_clusters_status()
-    
-    print("=" * 80)
-    print("🎯 사고 클러스터 대시보드")
-    print("=" * 80)
-    print(f"{'ID':<8} {'Name':<25} {'Stage':<15} {'Status':<12} {'Progress':>10}")
-    print("-" * 80)
-    
-    for c in clusters:
-        status_emoji = {
-            "in_progress": "🔄",
-            "blocked": "⚠️",
-            "completed": "✅",
-            "not_started": "⏸️"
-        }[c["status"]]
-        
-        print(f"{c['id']:<8} {c['name']:<25} {c['stage']:<15} {status_emoji} {c['status']:<10} {c['progress']:>8}%")
-    
-    print("=" * 80)
-    print(f"📈 총 {len(clusters)}개 클러스터")
-    
-    # 통계
-    in_progress = sum(1 for c in clusters if c["status"] == "in_progress")
-    blocked = sum(1 for c in clusters if c["status"] == "blocked")
-    completed = sum(1 for c in clusters if c["status"] == "completed")
-    
-    print(f"   진행 중: {in_progress}개 | 블로킹: {blocked}개 | 완료: {completed}개")
-    print("=" * 80)
+**예상 결과**:
+```text
+사고 클러스터 현황
 
-if __name__ == "__main__":
-    print_dashboard()
-```
+ID     이름                   Stage         진행률   상태
+TC001  content_generation    reasoning     50%      진행 중
+TC002  churn_analysis        experimenting 45%      블로킹
+TC003  strategy_planning     planning      25%      진행 중
+TC010  weekly_report         completed     100%     완료
 
-**출력 예시**:
-```
-================================================================================
-🎯 사고 클러스터 대시보드
-================================================================================
-ID       Name                      Stage           Status       Progress
---------------------------------------------------------------------------------
-TC001    content_generation        reasoning       🔄 in_progress     50%
-TC002    churn_analysis            experimenting   ⚠️ blocked         45%
-TC003    strategy_planning         planning        🔄 in_progress     25%
-TC010    weekly_report             completed       ✅ completed      100%
-================================================================================
-📈 총 4개 클러스터
-   진행 중: 2개 | 블로킹: 1개 | 완료: 1개
-================================================================================
+전체 요약: 진행 중 2개, 블로킹 1개, 완료 1개
 ```
 
 ---
@@ -881,44 +646,16 @@ feedback_section:
       - "신뢰 기준에 '출처 명시' 강조"
 ```
 
-### Python 코드: 피드백 기록
+### 피드백 기록하기
 
-```python
-# /shared/libraries/feedback_tracker.py
-def record_feedback(cluster_path: str, execution_results: Dict, improvements: List[Dict]):
-    """피드백 루프 결과를 thinking_state.json에 기록"""
-    tracker = ThinkingStateTracker(cluster_path)
-    state = tracker.get_state()
-    
-    # 피드백 섹션 추가
-    state["feedback"] = {
-        "execution_results": execution_results,
-        "thinking_improvements": improvements,
-        "recorded_at": datetime.now().isoformat() + "Z"
-    }
-    
-    tracker._save_state(state)
-    print("✅ Feedback recorded successfully")
+실행 결과를 `thinking_state.json`에 기록하여 다음 사이클에 활용할 수 있습니다.
 
-# 사용 예시
-record_feedback(
-    cluster_path="/workspace/thinking_clusters/TC001_content_generation",
-    execution_results={
-        "metrics": {
-            "engagement_rate": 6.8,
-            "views": 5000
-        },
-        "target_achieved": True
-    },
-    improvements=[
-        {
-            "stage": "planning",
-            "finding": "타겟 분석 정확",
-            "action": "템플릿 재사용"
-        }
-    ]
-)
-```
+**AI에게 요청하기**:
+- "TC001의 thinking_state.json에 feedback 섹션을 추가해주세요"
+- "execution_results에 인게이지먼트 6.8%, 조회수 5000을 기록해주세요"
+- "thinking_improvements에 '타겟 분석이 정확했음' 발견 사항을 추가해주세요"
+
+이렇게 기록된 피드백은 다음 사고 클러스터를 설계할 때 참고 자료가 됩니다.
 
 ---
 

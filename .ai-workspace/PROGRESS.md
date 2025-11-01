@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: .ai-workspace/00002-Q/phase-01/sprint-01/story-01/story.md  
-**Task**: Task 1: 파일 검토 (Review)
+**Story**: .ai-workspace/00002-Q/phase-01/sprint-01/story-04/story.md  
+**Task**: Task 5: 인간 검토 (Human Review)

@@ -1,17 +1,49 @@
-# Story 3: Book2 Chapter 12 코드 제거
+# Story 3: vol-1-part-1-chapter-01.md 코드 제거
 
 ## 목표
-Chapter 12의 7개 파일에서 프로그래밍 코드를 제거합니다.
+vol-1-part-1-chapter-01.md 파일에서 프로그래밍 언어 코드를 제거하여 일반 독자의 접근성을 높입니다.
 
-## 대상 파일 목록 (7개)
-1. vol-2-part-4-chapter-12-00-intro.md
-2. vol-2-part-4-chapter-12-01.md
-3. vol-2-part-4-chapter-12-02.md
-4. vol-2-part-4-chapter-12-03.md
-5. vol-2-part-4-chapter-12-04.md
-6. vol-2-part-4-chapter-12-05.md
-7. vol-2-part-4-chapter-12-06-practice.md
+## 배경
+- **독자 프로필**: 코딩 경험이 없거나 기초적인 일반 회사원, 분야 전문가
+- **문제점**: Python, JavaScript 등 프로그래밍 코드는 독자의 이해를 방해함
+- **해결책**: 실제 프로그래밍 코드는 제거하되, YAML/JSON(설정), Mermaid(다이어그램)는 유지
+
+## 기대효과
+- 비개발자 독자도 Chapter 1을 쉽게 이해할 수 있음
+- 프롬프트와 인스트럭션의 개념에 집중 가능
+
+## Workflow
+
+### Task 1: 파일 검토 (Review)
+- **담당**: AI
+- **방법**: 
+  1. vol-1-part-1-chapter-01.md 파일 읽기
+  2. 프로그래밍 코드 블록 식별
+  3. 수정 필요 여부 판단
+- **완료 기준**: 코드 블록 목록 작성 완료
+
+### Task 2: 수정 계획 (Plan)
+- **담당**: AI + Human
+- **방법**: 
+  1. 제거할 코드 블록 목록화
+  2. 대체 콘텐츠 제안
+  3. Human 승인 대기
+- **완료 기준**: 수정 계획 승인 완료
+
+### Task 3: 실행 (Execute)
+- **담당**: AI
+- **방법**: 승인된 계획에 따라 파일 수정
+- **완료 기준**: 파일 수정 완료
+
+### Task 4: 검증 (Verify)
+- **담당**: Human
+- **방법**: 수정 결과 검토
+- **완료 기준**: 최종 승인
+
+## 대상 파일
+- doc/book1/vol-1-part-1-chapter-01.md
 
 ## 제약 조건
 - **유지**: ```yaml, ```json, ```markdown, ```mermaid, ```text
-- **제거**: 모든 프로그래밍 언어 코드
+- **제거**: ```python, ```javascript, ```js, ```java, ```cpp 등 모든 프로그래밍 언어 코드
+- **원칙**: 코드 제거 시 문맥의 흐름이 자연스럽게 유지되어야 함
