@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: `00001-Q/phase-01/sprint-02/story-09/story.md`  
-**Task**: Task 06 - 요약, 체크리스트, 실습 작성
+**Story**: (작업 대기 중)  
+**Task**: (작업 대기 중)
