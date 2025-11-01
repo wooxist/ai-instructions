@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: (작업 대기 중)  
-**Task**: (작업 대기 중)
+**Story**: .ai-workspace/00002-Q/phase-01/sprint-01/story-01/story.md  
+**Task**: Task 1: 파일 검토 (Review)
