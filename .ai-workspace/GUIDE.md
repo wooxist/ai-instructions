@@ -33,31 +33,37 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 
 ### 작업하기 (Executing)
 
-**1단계: 어디서부터?**
+**1단계: 현재 위치 파악**
 → `PROGRESS.md` 확인
-- 현재 Story 경로
-- 현재 Task 이름
+- Story: `.ai-workspace/00002-Q/phase-01/sprint-01/story-03/`
+- Task: `Task 2: 문서 작성`
 
-**2단계: 무엇을?**
-→ `Story/story.md` 읽기
-- 목표: 무엇을 달성할 것인가
-- 배경: 왜 필요한가
-- 기대효과: 무엇이 개선되는가
+**2단계: Story 목표 확인**
+→ `story-03/story.md` 읽기
+- 목표: 무엇을 달성해야 하는가?
+- 배경: 왜 이 작업이 필요한가?
+- 기대효과: 어떤 개선이 기대되는가?
 
-**3단계: 어떻게?**
-→ `Workflow` 확인
-- Task 흐름과 순서
-- 각 Task의 입출력
-- 완료 기준
+**3단계: Task 실행**
+→ `story.md`의 Workflow 섹션에서 Task 설명 확인
+```markdown
+### Task 2: 문서 작성
+분석 결과를 바탕으로 개선된 문서를 작성합니다.
+- 입력: 분석 보고서
+- 출력: 개선된 문서
+- 완료 기준: 모든 개선 사항 반영
+```
 
-→ `Task` 실행
-- Workflow 내 Task 설명 참조
-- 실행 방법 따라 작업
+→ Task 실행
+- 설명대로 작업 수행
 - 산출물 생성
 
 **4단계: 마무리**
-1. PROGRESS.md 업데이트 (다음 Task로)
-2. COMMIT-RULES.md 참고하여 Commit
+1. PROGRESS.md 업데이트
+   - Task 완료: `Task 3`로 업데이트
+   - Story 완료: 다음 Story 경로로 업데이트
+2. COMMIT-RULES.md 참고하여 커밋
+   - 형식: `[Q2-P1-S1-S3-T2] feat: 문서 개선 완료`
 
 ---
 
@@ -82,9 +88,12 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - 권장 5개 이하, 실제 작업량에 맞게 조정 가능
 
 **5단계: Story 디렉토리 생성** → `Sprint/story-XX/`
-- Story 디렉토리 생성
-- `story.md` 파일 생성 (목표, 배경, Workflow)
-- 필요시 `tasks/` 디렉토리 생성
+- Story 디렉토리 생성 (번호는 01부터 순차적으로)
+- `story.md` 파일 생성
+  - 목표: 이 Story로 달성할 것
+  - 배경: 왜 이 작업이 필요한가
+  - Workflow: Task 목록과 각 Task 설명 (대부분 여기서 끝)
+- `tasks/` 디렉토리는 매우 복잡한 경우만 생성
 
 **6단계: Workflow 설계** → `story.md` 내
 - Task 흐름, 입출력, 의존성, 완료 기준 정의
@@ -92,8 +101,20 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - 재사용 가능한 Workflow는 `library/workflows/`에
 
 **7단계: Task 정의**
-- **기본**: `story.md` 내 Workflow에 Task 설명 포함
-- **선택적**: Task가 복잡한 경우만 `story-XX/tasks/`에 별도 파일
+- **기본 (99%)**: `story.md` 내 Workflow 섹션에 모든 Task 설명 포함
+  ```markdown
+  ## Workflow
+  
+  ### Task 1: 분석
+  현재 상태를 분석하고 문제점을 파악합니다.
+  - 입력: 기존 문서
+  - 출력: 분석 보고서
+  
+  ### Task 2: 개선
+  분석 결과를 바탕으로 개선안을 작성합니다.
+  ...
+  ```
+- **예외 (1%)**: 매우 복잡한 Task만 `story-XX/tasks/task-XX.md`로 분리
 
 ---
 
@@ -121,31 +142,38 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - **참조 방식**: Story에서 상대 경로로 Workflow 참조
 
 ### Task 파일 생성 기준
-- **생성 불필요**: Workflow 내 설명으로 충분한 경우 (대부분)
-- **생성 권장**: 
-  - Task가 매우 복잡하여 별도 문서가 필요한 경우
-  - 여러 Workflow에서 재사용되는 경우
-  - 상세한 체크리스트나 도구 설명이 필요한 경우
+
+**99% 경우 - Task 파일 불필요**:
+- Workflow 내 Task 설명(1-3문단)으로 충분
+- 입력/출력이 명확한 단순 작업
+- 한 Story에서만 사용되는 Task
+
+**1% 경우 - Task 파일 생성**:
+- 10단계 이상의 복잡한 절차
+- 여러 Workflow에서 재사용
+- 별도의 상세 기술 문서 필요
+- 복잡한 도구 사용법 설명 필요
 
 ### Story 디렉토리 구조
 ```
 sprint-01/
 ├── index.md              # Sprint 계획
-├── story-01/             # Story 디렉토리
-│   ├── story.md          # Story 정의 (목표, 배경, Workflow)
-│   └── (tasks/)          # 이 Story의 Task 파일 (선택적)
-├── story-02/             # Story 디렉토리
+├── story-01/             # Story 디렉토리 (필수)
+│   ├── story.md          # Story 정의 (목표, 배경, Workflow 포함)
+│   └── tasks/            # 복잡한 Task 파일 (선택적, 대부분 불필요)
+├── story-02/             # Story 디렉토리 (필수)
 │   ├── story.md          # Story 정의
-│   └── (tasks/)          # 이 Story의 Task 파일 (선택적)
-└── (workflows/)          # Sprint 공통 Workflow (선택적)
+│   └── tasks/            # 복잡한 Task 파일 (선택적)
+└── workflows/            # Sprint 공통 Workflow (선택적, 재사용 시)
 ```
 
 **핵심 원칙**:
-- **Story는 디렉토리**, 내부에 `story.md` 필수
-- Task는 대부분 `story.md` 내 Workflow에 포함
-- 복잡한 Task만 해당 Story의 `tasks/` 디렉토리에 별도 파일
-- Sprint 공통 Workflow는 Sprint 레벨의 `workflows/`에
-- **Story 간 Task 파일이 섞이지 않음** (각 Story의 tasks/ 분리)
+- **Story는 반드시 디렉토리로 생성**, 내부에 `story.md` 필수
+- **Task 설명은 기본적으로 `story.md` 내 Workflow 섹션에 포함**
+- 매우 복잡한 Task만 해당 Story의 `tasks/` 디렉토리에 별도 파일로 생성
+- Sprint 전체에서 재사용되는 Workflow는 Sprint 레벨의 `workflows/`에 생성
+- 여러 Sprint에서 재사용되는 Workflow는 `library/workflows/`에 생성
+- **각 Story는 독립된 디렉토리** - Task 파일이 Story 간 섞이지 않음
 
 ---
 
@@ -177,27 +205,26 @@ sprint-01/
 
 ```
 .ai-workspace/
-├── PROGRESS.md              # 현재 작업 위치
-├── GUIDE.md                 # 이 파일
-├── ROADMAP.md               # 전체 분기 계획
-├── COMMIT-RULES.md          # 커밋 규칙
-├── ARCHIVE.md               # 완료 기록
-├── library/                 # 재사용 템플릿
-│   ├── workflows/           # 공통 Workflow
-│   └── tasks/               # 공통 Task (선택적)
-└── 00001-Q/                 # Quarter 1
-    ├── index.md             # Quarter 계획
-    └── phase-01/            # Phase 1
-        ├── index.md         # Phase 계획
-        └── sprint-01/       # Sprint 1
-            ├── index.md     # Sprint 계획
-            ├── story-01/    # Story 디렉토리
-            │   ├── story.md # Story 정의
-            │   └── tasks/   # Story 전용 Task (선택적)
-            ├── story-02/    # Story 디렉토리
-            │   ├── story.md # Story 정의
-            │   └── tasks/   # Story 전용 Task (선택적)
-            └── workflows/   # Sprint 공통 (선택적)
+├── PROGRESS.md              # 현재 작업 위치 (필수 확인)
+├── GUIDE.md                 # 작업 가이드 (지금 읽고 있는 파일)
+├── ROADMAP.md               # 전체 Quarter 계획 목록
+├── COMMIT-RULES.md          # 커밋 메시지 규칙
+├── ARCHIVE.md               # 완료된 Quarter 기록
+├── library/                 # 재사용 가능한 코드
+│   ├── workflows/           # 여러 Sprint에서 재사용하는 Workflow
+│   └── tasks/               # 여러 Sprint에서 재사용하는 Task (드물게 사용)
+└── 00002-Q/                 # Quarter 2 (현재 진행 중)
+    ├── index.md             # Quarter 2 목표와 Phase 분해
+    └── phase-01/            # Phase 1 (1개월)
+        ├── index.md         # Phase 1 목표와 Sprint 나열
+        └── sprint-01/       # Sprint 1 (1주)
+            ├── index.md     # Sprint 1 목표와 Story 목록
+            ├── story-01/    # Story 1 (1일 작업)
+            │   └── story.md # 목표 + 배경 + Workflow (대부분 Task는 여기에)
+            ├── story-02/    # Story 2 (1일 작업)
+            │   ├── story.md # 목표 + 배경 + Workflow
+            │   └── tasks/   # 복잡한 Task만 (드물게 필요)
+            └── workflows/   # Sprint 내 여러 Story에서 공유 (선택적)
 ```
 
 ---
