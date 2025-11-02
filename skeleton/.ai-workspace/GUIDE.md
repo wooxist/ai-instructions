@@ -39,7 +39,7 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - 현재 Task 이름
 
 **2단계: 무엇을?**
-→ `Story` 읽기
+→ `Story/story.md` 읽기
 - 목표: 무엇을 달성할 것인가
 - 배경: 왜 필요한가
 - 기대효과: 무엇이 개선되는가
@@ -81,14 +81,19 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - Sprint 목표를 달성하기 위한 Story 나열
 - 권장 5개 이하, 실제 작업량에 맞게 조정 가능
 
-**5단계: Workflow 설계**
-- **재사용 가능한 경우**: `library/workflows/`에 생성 후 Story에서 참조
-- **Story 전용인 경우**: `Story/workflows/`에 생성
-- Task 흐름, 입출력, 의존성, 완료 기준 정의
+**5단계: Story 디렉토리 생성** → `Sprint/story-XX/`
+- Story 디렉토리 생성
+- `story.md` 파일 생성 (목표, 배경, Workflow)
+- 필요시 `tasks/` 디렉토리 생성
 
-**6단계: Task 정의**
-- **기본**: Workflow 내에 Task 설명 포함
-- **선택적 파일 생성**: Task가 복잡하거나 재사용될 경우만 `Story/tasks/` 또는 `library/tasks/`에 별도 파일 생성
+**6단계: Workflow 설계** → `story.md` 내
+- Task 흐름, 입출력, 의존성, 완료 기준 정의
+- 기본적으로 story.md 내에 Workflow 포함
+- 재사용 가능한 Workflow는 `library/workflows/`에
+
+**7단계: Task 정의**
+- **기본**: `story.md` 내 Workflow에 Task 설명 포함
+- **선택적**: Task가 복잡한 경우만 `story-XX/tasks/`에 별도 파일
 
 ---
 
@@ -122,15 +127,25 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
   - 여러 Workflow에서 재사용되는 경우
   - 상세한 체크리스트나 도구 설명이 필요한 경우
 
-### 디렉토리 간소화
+### Story 디렉토리 구조
 ```
 sprint-01/
-├── index.md           # Sprint 계획
-├── story-01.md        # Story (Workflow 참조)
-├── story-02.md        # Story (Workflow 참조)
-└── (workflows/)       # 선택적: Story 전용 Workflow
-└── (tasks/)           # 선택적: 복잡한 Task만
+├── index.md              # Sprint 계획
+├── story-01/             # Story 디렉토리
+│   ├── story.md          # Story 정의 (목표, 배경, Workflow)
+│   └── (tasks/)          # 이 Story의 Task 파일 (선택적)
+├── story-02/             # Story 디렉토리
+│   ├── story.md          # Story 정의
+│   └── (tasks/)          # 이 Story의 Task 파일 (선택적)
+└── (workflows/)          # Sprint 공통 Workflow (선택적)
 ```
+
+**핵심 원칙**:
+- **Story는 디렉토리**, 내부에 `story.md` 필수
+- Task는 대부분 `story.md` 내 Workflow에 포함
+- 복잡한 Task만 해당 Story의 `tasks/` 디렉토리에 별도 파일
+- Sprint 공통 Workflow는 Sprint 레벨의 `workflows/`에
+- **Story 간 Task 파일이 섞이지 않음** (각 Story의 tasks/ 분리)
 
 ---
 
@@ -176,10 +191,13 @@ sprint-01/
         ├── index.md         # Phase 계획
         └── sprint-01/       # Sprint 1
             ├── index.md     # Sprint 계획
-            ├── story-01.md  # Story
-            └── story-02.md  # Story
-            (workflows/)     # Story 전용 (선택적)
-            (tasks/)         # 복잡한 Task만 (선택적)
+            ├── story-01/    # Story 디렉토리
+            │   ├── story.md # Story 정의
+            │   └── tasks/   # Story 전용 Task (선택적)
+            ├── story-02/    # Story 디렉토리
+            │   ├── story.md # Story 정의
+            │   └── tasks/   # Story 전용 Task (선택적)
+            └── workflows/   # Sprint 공통 (선택적)
 ```
 
 ---
