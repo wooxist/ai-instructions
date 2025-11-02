@@ -101,49 +101,56 @@ Stage 4: reflecting     →   ReflectionAgent
 에이전트는 단순한 스크립트나 자동화와 다릅니다.
 
 **단순 자동화**:
-```python
-# 단순 스크립트: 고정된 순서로 작업 실행
-def generate_content():
-    ideas = call_ai("아이디어 10개 생성")
-    selected = ideas[0]  # 항상 첫 번째 선택
-    draft = call_ai(f"초안 작성: {selected}")
-    return draft
+```text
+단순 스크립트의 동작 흐름:
+
+1. AI에게 "아이디어 10개 생성" 요청
+2. 항상 첫 번째 아이디어 자동 선택
+3. 선택된 아이디어로 "초안 작성" 요청
+4. 결과 반환
+
+특징:
+- 고정된 순서로만 실행
+- 조건 판단 없음
+- 항상 같은 방식으로 동작
+- 상황 변화에 대응 불가
 ```
 
 **에이전트 시스템**:
-```python
-# 에이전트: 상태를 추적하고 판단하며 적응
-class ContentAgent:
-    def __init__(self, core_values, constraints):
-        self.core_values = core_values
-        self.state = ThinkingState()
-        self.constraints = constraints
-    
-    def generate_content(self):
-        # Stage 1: 상황에 따라 다른 프롬프트
-        self.state.update_stage("planning")
-        ideas = self.planning_stage()
-        
-        # Stage 2: 핵심 가치 기준으로 평가 및 선택
-        self.state.update_stage("reasoning")
-        selected = self.evaluate_by_values(ideas)
-        
-        # Stage 3: 제약조건 확인 후 작성
-        if self.check_constraints(selected):
-            self.state.update_stage("experimenting")
-            draft = self.generate_draft(selected)
-        else:
-            # 문제 발생 시 인간에게 알림
-            self.notify_human("제약조건 위반")
-            return None
-        
-        # Stage 4: 품질 검증
-        self.state.update_stage("reflecting")
-        if not self.verify_quality(draft):
-            # 재시도 또는 인간에게 알림
-            self.notify_human("품질 기준 미달")
-        
-        return draft
+```text
+에이전트의 지능적 동작 흐름:
+
+1. 준비 단계
+   - 핵심 가치 설정 (미션, 가치관)
+   - 제약조건 정의 (길이, 톤, 형식 등)
+   - 상태 추적 시스템 준비
+
+2. Stage 1: Planning (계획 수립)
+   - 현재 상태를 "planning"으로 업데이트
+   - 상황에 맞는 프롬프트 자동 생성
+   - 아이디어 발산 실행
+
+3. Stage 2: Reasoning (판단 및 선택)
+   - 현재 상태를 "reasoning"으로 업데이트
+   - 설정된 핵심 가치 기준으로 평가
+   - 최적의 아이디어 선택
+
+4. Stage 3: Experimenting (실행)
+   - 제약조건 자동 확인
+   - 조건 충족 시 → 초안 작성 진행
+   - 조건 미충족 시 → 인간에게 알림 전송
+
+5. Stage 4: Reflecting (검증)
+   - 품질 기준 자동 검증
+   - 기준 미달 시 → 인간에게 알림
+   - 기준 통과 시 → 작업 완료
+
+에이전트의 핵심 특징:
+- 상태 추적: 현재 어느 단계인지 항상 파악
+- 조건부 실행: 상황에 따라 다른 행동 선택
+- 오류 처리: 문제 발생 시 적절히 대응
+- Human-in-the-Loop: 필요할 때만 인간 개입 요청
+- 학습 능력: 과거 결과를 참고하여 개선
 ```
 
 **에이전트의 특징**:
@@ -302,75 +309,89 @@ Stage 4 (reflecting):
 ```
 
 **16.2.1: ContentAgent (자동화)**
-```python
-class ContentAgent:
-    def __init__(self, config):
-        self.core_values = config['core_values']
-        self.constraints = config['constraints']
-        self.state = ThinkingState(task_id="content-001")
-    
-    async def run(self):
-        """전체 워크플로우를 자율 실행"""
-        try:
-            # Stage 1: 자동으로 아이디어 생성 및 저장
-            ideas = await self.planning_stage()
-            self.state.save()  # thinking_state.json 자동 업데이트
-            
-            # Stage 2: 핵심 가치 기준으로 자동 평가 및 선택
-            selected = await self.reasoning_stage(ideas)
-            self.state.save()
-            
-            # Stage 3: 자동으로 초안 작성 및 저장
-            draft = await self.experimenting_stage(selected)
-            self.state.save()
-            
-            # Stage 4: 자동 품질 검증
-            quality = await self.reflecting_stage(draft)
-            
-            if quality.passed:
-                return draft  # 완료!
-            else:
-                # 품질 미달 시 인간에게 알림
-                await self.notify_human(
-                    "품질 기준 미달",
-                    quality.report
-                )
-                return None
-        
-        except Exception as e:
-            # 오류 발생 시 인간에게 알림
-            await self.notify_human("오류 발생", str(e))
-            raise
-    
-    async def planning_stage(self):
-        """Stage 1: 아이디어 발산"""
-        self.state.update_stage("planning")
-        
-        prompt = f"""
-        미션: {self.core_values['mission']}
-        핵심 가치: {self.core_values['values']}
-        
-        10개의 블로그 포스트 아이디어를 생성하세요.
-        """
-        
-        ideas = await call_ai(prompt)
-        
-        # ideas.json 자동 저장
-        save_json(
-            f"{self.state.task_dir}/thinking/planning/ideas.json",
-            ideas
-        )
-        
-        return ideas
-    
-    # ... 나머지 Stage 메서드들
+```yaml
+ContentAgent 구조:
+
+초기_설정:
+  핵심_가치:
+    mission: "블로그 독자에게 실질적 가치 제공"
+    values: ["명확성", "실용성", "친근함"]
+  
+  제약조건:
+    길이: 1500-2000자
+    톤: 친근하고 실용적
+    형식: 마크다운
+  
+  상태_추적:
+    task_id: "content-001"
+    현재_stage: null
+    시작_시간: null
+
+실행_흐름:
+  
+  1단계_Planning:
+    입력: 핵심 가치, 미션
+    처리:
+      - 상태를 "planning"으로 업데이트
+      - AI에게 프롬프트 전달:
+        "미션: [mission]
+         핵심 가치: [values]
+         10개의 블로그 포스트 아이디어를 생성하세요."
+      - AI가 10개 아이디어 생성
+    출력: ideas.json 파일 자동 저장
+    오류_처리: 생성 실패 시 인간에게 알림
+  
+  2단계_Reasoning:
+    입력: ideas.json
+    처리:
+      - 상태를 "reasoning"으로 업데이트
+      - 각 아이디어를 핵심 가치 기준으로 평가
+      - 가장 적합한 아이디어 선택
+    출력: selected.json 파일 자동 저장
+    오류_처리: 평가 실패 시 인간에게 알림
+  
+  3단계_Experimenting:
+    입력: selected.json
+    처리:
+      - 상태를 "experimenting"으로 업데이트
+      - 제약조건 확인 (길이, 톤, 형식)
+      - 조건 충족 시: 선택된 아이디어로 초안 작성
+      - 조건 미충족 시: 인간에게 알림
+    출력: draft_v1.md 파일 자동 저장
+    오류_처리: 작성 실패 또는 제약조건 위반 시 알림
+  
+  4단계_Reflecting:
+    입력: draft_v1.md
+    처리:
+      - 상태를 "reflecting"으로 업데이트
+      - 품질 기준 자동 검증:
+        * 핵심 가치 반영 여부
+        * 제약조건 준수 여부
+        * 독자 가치 제공 여부
+      - 통과 시: 작업 완료
+      - 미달 시: 인간에게 품질 리포트와 함께 알림
+    출력: quality_report.json
+    오류_처리: 검증 실패 시 상세 리포트 제공
+
+전체_오류_처리:
+  - 각 단계에서 오류 발생 시
+  - 현재 상태와 오류 내용을 기록
+  - 인간에게 알림 전송
+  - 상태 저장 후 작업 중단
+  - 이후 같은 지점부터 재개 가능
+
+인간_개입_지점:
+  - 제약조건 위반 발생 시
+  - 품질 기준 미달 시
+  - 예상치 못한 오류 발생 시
+  - 최종 승인 단계
 ```
 
 **차이점**:
-- 인간은 초기 설정(`config`)만 제공
-- 에이전트가 4단계 전체를 자율 실행
-- 파일 I/O, 상태 추적이 모두 자동화
-- 문제 발생 시에만 인간 개입
+- **인간의 역할**: 초기 설정만 제공 (핵심 가치, 제약조건)
+- **에이전트의 역할**: 4단계 전체를 자율 실행
+- **자동화 범위**: 파일 읽기/쓰기, 상태 추적, 품질 검증 모두 자동
+- **개입 방식**: 문제 발생 시에만 인간이 개입하여 판단
 
 ### 16장이 Part 4를 완성하는 방법
 

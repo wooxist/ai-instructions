@@ -23,74 +23,57 @@
 - ❌ 유지보수 부담: 버그 수정, 기능 추가 모두 직접
 
 **적합한 경우**:
-```python
-# 간단한 단일 에이전트
-# 특수한 요구사항 (예: 극도로 최적화된 성능 필요)
-# 기존 시스템과의 긴밀한 통합 필요
+- 간단한 단일 에이전트
+- 특수한 요구사항 (예: 극도로 최적화된 성능 필요)
+- 기존 시스템과의 긴밀한 통합 필요
 
-# 예시: ContentAgent를 API 직접 호출로 구현
-import anthropic
-
-client = anthropic.Anthropic(api_key="your-api-key")
-
-class SimpleContentAgent:
-    def __init__(self, task_id, goal, core_values):
-        self.task_id = task_id
-        self.goal = goal
-        self.core_values = core_values
-        self.memory = {}
+**구현 구조**:
+```yaml
+SimpleContentAgent:
+  초기화:
+    - task_id: 작업 식별자
+    - goal: 목표
+    - core_values: 핵심 가치
+    - memory: 빈 딕셔너리 (단계별 결과 저장)
+  
+  실행_흐름:
+    1. Planning:
+       - 프롬프트 생성 (목표, 핵심 가치 포함)
+       - API 호출
+       - 결과를 memory['planning']에 저장
     
-    async def run(self):
-        # Planning
-        planning_result = await self._call_api(
-            self._create_planning_prompt()
-        )
-        self.memory['planning'] = planning_result
-        
-        # Reasoning
-        reasoning_result = await self._call_api(
-            self._create_reasoning_prompt(planning_result)
-        )
-        self.memory['reasoning'] = reasoning_result
-        
-        # Experimenting
-        experimenting_result = await self._call_api(
-            self._create_experimenting_prompt(reasoning_result)
-        )
-        self.memory['experimenting'] = experimenting_result
-        
-        # Reflecting
-        final_result = await self._call_api(
-            self._create_reflecting_prompt(experimenting_result)
-        )
-        
-        return final_result
+    2. Reasoning:
+       - Planning 결과를 포함한 프롬프트 생성
+       - API 호출
+       - 결과를 memory['reasoning']에 저장
     
-    async def _call_api(self, prompt, max_retries=3):
-        """API 호출 with 재시도"""
-        for attempt in range(max_retries):
-            try:
-                message = client.messages.create(
-                    model="claude-sonnet-4-20250514",
-                    max_tokens=4000,
-                    messages=[{"role": "user", "content": prompt}]
-                )
-                return message.content[0].text
-            except Exception as e:
-                if attempt == max_retries - 1:
-                    raise
-                await asyncio.sleep(2 ** attempt)
+    3. Experimenting:
+       - Reasoning 결과를 포함한 프롬프트 생성
+       - API 호출
+       - 결과를 memory['experimenting']에 저장
     
-    def _create_planning_prompt(self):
-        return f"""
-당신은 콘텐츠 기획 전문가입니다.
-
-목표: {self.goal}
-핵심 가치: {self.core_values}
-
-1단계: 콘텐츠 구조 기획
-이 목표를 달성하기 위한 콘텐츠 구조를 설계하세요.
-"""
+    4. Reflecting:
+       - Experimenting 결과를 포함한 프롬프트 생성
+       - API 호출
+       - 최종 결과 반환
+  
+  API_호출_로직:
+    재시도_메커니즘:
+      - 최대 3회 재시도
+      - 실패 시 지수 백오프 (2^attempt 초)
+      - 마지막 시도 실패 시 예외 발생
+    
+    호출_파라미터:
+      - model: "claude-sonnet-4-20250514"
+      - max_tokens: 4000
+      - messages: [{"role": "user", "content": prompt}]
+  
+  프롬프트_구조:
+    Planning_프롬프트:
+      - 역할: "콘텐츠 기획 전문가"
+      - 목표: goal 값
+      - 핵심_가치: core_values 값
+      - 요청: "콘텐츠 구조 설계"
 ```
 
 **평가**: 간단한 에이전트라면 좋지만, 복잡해질수록 직접 관리하는 것이 부담스러워요.
@@ -109,135 +92,138 @@ class SimpleContentAgent:
 - ❌ 제약사항 존재: 프레임워크가 지원하는 패턴으로 제한됨
 - ❌ 의존성 증가: 프레임워크 버전 업데이트에 영향받음
 
-#### LangChain Agents 예시
+#### LangChain Agents 개념
 
-```python
-from langchain.agents import AgentExecutor, create_structured_chat_agent
-from langchain_anthropic import ChatAnthropic
-from langchain.tools import Tool
-from langchain.prompts import ChatPromptTemplate
+```yaml
+LangChain_구조:
+  핵심_개념:
+    - LLM: 언어 모델 (Claude, GPT 등)
+    - Tools: 에이전트가 사용할 수 있는 도구들
+    - Agent: LLM과 Tools를 연결
+    - AgentExecutor: Agent 실행 관리
+  
+  구성_요소:
+    LLM_설정:
+      - model: "claude-sonnet-4-20250514"
+      - temperature: 0.3
+    
+    Tools_정의:
+      - name: 도구 이름
+      - func: 실제 실행 함수
+      - description: 도구 설명 (LLM이 선택 시 참고)
+    
+    Agent_생성:
+      - prompt: 시스템 메시지 + 입력 템플릿
+      - llm: 사용할 언어 모델
+      - tools: 사용 가능한 도구 목록
+    
+    실행:
+      - AgentExecutor가 Agent와 Tools 조율
+      - LLM이 어떤 Tool을 사용할지 결정
+      - Tool 실행 결과를 LLM에 다시 전달
+      - 최종 답변 생성
 
-# LLM 설정
-llm = ChatAnthropic(
-    model="claude-sonnet-4-20250514",
-    temperature=0.3
-)
-
-# Tool 정의
-def analyze_market(query: str) -> str:
-    """시장 분석 tool"""
-    # 실제 분석 로직
-    return "시장 분석 결과..."
-
-def create_strategy(query: str) -> str:
-    """전략 수립 tool"""
-    # 실제 전략 수립 로직
-    return "전략 수립 결과..."
-
-tools = [
-    Tool(
-        name="MarketAnalysis",
-        func=analyze_market,
-        description="시장을 분석합니다"
-    ),
-    Tool(
-        name="StrategyCreation",
-        func=create_strategy,
-        description="전략을 수립합니다"
-    )
-]
-
-# Agent 생성
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "당신은 마케팅 전략 에이전트입니다."),
-    ("human", "{input}"),
-    ("assistant", "{agent_scratchpad}")
-])
-
-agent = create_structured_chat_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
-
-# 실행
-result = agent_executor.invoke({
-    "input": "신제품 런칭 전략을 수립해주세요"
-})
+  사용_예시_흐름:
+    1. "신제품 런칭 전략 수립" 요청
+    2. LLM이 "먼저 시장 분석이 필요" 판단
+    3. MarketAnalysis Tool 호출
+    4. 결과를 받아 "이제 전략 수립" 판단
+    5. StrategyCreation Tool 호출
+    6. 최종 전략 반환
 ```
 
-#### AutoGen 예시
+#### AutoGen 개념
 
-```python
-import autogen
+```yaml
+AutoGen_구조:
+  핵심_개념:
+    - Multi-Agent 대화
+    - 각 에이전트가 서로 대화하며 문제 해결
+    - Human-in-the-Loop 자연스럽게 통합
+  
+  주요_에이전트_타입:
+    AssistantAgent:
+      - 역할: AI 어시스턴트
+      - 특징: LLM 기반 응답 생성
+      - 사용: 분석, 기획, 전략 수립
+    
+    UserProxyAgent:
+      - 역할: 사용자 대리
+      - 특징: 코드 실행, 사용자 입력 처리
+      - 사용: 실행 검증, 승인 요청
+  
+  대화_흐름:
+    1. UserProxy가 AssistantAgent에 요청
+    2. Assistant가 응답 생성
+    3. UserProxy가 검증 (자동 또는 인간)
+    4. 필요시 추가 대화 반복
+    5. 목표 달성 시 종료
 
-config_list = [
-    {
-        "model": "claude-sonnet-4-20250514",
-        "api_key": "your-api-key",
-        "api_type": "anthropic"
-    }
-]
-
-# Assistant Agent
-assistant = autogen.AssistantAgent(
-    name="MarketingAssistant",
-    llm_config={"config_list": config_list},
-    system_message="""당신은 마케팅 전문가입니다.
-    시장 분석과 전략 수립을 도와주세요."""
-)
-
-# User Proxy Agent (사용자 대리)
-user_proxy = autogen.UserProxyAgent(
-    name="UserProxy",
-    human_input_mode="NEVER",
-    code_execution_config={"work_dir": "workspace"}
-)
-
-# 대화 시작
-user_proxy.initiate_chat(
-    assistant,
-    message="신제품 런칭 전략을 수립해주세요"
-)
+  사용_예시_흐름:
+    설정:
+      - MarketingAssistant: 마케팅 전문가 역할
+      - UserProxy: 사용자 대리 (자동 모드)
+    
+    대화:
+      1. UserProxy: "신제품 런칭 전략 수립"
+      2. Assistant: "먼저 시장 조사가 필요합니다..."
+      3. UserProxy: "진행하세요"
+      4. Assistant: "분석 결과... 이제 전략은..."
+      5. 완료
 ```
 
-#### CrewAI 예시
+#### CrewAI 개념
 
-```python
-from crewai import Agent, Task, Crew, Process
+```yaml
+CrewAI_구조:
+  핵심_개념:
+    - Role 기반 에이전트
+    - Task 중심 워크플로우
+    - Sequential/Parallel 프로세스
+  
+  구성_요소:
+    Agent:
+      - role: 역할 (예: 시장 조사원)
+      - goal: 목표
+      - backstory: 배경 스토리 (페르소나)
+      - verbose: 로깅 여부
+    
+    Task:
+      - description: 작업 설명
+      - agent: 담당 에이전트
+      - expected_output: 기대 결과 (선택)
+    
+    Crew:
+      - agents: 에이전트 목록
+      - tasks: 작업 목록
+      - process: Sequential 또는 Parallel
+  
+  실행_흐름:
+    Sequential_프로세스:
+      1. Task 1 → Agent A 실행
+      2. Task 1 완료
+      3. Task 2 → Agent B 실행 (Task 1 결과 참조)
+      4. Task 2 완료
+      5. 전체 완료
+    
+    Parallel_프로세스:
+      1. Task 1, 2, 3 동시 실행
+      2. 모두 완료 대기
+      3. 결과 통합
 
-# Agent 정의
-researcher = Agent(
-    role='시장 조사원',
-    goal='시장 트렌드와 경쟁사를 분석합니다',
-    backstory='10년 경력의 시장 분석 전문가',
-    verbose=True
-)
-
-strategist = Agent(
-    role='전략 기획자',
-    goal='시장 조사 결과를 바탕으로 전략을 수립합니다',
-    backstory='마케팅 전략 전문가',
-    verbose=True
-)
-
-# Task 정의
-research_task = Task(
-    description='신제품 시장을 조사하세요',
-    agent=researcher
-)
-
-strategy_task = Task(
-    description='시장 조사 결과를 바탕으로 런칭 전략을 수립하세요',
-    agent=strategist
-)
-
-# Crew 구성
-crew = Crew(
-    agents=[researcher, strategist],
-    tasks=[research_task, strategy_task],
-    process=Process.sequential
-)
-
-# 실행
-result = crew.kickoff()
+  사용_예시_흐름:
+    설정:
+      - researcher: 시장 조사원 (10년 경력)
+      - strategist: 전략 기획자 (마케팅 전문가)
+    
+    Tasks:
+      - research_task: 시장 조사
+      - strategy_task: 전략 수립
+    
+    실행:
+      1. researcher가 시장 조사 수행
+      2. strategist가 조사 결과로 전략 수립
+      3. 최종 전략 반환
 ```
 
 **프레임워크 선택 가이드**:
@@ -261,53 +247,66 @@ result = crew.kickoff()
 - ❌ 비용: 서비스 요금 지불 필요
 - ❌ 종속성: 서비스 변경/중단에 영향받음
 
-#### OpenAI Assistants API 예시
+#### OpenAI Assistants API 개념
 
-```python
-from openai import OpenAI
+```yaml
+Assistants_API_구조:
+  핵심_개념:
+    - Assistant: 영구적인 AI 어시스턴트
+    - Thread: 대화 스레드
+    - Message: 대화 메시지
+    - Run: 실행 단위
+  
+  구성_요소:
+    Assistant_생성:
+      - name: 어시스턴트 이름
+      - instructions: 시스템 지침
+      - model: 사용 모델
+      - tools: 사용 도구 (code_interpreter 등)
+    
+    Thread_생성:
+      - 독립적인 대화 공간
+      - 여러 Message 포함
+      - 컨텍스트 자동 관리
+    
+    Message_추가:
+      - role: "user" 또는 "assistant"
+      - content: 메시지 내용
+    
+    Run_실행:
+      - Thread에서 Assistant 실행
+      - 비동기 처리
+      - 상태: queued → in_progress → completed
+  
+  실행_흐름:
+    1. Assistant_생성:
+       - 한 번 생성, 계속 재사용
+       - 역할과 지침 설정
+    
+    2. Thread_생성:
+       - 작업마다 새 Thread
+       - 대화 컨텍스트 격리
+    
+    3. Message_추가:
+       - 사용자 요청 추가
+    
+    4. Run_실행:
+       - Assistant가 처리 시작
+       - 비동기로 진행
+    
+    5. 완료_대기:
+       - 상태 주기적 확인
+       - completed 상태까지 대기
+    
+    6. 결과_가져오기:
+       - Thread의 Message 목록 조회
+       - Assistant의 응답 추출
 
-client = OpenAI(api_key="your-api-key")
-
-# Assistant 생성
-assistant = client.beta.assistants.create(
-    name="Marketing Strategist",
-    instructions="""당신은 마케팅 전략 전문가입니다.
-    시장 분석을 바탕으로 실행 가능한 전략을 수립하세요.""",
-    model="gpt-4-turbo",
-    tools=[{"type": "code_interpreter"}]
-)
-
-# Thread 생성
-thread = client.beta.threads.create()
-
-# Message 추가
-message = client.beta.threads.messages.create(
-    thread_id=thread.id,
-    role="user",
-    content="신제품 런칭 전략을 수립해주세요"
-)
-
-# Run 실행
-run = client.beta.threads.runs.create(
-    thread_id=thread.id,
-    assistant_id=assistant.id
-)
-
-# 완료 대기
-while run.status != "completed":
-    run = client.beta.threads.runs.retrieve(
-        thread_id=thread.id,
-        run_id=run.id
-    )
-    time.sleep(1)
-
-# 결과 가져오기
-messages = client.beta.threads.messages.list(
-    thread_id=thread.id
-)
-
-for message in messages.data:
-    print(f"{message.role}: {message.content[0].text.value}")
+  장점:
+    - 상태 관리 자동화
+    - 코드 실행 내장
+    - 파일 업로드/다운로드 지원
+    - 다중 대화 관리
 ```
 
 ### 구현 옵션 선택 기준
@@ -359,130 +358,83 @@ for message in messages.data:
 **왜 필요한가요?**  
 에이전트가 여러 Stage를 거치며 작업할 때, 현재 어느 단계에 있는지 추적하고 다음 단계로 안전하게 이동하는 메커니즘이 필요해요.
 
-**구현**:
-```python
-from enum import Enum
-from typing import Optional, List, Callable
-from datetime import datetime
-
-class StageStatus(Enum):
-    """Stage 상태"""
-    PENDING = "pending"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-    FAILED = "failed"
-
-class Stage:
-    """개별 Stage"""
+**구현 개념**:
+```yaml
+상태_머신_구조:
+  StageStatus:
+    목적: Stage의 상태를 나타내는 열거형
+    값:
+      - PENDING: 대기 중
+      - IN_PROGRESS: 실행 중
+      - COMPLETED: 완료
+      - FAILED: 실패
+  
+  Stage:
+    목적: 개별 Stage 정의
+    속성:
+      - name: Stage 이름
+      - handler: 실행할 함수
+      - description: 설명
+      - status: 현재 상태 (StageStatus)
+      - result: 실행 결과
+      - error: 오류 메시지 (있는 경우)
+  
+  AgentStateMachine:
+    목적: 여러 Stage의 실행 순서와 상태 관리
     
-    def __init__(
-        self,
-        name: str,
-        handler: Callable,
-        description: str = ""
-    ):
-        self.name = name
-        self.handler = handler
-        self.description = description
-        self.status = StageStatus.PENDING
-        self.result = None
-        self.error = None
-
-class AgentStateMachine:
-    """에이전트 상태 머신"""
+    속성:
+      - stages: Stage 목록
+      - current_index: 현재 Stage 인덱스
+      - history: 실행 히스토리
     
-    def __init__(self, stages: List[Stage]):
-        self.stages = stages
-        self.current_index = 0
-        self.history = []
-    
-    def get_current_stage(self) -> Optional[Stage]:
-        """현재 Stage 가져오기"""
-        if self.current_index < len(self.stages):
-            return self.stages[self.current_index]
-        return None
-    
-    async def execute_current_stage(self, context: dict):
-        """현재 Stage 실행"""
-        stage = self.get_current_stage()
-        if not stage:
-            raise RuntimeError("No more stages")
-        
-        stage.status = StageStatus.IN_PROGRESS
-        
-        try:
-            result = await stage.handler(context)
-            stage.status = StageStatus.COMPLETED
-            stage.result = result
-            
-            self.history.append({
-                'stage': stage.name,
-                'status': 'completed',
-                'timestamp': datetime.now().isoformat()
-            })
-            
-            return result
-            
-        except Exception as e:
-            stage.status = StageStatus.FAILED
-            stage.error = str(e)
-            
-            self.history.append({
-                'stage': stage.name,
-                'status': 'failed',
-                'error': str(e),
-                'timestamp': datetime.now().isoformat()
-            })
-            
-            raise
-    
-    def move_next(self) -> bool:
-        """다음 Stage로 이동"""
-        if self.current_index < len(self.stages) - 1:
-            self.current_index += 1
-            return True
-        return False
-    
-    def get_progress(self) -> dict:
-        """진행 상황"""
-        completed = sum(
-            1 for s in self.stages
-            if s.status == StageStatus.COMPLETED
-        )
-        
-        return {
-            'total_stages': len(self.stages),
-            'completed_stages': completed,
-            'current_stage': self.get_current_stage().name if self.get_current_stage() else None,
-            'progress_percent': (completed / len(self.stages)) * 100
-        }
+    주요_메서드:
+      get_current_stage():
+        - 현재 Stage 반환
+        - 모든 Stage 완료 시 None
+      
+      execute_current_stage(context):
+        - 현재 Stage 실행
+        - 상태를 IN_PROGRESS로 변경
+        - handler 함수 호출
+        - 성공 시: COMPLETED, 결과 저장
+        - 실패 시: FAILED, 오류 저장
+        - history에 기록
+      
+      move_next():
+        - 다음 Stage로 이동
+        - 가능하면 True, 불가능하면 False
+      
+      get_progress():
+        - 진행 상황 반환
+        - total_stages: 전체 Stage 수
+        - completed_stages: 완료된 Stage 수
+        - current_stage: 현재 Stage 이름
+        - progress_percent: 진행률 (%)
 
+사용_패턴:
+  1. Stage_정의:
+     - 각 Stage마다 handler 함수 정의
+     - Stage 객체 생성 (name, handler, description)
+  
+  2. StateMachine_생성:
+     - Stage 목록으로 AgentStateMachine 생성
+  
+  3. 실행_루프:
+     - current_stage 있는 동안 반복:
+       * execute_current_stage(context) 호출
+       * 결과를 context에 추가
+       * move_next() 호출
+       * 이동 불가능하면 종료
+  
+  4. 진행_상황_확인:
+     - get_progress()로 현재 진행률 확인
+     - 사용자에게 피드백 제공
 
-# 사용 예시
-async def planning_handler(context):
-    print("Planning...")
-    return {"structure": "..."}
-
-stages = [
-    Stage("planning", planning_handler, "콘텐츠 구조 기획"),
-    Stage("reasoning", reasoning_handler, "논리 전개 분석"),
-    Stage("experimenting", experimenting_handler, "실험적 작성"),
-    Stage("reflecting", reflecting_handler, "반성 및 개선")
-]
-
-state_machine = AgentStateMachine(stages)
-
-context = {"goal": "...", "core_values": "..."}
-
-while state_machine.get_current_stage():
-    result = await state_machine.execute_current_stage(context)
-    context['previous_result'] = result
-    
-    if not state_machine.move_next():
-        break
-
-progress = state_machine.get_progress()
-print(f"진행률: {progress['progress_percent']}%")
+장점:
+  - 명확한 상태 추적
+  - 오류 처리 일관성
+  - 재시작 가능 (체크포인트)
+  - 진행 상황 가시성
 ```
 
 ### 패턴 2: 파일 I/O 자동화
@@ -490,98 +442,101 @@ print(f"진행률: {progress['progress_percent']}%")
 **왜 필요한가요?**  
 에이전트는 파일 시스템을 통해 입출력을 주고받아요. 디렉토리 생성, 파일 저장, JSON 직렬화 등 반복 작업을 자동화하면 코드가 간결해집니다.
 
-**구현**:
-```python
-import json
-from pathlib import Path
-from typing import Any, Dict
+**구현 개념**:
+```yaml
+파일_관리자_구조:
+  FileManager:
+    목적: 파일 I/O 작업 자동화
+    
+    초기화:
+      - base_dir: 기본 디렉토리 경로
+      - 디렉토리 자동 생성
+    
+    핵심_메서드:
+      _ensure_directory(path):
+        - 디렉토리가 없으면 생성
+        - parents=True: 부모 디렉토리도 생성
+        - exist_ok=True: 이미 존재해도 오류 없음
+      
+      get_path(relative_path):
+        - 상대 경로를 절대 경로로 변환
+        - base_dir 기준으로 결합
+      
+      save_json(relative_path, data):
+        - JSON 파일로 저장
+        - 디렉토리 자동 생성
+        - UTF-8 인코딩
+        - 들여쓰기 2칸
+        - 저장 확인 메시지 출력
+      
+      load_json(relative_path):
+        - JSON 파일 로드
+        - 파일 없으면 FileNotFoundError
+        - 파싱 후 반환
+      
+      save_text(relative_path, text):
+        - 텍스트 파일로 저장
+        - 디렉토리 자동 생성
+        - UTF-8 인코딩
+      
+      load_text(relative_path):
+        - 텍스트 파일 로드
+        - 전체 내용 문자열로 반환
+    
+    사고_클러스터_전용_헬퍼:
+      save_thinking_record(cluster_id, stage, record):
+        - thinking_record.json 저장
+        - 경로: thinking/{cluster_id}/{stage}/thinking_record.json
+        - record를 JSON으로 저장
+      
+      load_thinking_record(cluster_id, stage):
+        - thinking_record.json 로드
+        - 경로: thinking/{cluster_id}/{stage}/thinking_record.json
+        - JSON을 딕셔너리로 반환
 
-class FileManager:
-    """파일 관리 유틸리티"""
-    
-    def __init__(self, base_dir: str):
-        self.base_dir = Path(base_dir)
-        self._ensure_directory(self.base_dir)
-    
-    def _ensure_directory(self, path: Path):
-        """디렉토리가 없으면 생성"""
-        path.mkdir(parents=True, exist_ok=True)
-    
-    def get_path(self, relative_path: str) -> Path:
-        """상대 경로를 절대 경로로 변환"""
-        return self.base_dir / relative_path
-    
-    def save_json(self, relative_path: str, data: Any):
-        """JSON 파일 저장"""
-        file_path = self.get_path(relative_path)
-        self._ensure_directory(file_path.parent)
-        
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        
-        print(f"✓ 저장: {relative_path}")
-    
-    def load_json(self, relative_path: str) -> Any:
-        """JSON 파일 로드"""
-        file_path = self.get_path(relative_path)
-        
-        if not file_path.exists():
-            raise FileNotFoundError(f"파일 없음: {relative_path}")
-        
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    
-    def save_text(self, relative_path: str, text: str):
-        """텍스트 파일 저장"""
-        file_path = self.get_path(relative_path)
-        self._ensure_directory(file_path.parent)
-        
-        with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(text)
-    
-    def load_text(self, relative_path: str) -> str:
-        """텍스트 파일 로드"""
-        file_path = self.get_path(relative_path)
-        
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return f.read()
-    
-    # 사고 클러스터 전용 헬퍼
-    def save_thinking_record(
-        self,
-        cluster_id: str,
-        stage: str,
-        record: Dict[str, Any]
-    ):
-        """thinking_record.json 저장"""
-        path = f"thinking/{cluster_id}/{stage}/thinking_record.json"
-        self.save_json(path, record)
-    
-    def load_thinking_record(
-        self,
-        cluster_id: str,
-        stage: str
-    ) -> Dict[str, Any]:
-        """thinking_record.json 로드"""
-        path = f"thinking/{cluster_id}/{stage}/thinking_record.json"
-        return self.load_json(path)
+사용_패턴:
+  1. 초기화:
+     - FileManager('./workspaces/task-123')
+     - 작업 디렉토리 자동 생성
+  
+  2. JSON_저장:
+     - save_json('outputs/result.json', data)
+     - outputs/ 디렉토리 자동 생성
+     - data를 JSON 형식으로 저장
+  
+  3. thinking_record_저장:
+     - save_thinking_record('tc-c1', 'planning', record)
+     - thinking/tc-c1/planning/ 자동 생성
+     - thinking_record.json 저장
+  
+  4. 파일_로드:
+     - load_json('outputs/result.json')
+     - 파일 존재 확인
+     - JSON 파싱 후 반환
 
+디렉토리_구조_예시:
+  workspaces/task-123/
+  ├── thinking/
+  │   ├── tc-c1/
+  │   │   ├── planning/
+  │   │   │   └── thinking_record.json
+  │   │   ├── reasoning/
+  │   │   │   └── thinking_record.json
+  │   │   └── ...
+  │   └── tc-c2/
+  │       └── ...
+  ├── outputs/
+  │   ├── result.json
+  │   └── report.md
+  └── data/
+      └── input.csv
 
-# 사용 예시
-file_manager = FileManager('./workspaces/task-123')
-
-# JSON 저장
-file_manager.save_json('outputs/result.json', {
-    'title': '결과',
-    'data': [1, 2, 3]
-})
-
-# thinking_record 저장
-file_manager.save_thinking_record(
-    cluster_id='tc-c1',
-    stage='planning',
-    record={'plan': '...', 'reasoning': '...'}
-)
+장점:
+  - 경로 관리 간소화
+  - 오류 처리 일관성
+  - 디렉토리 자동 생성
+  - 인코딩 통일
+  - 재사용성 높음
 ```
 
 ---

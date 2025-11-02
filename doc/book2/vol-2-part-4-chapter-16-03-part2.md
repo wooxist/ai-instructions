@@ -7,122 +7,76 @@
 **왜 필요한가요?**  
 AI API 호출은 네트워크 문제나 레이트 리밋으로 실패할 수 있어요. 자동 재시도 로직을 추가하면 안정성이 크게 향상됩니다.
 
-**구현**:
-```python
-import asyncio
-from typing import Callable, TypeVar, Optional
-from functools import wraps
-
-T = TypeVar('T')
-
-class RetryConfig:
-    """재시도 설정"""
+**구현 개념**:
+```yaml
+재시도_설정:
+  RetryConfig:
+    목적: 재시도 동작 설정
     
-    def __init__(
-        self,
-        max_retries: int = 3,
-        base_delay: float = 1.0,
-        max_delay: float = 60.0,
-        exponential_backoff: bool = True,
-        retry_on_exceptions: tuple = (Exception,)
-    ):
-        self.max_retries = max_retries
-        self.base_delay = base_delay
-        self.max_delay = max_delay
-        self.exponential_backoff = exponential_backoff
-        self.retry_on_exceptions = retry_on_exceptions
-
-async def with_retry(
-    func: Callable[..., T],
-    *args,
-    config: Optional[RetryConfig] = None,
-    **kwargs
-) -> T:
-    """함수를 재시도 로직과 함께 실행"""
-    if config is None:
-        config = RetryConfig()
+    속성:
+      max_retries: 최대 재시도 횟수 (기본: 3)
+      base_delay: 기본 대기 시간 (초, 기본: 1.0)
+      max_delay: 최대 대기 시간 (초, 기본: 60.0)
+      exponential_backoff: 지수 백오프 사용 여부 (기본: true)
+      retry_on_exceptions: 재시도할 예외 타입들
     
-    last_exception = None
+    예시:
+      max_retries: 3
+      base_delay: 1.0
+      max_delay: 60.0
+      exponential_backoff: true
+      retry_on_exceptions: [ConnectionError, TimeoutError]
+
+재시도_로직:
+  with_retry:
+    목적: 함수를 재시도 로직으로 감싸서 실행
     
-    for attempt in range(config.max_retries):
-        try:
-            if asyncio.iscoroutinefunction(func):
-                return await func(*args, **kwargs)
-            else:
-                return func(*args, **kwargs)
-        
-        except config.retry_on_exceptions as e:
-            last_exception = e
-            
-            if attempt == config.max_retries - 1:
-                raise
-            
-            # 대기 시간 계산
-            if config.exponential_backoff:
-                delay = min(
-                    config.base_delay * (2 ** attempt),
-                    config.max_delay
-                )
-            else:
-                delay = config.base_delay
-            
-            print(f"⚠️  시도 {attempt + 1}/{config.max_retries} 실패. "
-                  f"{delay:.1f}초 후 재시도... (오류: {str(e)[:50]})")
-            
-            await asyncio.sleep(delay)
+    동작_흐름:
+      1. 함수 실행 시도
+      2. 성공하면 결과 반환
+      3. 실패하면:
+         - 재시도 가능한 예외인가? → 아니면 즉시 예외 발생
+         - 최대 재시도 도달? → 예이면 예외 발생
+         - 대기 시간 계산:
+           * 지수_백오프 = base_delay × 2^attempt
+           * max_delay를 초과하지 않도록 제한
+         - 대기 후 다시 시도 (1단계로)
     
-    raise last_exception
+    대기_시간_예시:
+      시도_1: 1.0초
+      시도_2: 2.0초
+      시도_3: 4.0초
+      시도_4: 8.0초
+      시도_5: 16.0초
 
-
-# Decorator로도 사용 가능
-def retry(config: Optional[RetryConfig] = None):
-    """재시도 decorator"""
+  retry_decorator:
+    목적: 함수에 재시도 로직을 decorator로 적용
     
-    def decorator(func):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            return await with_retry(func, *args, config=config, **kwargs)
-        return wrapper
-    
-    return decorator
+    사용_방법:
+      - 함수 정의 시 @retry(config) 추가
+      - 함수 호출 시 자동으로 재시도 로직 적용
 
+API_호출_특화_설정:
+  API_RETRY_CONFIG:
+    max_retries: 5
+    base_delay: 1.0
+    max_delay: 30.0
+    exponential_backoff: true
+    retry_on_exceptions:
+      - ConnectionError
+      - TimeoutError
+      - RateLimitError
+  
+  적용_사례:
+    - BaseAgent의 call_ai 메서드
+    - 모든 API 호출에 자동 적용
+    - 일시적 오류에 강건하게 대응
 
-# 사용 예시
-@retry(RetryConfig(max_retries=3))
-async def call_api(prompt: str) -> str:
-    """API 호출 (실패 가능)"""
-    # ... API 호출 로직
-    pass
-
-result = await call_api("안녕하세요")
-```
-
-**고급 활용**:
-```python
-# API 호출용 특화 재시도 설정
-API_RETRY_CONFIG = RetryConfig(
-    max_retries=5,
-    base_delay=1.0,
-    max_delay=30.0,
-    exponential_backoff=True,
-    retry_on_exceptions=(
-        ConnectionError,
-        TimeoutError,
-    )
-)
-
-# BaseAgent에서 사용
-class BaseAgent:
-    def __init__(self):
-        self.api_retry_config = API_RETRY_CONFIG
-    
-    async def call_ai(self, prompt: str) -> str:
-        """AI 호출 (자동 재시도)"""
-        return await with_retry(
-            self._raw_api_call,
-            prompt,
-            config=self.api_retry_config
-        )
+장점:
+  - 일시적 네트워크 문제 자동 해결
+  - 레이트 리밋 자동 대응
+  - 안정성 대폭 향상
+  - 수동 재시도 불필요
 ```
 
 ### 패턴 4: Human-in-the-Loop
@@ -130,149 +84,102 @@ class BaseAgent:
 **왜 필요한가요?**  
 에이전트가 중요한 결정을 내려야 할 때, 사람의 승인을 받는 것이 안전해요. 특히 비용이 많이 드는 작업이나 되돌리기 어려운 작업에서는 필수입니다.
 
-**구현**:
-```python
-from abc import ABC, abstractmethod
-from typing import Any, Dict, Optional
-from enum import Enum
+**구현 개념**:
+```yaml
+승인_상태:
+  ApprovalStatus:
+    - PENDING: 승인 대기 중
+    - APPROVED: 승인됨
+    - REJECTED: 거부됨
+    - TIMEOUT: 승인 시간 초과
 
-class ApprovalStatus(Enum):
-    """승인 상태"""
-    PENDING = "pending"
-    APPROVED = "approved"
-    REJECTED = "rejected"
-    TIMEOUT = "timeout"
-
-class ApprovalResponse:
-    """승인 응답"""
+승인_응답:
+  ApprovalResponse:
+    속성:
+      - status: 승인 상태 (ApprovalStatus)
+      - feedback: 피드백 메시지 (선택)
+      - modifications: 수정 사항 (선택)
     
-    def __init__(
-        self,
-        status: ApprovalStatus,
-        feedback: Optional[str] = None,
-        modifications: Optional[Dict[str, Any]] = None
-    ):
-        self.status = status
-        self.feedback = feedback
-        self.modifications = modifications or {}
-    
-    @property
-    def is_approved(self) -> bool:
-        return self.status == ApprovalStatus.APPROVED
+    is_approved:
+      - status가 APPROVED이면 true
+      - 그 외는 false
 
-
-class Notifier(ABC):
-    """알림 발송 인터페이스"""
+알림_시스템:
+  Notifier_인터페이스:
+    목적: 알림 발송 추상화
+    메서드: send(message)
+  
+  구현_예시:
+    SlackNotifier:
+      - webhook_url: Slack 웹훅 URL
+      - channel: 알림 채널
+      - 메시지를 Slack으로 전송
     
-    @abstractmethod
-    async def send(self, message: Dict[str, Any]):
-        pass
+    EmailNotifier:
+      - recipient: 수신자 이메일
+      - smtp_config: SMTP 설정
+      - 메시지를 이메일로 전송
 
-
-class SlackNotifier(Notifier):
-    """Slack 알림"""
+승인_게이트:
+  ApprovalGate:
+    목적: Human-in-the-Loop 승인 프로세스 관리
     
-    def __init__(self, webhook_url: str, channel: str):
-        self.webhook_url = webhook_url
-        self.channel = channel
+    초기화:
+      - notifier: 알림 발송자
+      - timeout_seconds: 승인 타임아웃 (기본: 3600초 = 1시간)
+      - pending_approvals: 대기 중인 승인 목록
     
-    async def send(self, message: Dict[str, Any]):
-        print(f"[Slack #{self.channel}] {message}")
-
-
-class ApprovalGate:
-    """Human-in-the-Loop 승인 게이트"""
-    
-    def __init__(
-        self,
-        notifier: Notifier,
-        timeout_seconds: int = 3600
-    ):
-        self.notifier = notifier
-        self.timeout_seconds = timeout_seconds
-        self.pending_approvals: Dict[str, ApprovalResponse] = {}
-    
-    async def require_approval(
-        self,
-        approval_id: str,
-        context: Dict[str, Any],
-        explanation: str = ""
-    ) -> ApprovalResponse:
-        """승인 요청"""
+    require_approval(approval_id, context, explanation):
+      동작_흐름:
+        1. 알림_발송:
+           - type: "approval_request"
+           - approval_id: 승인 식별자
+           - explanation: 설명 메시지
+           - context: 승인 컨텍스트
+           - timeout: 타임아웃 시간
         
-        message = {
-            'type': 'approval_request',
-            'approval_id': approval_id,
-            'explanation': explanation,
-            'context': context,
-            'timeout': f"{self.timeout_seconds // 60}분"
-        }
+        2. 승인_대기:
+           - 주기적으로 pending_approvals 확인
+           - approval_id에 대한 응답이 있는가?
+             * 있으면 → 응답 반환
+             * 없으면 → 계속 대기
+           - 타임아웃 초과 시:
+             * TIMEOUT 응답 반환
         
-        await self.notifier.send(message)
-        
-        # 승인 대기
-        start_time = asyncio.get_event_loop().time()
-        
-        while True:
-            if approval_id in self.pending_approvals:
-                response = self.pending_approvals.pop(approval_id)
-                return response
-            
-            elapsed = asyncio.get_event_loop().time() - start_time
-            if elapsed > self.timeout_seconds:
-                return ApprovalResponse(
-                    status=ApprovalStatus.TIMEOUT,
-                    feedback="승인 타임아웃"
-                )
-            
-            await asyncio.sleep(1)
+        3. 응답_반환:
+           - ApprovalResponse 객체
+           - 호출자는 is_approved로 승인 여부 확인
     
-    def submit_approval(
-        self,
-        approval_id: str,
-        approved: bool,
-        feedback: Optional[str] = None
-    ):
-        """승인 응답 제출"""
-        status = ApprovalStatus.APPROVED if approved else ApprovalStatus.REJECTED
-        
-        response = ApprovalResponse(
-            status=status,
-            feedback=feedback
-        )
-        
-        self.pending_approvals[approval_id] = response
-        print(f"✓ 승인 응답 제출: {approval_id} -> {status.value}")
+    submit_approval(approval_id, approved, feedback):
+      동작:
+        - 외부에서 승인 응답 제출
+        - approved=true이면 APPROVED
+        - approved=false이면 REJECTED
+        - pending_approvals에 저장
+        - require_approval이 응답 발견
 
+사용_시나리오:
+  마케팅_캠페인_런칭:
+    1. 에이전트가 캠페인 계획 수립
+    2. 예상_비용: $50,000
+    3. approval_gate.require_approval() 호출
+    4. Slack으로 승인 요청 알림
+    5. 담당자가 검토
+    6. approval_gate.submit_approval() 호출
+    7. 승인되면 캠페인 실행
+    8. 거부되면 작업 중단
 
-# 사용 예시
-async def main():
-    notifier = SlackNotifier(
-        webhook_url="https://hooks.slack.com/...",
-        channel="approvals"
-    )
-    
-    approval_gate = ApprovalGate(
-        notifier=notifier,
-        timeout_seconds=1800
-    )
-    
-    context = {
-        'task': 'Launch marketing campaign',
-        'estimated_cost': '$50,000'
-    }
-    
-    response = await approval_gate.require_approval(
-        approval_id='campaign-launch-2025-q4',
-        context=context,
-        explanation='Q4 마케팅 캠페인 승인이 필요합니다.'
-    )
-    
-    if response.is_approved:
-        print("✅ 승인됨!")
-        await launch_campaign(context)
-    else:
-        print("❌ 거부됨")
+적용_사례:
+  - 고비용 작업 (광고 캠페인, 대규모 이메일 발송)
+  - 되돌리기 어려운 작업 (데이터 삭제, 공개 발표)
+  - 법적/윤리적 검토 필요 작업
+  - 브랜드 이미지 관련 작업
+
+장점:
+  - 중요한 결정에 인간 개입
+  - 위험 감소
+  - 책임 소재 명확
+  - 타임아웃으로 무한 대기 방지
 ```
 
 ---
@@ -286,288 +193,257 @@ async def main():
 **왜 필요한가요?**  
 에이전트가 긴 작업을 수행 중 실패하면, 처음부터 다시 시작하는 것은 비효율적이에요. 체크포인트를 저장하고 실패 지점부터 재개하면 시간과 비용을 절약할 수 있습니다.
 
-**구현**:
-```python
-import json
-from pathlib import Path
-from typing import Optional, Any, Dict
-from datetime import datetime
+**구현 개념**:
+```yaml
+체크포인트_데이터:
+  Checkpoint:
+    목적: 특정 시점의 상태 저장
+    
+    속성:
+      - stage_name: Stage 이름
+      - stage_index: Stage 인덱스
+      - result: 실행 결과
+      - timestamp: 저장 시간
+    
+    직렬화:
+      - to_dict(): 딕셔너리로 변환
+      - from_dict(): 딕셔너리에서 복원
 
-class Checkpoint:
-    """체크포인트 데이터"""
+체크포인트_관리자:
+  CheckpointManager:
+    목적: 체크포인트 저장/로드 관리
     
-    def __init__(
-        self,
-        stage_name: str,
-        stage_index: int,
-        result: Any,
-        timestamp: str
-    ):
-        self.stage_name = stage_name
-        self.stage_index = stage_index
-        self.result = result
-        self.timestamp = timestamp
+    초기화:
+      - base_dir: 기본 디렉토리
+      - task_id: 작업 식별자
+      - checkpoint_file: {base_dir}/checkpoints/{task_id}.json
+      - 디렉토리 자동 생성
     
-    def to_dict(self) -> Dict:
-        return {
-            'stage_name': self.stage_name,
-            'stage_index': self.stage_index,
-            'result': self.result,
-            'timestamp': self.timestamp
-        }
+    save_checkpoint(stage_name, stage_index, result):
+      동작:
+        1. Checkpoint 객체 생성
+        2. 현재 시간 기록
+        3. JSON 파일로 저장
+        4. 저장 확인 메시지 출력
     
-    @classmethod
-    def from_dict(cls, data: Dict) -> 'Checkpoint':
-        return cls(
-            stage_name=data['stage_name'],
-            stage_index=data['stage_index'],
-            result=data['result'],
-            timestamp=data['timestamp']
-        )
+    load_checkpoint():
+      동작:
+        1. checkpoint_file 존재 확인
+        2. 없으면 None 반환
+        3. 있으면 JSON 로드
+        4. Checkpoint 객체로 변환
+        5. 로드 확인 메시지 출력
+    
+    clear_checkpoint():
+      동작:
+        - checkpoint_file 삭제
+        - 작업 완료 후 호출
 
+BaseAgent_통합:
+  run(resume=True):
+    동작_흐름:
+      1. 시작_준비:
+         - start_stage_index = 0
+         - previous_results = {}
+      
+      2. 체크포인트_확인 (resume=True인 경우):
+         - checkpoint = load_checkpoint()
+         - checkpoint가 있으면:
+           * start_stage_index = checkpoint.stage_index + 1
+           * previous_results = checkpoint.result
+           * "재개 중..." 메시지
+      
+      3. Stage_실행_루프:
+         - start_stage_index부터 끝까지:
+           * Stage 실행
+           * 성공 시:
+             - 체크포인트 저장
+             - previous_results에 추가
+           * 실패 시:
+             - 오류 메시지
+             - "resume=True로 재실행하면 이 지점부터 계속" 안내
+             - 예외 발생
+      
+      4. 완료_처리:
+         - 체크포인트 삭제
+         - 최종 결과 반환
 
-class CheckpointManager:
-    """체크포인트 관리"""
-    
-    def __init__(self, base_dir: str, task_id: str):
-        self.base_dir = Path(base_dir)
-        self.task_id = task_id
-        self.checkpoint_file = self.base_dir / f"checkpoints/{task_id}.json"
-        
-        self.checkpoint_file.parent.mkdir(parents=True, exist_ok=True)
-    
-    def save_checkpoint(
-        self,
-        stage_name: str,
-        stage_index: int,
-        result: Any
-    ):
-        """체크포인트 저장"""
-        checkpoint = Checkpoint(
-            stage_name=stage_name,
-            stage_index=stage_index,
-            result=result,
-            timestamp=datetime.now().isoformat()
-        )
-        
-        with open(self.checkpoint_file, 'w', encoding='utf-8') as f:
-            json.dump(checkpoint.to_dict(), f, ensure_ascii=False, indent=2)
-        
-        print(f"💾 체크포인트 저장: {stage_name} (#{stage_index})")
-    
-    def load_checkpoint(self) -> Optional[Checkpoint]:
-        """체크포인트 로드"""
-        if not self.checkpoint_file.exists():
-            return None
-        
-        with open(self.checkpoint_file, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        
-        checkpoint = Checkpoint.from_dict(data)
-        print(f"📂 체크포인트 로드: {checkpoint.stage_name} (#{checkpoint.stage_index})")
-        
-        return checkpoint
-    
-    def clear_checkpoint(self):
-        """체크포인트 삭제"""
-        if self.checkpoint_file.exists():
-            self.checkpoint_file.unlink()
+실제_사용_예시:
+  첫_번째_실행:
+    - agent.run() 호출
+    - Planning 완료 → 체크포인트 저장
+    - Reasoning 완료 → 체크포인트 저장
+    - Experimenting 중 실패 → 예외 발생
+  
+  재실행:
+    - agent.run(resume=True) 호출
+    - 체크포인트 로드: "Reasoning 완료됨"
+    - Experimenting부터 재개
+    - Reflecting 완료
+    - 전체 완료 → 체크포인트 삭제
 
-
-# BaseAgent에 통합
-class BaseAgent:
-    def __init__(self, task_id: str, base_dir: str):
-        self.task_id = task_id
-        self.checkpoint_manager = CheckpointManager(base_dir, task_id)
-    
-    async def run(self, resume: bool = True):
-        """에이전트 실행"""
-        start_stage_index = 0
-        previous_results = {}
-        
-        # 체크포인트 확인
-        if resume:
-            checkpoint = self.checkpoint_manager.load_checkpoint()
-            
-            if checkpoint:
-                start_stage_index = checkpoint.stage_index + 1
-                previous_results = checkpoint.result
-                print(f"🔄 {checkpoint.stage_name} 이후부터 재개...")
-        
-        # Stage 실행
-        context = {'previous_results': previous_results}
-        
-        for i in range(start_stage_index, len(self.stages)):
-            stage = self.stages[i]
-            
-            try:
-                result = await stage.handler(context)
-                
-                # 체크포인트 저장
-                self.checkpoint_manager.save_checkpoint(
-                    stage_name=stage.name,
-                    stage_index=i,
-                    result=result
-                )
-                
-                context['previous_results'][stage.name] = result
-                
-            except Exception as e:
-                print(f"❌ {stage.name} 실패: {e}")
-                print(f"💡 resume=True로 재실행하면 이 지점부터 계속됩니다.")
-                raise
-        
-        # 완료 후 체크포인트 삭제
-        self.checkpoint_manager.clear_checkpoint()
-        
-        return context['previous_results']
+장점:
+  - 시간 절약 (완료된 단계 스킵)
+  - 비용 절약 (API 재호출 불필요)
+  - 안정성 향상 (언제든 재개 가능)
+  - 디버깅 용이 (실패 지점 명확)
 ```
 
 ### 로깅 및 디버깅
 
-**구현**:
-```python
-import logging
-from datetime import datetime
+**구현 개념**:
+```yaml
+에이전트_로거:
+  AgentLogger:
+    목적: 에이전트 전용 로깅 시스템
+    
+    초기화:
+      - task_id: 작업 식별자
+      - log_file: 로그 파일 경로 (선택)
+      - logger 생성 (logging.getLogger)
+      - 로그 레벨: DEBUG
+    
+    핸들러_설정:
+      Console_Handler:
+        - 레벨: INFO
+        - 출력: 표준 출력
+        - 형식: [시간] [이름] [레벨] 메시지
+      
+      File_Handler (log_file 지정 시):
+        - 레벨: DEBUG
+        - 출력: 파일
+        - 형식: [시간] [이름] [레벨] 메시지
+        - 인코딩: UTF-8
+    
+    주요_메서드:
+      stage_start(stage_name):
+        - 메시지: "🚀 {stage_name} 시작"
+        - 레벨: INFO
+      
+      stage_complete(stage_name, duration_seconds):
+        - 메시지: "✅ {stage_name} 완료 ({duration}초)"
+        - 레벨: INFO
+      
+      stage_failed(stage_name, error):
+        - 메시지: "❌ {stage_name} 실패: {error}"
+        - 레벨: ERROR
+      
+      api_call(prompt_preview, tokens):
+        - 메시지: "🔵 API 호출: {prompt[:50]}... (토큰: {tokens})"
+        - 레벨: DEBUG
+      
+      human_approval_required(approval_id):
+        - 메시지: "⏸️  승인 대기: {approval_id}"
+        - 레벨: WARNING
+      
+      human_approval_received(approval_id, approved):
+        - 메시지: "✓ 승인 응답: {approval_id} -> 승인/거부"
+        - 레벨: INFO
 
-class AgentLogger:
-    """에이전트 전용 로거"""
-    
-    def __init__(self, task_id: str, log_file: str = None):
-        self.task_id = task_id
-        self.logger = logging.getLogger(f"agent.{task_id}")
-        self.logger.setLevel(logging.DEBUG)
-        
-        formatter = logging.Formatter(
-            '[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S'
-        )
-        
-        # Console Handler
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
-        console_handler.setFormatter(formatter)
-        self.logger.addHandler(console_handler)
-        
-        # File Handler
-        if log_file:
-            file_handler = logging.FileHandler(log_file, encoding='utf-8')
-            file_handler.setLevel(logging.DEBUG)
-            file_handler.setFormatter(formatter)
-            self.logger.addHandler(file_handler)
-    
-    def stage_start(self, stage_name: str):
-        """Stage 시작"""
-        self.logger.info(f"🚀 {stage_name} 시작")
-    
-    def stage_complete(self, stage_name: str, duration_seconds: float):
-        """Stage 완료"""
-        self.logger.info(f"✅ {stage_name} 완료 ({duration_seconds:.1f}초)")
-    
-    def stage_failed(self, stage_name: str, error: Exception):
-        """Stage 실패"""
-        self.logger.error(f"❌ {stage_name} 실패: {error}")
-    
-    def api_call(self, prompt_preview: str, tokens: int):
-        """API 호출"""
-        self.logger.debug(f"🔵 API 호출: {prompt_preview[:50]}... (토큰: {tokens})")
-    
-    def human_approval_required(self, approval_id: str):
-        """승인 요청"""
-        self.logger.warning(f"⏸️  승인 대기: {approval_id}")
-    
-    def human_approval_received(self, approval_id: str, approved: bool):
-        """승인 응답"""
-        status = "승인" if approved else "거부"
-        self.logger.info(f"✓ 승인 응답: {approval_id} -> {status}")
+로그_활용:
+  개발_단계:
+    - Console에서 실시간 확인
+    - 문제 발생 시 즉시 파악
+  
+  운영_단계:
+    - 파일에 모든 로그 기록
+    - 문제 발생 시 로그 분석
+    - 성능 모니터링
+  
+  디버깅:
+    - DEBUG 레벨로 상세 정보
+    - API 호출 내용 확인
+    - Stage별 소요 시간 분석
 
-
-# 사용 예시
-logger = AgentLogger(
-    task_id='content-gen-001',
-    log_file='logs/content-gen-001.log'
-)
-
-logger.stage_start('planning')
-# ... 작업 수행
-logger.stage_complete('planning', 15.3)
+로그_예시:
+  "[2025-11-02 10:30:15] [agent.content-001] [INFO] 🚀 planning 시작"
+  "[2025-11-02 10:30:18] [agent.content-001] [DEBUG] 🔵 API 호출: 당신은 콘텐츠 기획 전문가입니다... (토큰: 1500)"
+  "[2025-11-02 10:30:30] [agent.content-001] [INFO] ✅ planning 완료 (15.3초)"
+  "[2025-11-02 10:30:31] [agent.content-001] [WARNING] ⏸️  승인 대기: idea-selection-001"
 ```
 
 ### 알림 및 모니터링
 
-**구현**:
-```python
-class AlertManager:
-    """알림 관리자"""
+**구현 개념**:
+```yaml
+알림_관리자:
+  AlertManager:
+    목적: 다양한 이벤트에 대한 알림 발송
     
-    def __init__(self, notifiers: List[Notifier]):
-        self.notifiers = notifiers
+    초기화:
+      - notifiers: 알림 발송자 목록 (Slack, Email 등)
     
-    async def alert_failure(
-        self,
-        task_id: str,
-        stage_name: str,
-        error: Exception
-    ):
-        """실패 알림"""
-        message = {
-            'type': 'agent_failure',
-            'task_id': task_id,
-            'stage': stage_name,
-            'error': str(error),
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        for notifier in self.notifiers:
-            await notifier.send(message)
+    alert_failure(task_id, stage_name, error):
+      목적: 실패 알림
+      
+      메시지_내용:
+        - type: "agent_failure"
+        - task_id: 작업 ID
+        - stage: 실패한 Stage
+        - error: 오류 메시지
+        - timestamp: 발생 시간
+      
+      발송:
+        - 모든 notifiers에게 전송
+        - 즉시 확인 필요
     
-    async def alert_completion(
-        self,
-        task_id: str,
-        duration_seconds: float
-    ):
-        """완료 알림"""
-        message = {
-            'type': 'agent_completion',
-            'task_id': task_id,
-            'duration': f"{duration_seconds:.1f}초",
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        for notifier in self.notifiers:
-            await notifier.send(message)
+    alert_completion(task_id, duration_seconds):
+      목적: 완료 알림
+      
+      메시지_내용:
+        - type: "agent_completion"
+        - task_id: 작업 ID
+        - duration: 소요 시간
+        - timestamp: 완료 시간
+      
+      발송:
+        - 모든 notifiers에게 전송
+        - 성공 확인
     
-    async def alert_cost_warning(
-        self,
-        task_id: str,
-        current_cost: float,
-        budget: float
-    ):
-        """비용 경고"""
-        if current_cost > budget * 0.8:
-            message = {
-                'type': 'cost_warning',
-                'task_id': task_id,
-                'current_cost': current_cost,
-                'budget': budget,
-                'percent': (current_cost / budget) * 100
-            }
-            
-            for notifier in self.notifiers:
-                await notifier.send(message)
+    alert_cost_warning(task_id, current_cost, budget):
+      목적: 비용 경고
+      
+      조건:
+        - current_cost > budget × 0.8
+        - 예산의 80% 초과 시 경고
+      
+      메시지_내용:
+        - type: "cost_warning"
+        - task_id: 작업 ID
+        - current_cost: 현재 비용
+        - budget: 예산
+        - percent: 사용률 (%)
+      
+      발송:
+        - 모든 notifiers에게 전송
+        - 예산 초과 방지
 
+알림_전략:
+  중요도별_채널:
+    CRITICAL (실패):
+      - Slack #alerts
+      - Email (팀 전체)
+      - SMS (담당자)
+    
+    WARNING (비용 경고):
+      - Slack #monitoring
+      - Email (담당자)
+    
+    INFO (완료):
+      - Slack #status
+      - Email (선택)
 
-# 사용
-alert_manager = AlertManager([
-    SlackNotifier(webhook_url="...", channel="alerts"),
-    EmailNotifier(recipient="team@example.com")
-])
-
-await alert_manager.alert_failure(
-    task_id='task-123',
-    stage_name='reasoning',
-    error=Exception("API timeout")
-)
+모니터링_대시보드:
+  실시간_지표:
+    - 실행 중인 에이전트 수
+    - 평균 완료 시간
+    - 실패율
+    - 총 비용
+  
+  알림_히스토리:
+    - 최근 24시간 알림
+    - 실패 원인 분석
+    - 비용 추이
 ```
 
 ---
@@ -579,159 +455,177 @@ await alert_manager.alert_failure(
 ### API 호출 최소화
 
 **1. 결과 캐싱**:
-```python
-import hashlib
-from typing import Optional
+```yaml
+응답_캐시:
+  ResponseCache:
+    목적: API 응답 캐싱으로 중복 호출 방지
+    
+    초기화:
+      - cache_dir: 캐시 저장 디렉토리
+      - 디렉토리 자동 생성
+    
+    _get_cache_key(prompt, model):
+      목적: 캐시 키 생성
+      방법:
+        - "{model}:{prompt}" 문자열 생성
+        - MD5 해시로 변환
+        - 파일명으로 사용
+    
+    get(prompt, model):
+      동작:
+        1. 캐시 키 생성
+        2. 캐시 파일 존재 확인
+        3. 있으면:
+           - 파일 읽기
+           - response 반환
+           - "캐시 히트" 메시지
+        4. 없으면 None 반환
+    
+    set(prompt, model, response):
+      동작:
+        1. 캐시 키 생성
+        2. 캐시 파일 경로 생성
+        3. 데이터 저장:
+           - prompt
+           - model
+           - response
+           - timestamp
 
-class ResponseCache:
-    """API 응답 캐시"""
-    
-    def __init__(self, cache_dir: str):
-        self.cache_dir = Path(cache_dir)
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
-    
-    def _get_cache_key(self, prompt: str, model: str) -> str:
-        """캐시 키 생성"""
-        content = f"{model}:{prompt}"
-        return hashlib.md5(content.encode()).hexdigest()
-    
-    def get(self, prompt: str, model: str) -> Optional[str]:
-        """캐시에서 가져오기"""
-        key = self._get_cache_key(prompt, model)
-        cache_file = self.cache_dir / f"{key}.json"
-        
-        if cache_file.exists():
-            with open(cache_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                print(f"💚 캐시 히트: {prompt[:30]}...")
-                return data['response']
-        
-        return None
-    
-    def set(self, prompt: str, model: str, response: str):
-        """캐시에 저장"""
-        key = self._get_cache_key(prompt, model)
-        cache_file = self.cache_dir / f"{key}.json"
-        
-        with open(cache_file, 'w', encoding='utf-8') as f:
-            json.dump({
-                'prompt': prompt,
-                'model': model,
-                'response': response,
-                'timestamp': datetime.now().isoformat()
-            }, f, ensure_ascii=False, indent=2)
+BaseAgent_통합:
+  call_ai(prompt):
+    동작_흐름:
+      1. 캐시_확인 (enable_cache=True인 경우):
+         - cache.get(prompt, model)
+         - 있으면 즉시 반환 (API 호출 스킵)
+      
+      2. API_호출:
+         - 캐시 미스 시에만 호출
+         - 실제 API 요청
+      
+      3. 캐시_저장:
+         - cache.set(prompt, model, response)
+         - 다음 호출 시 재사용
 
+효과:
+  - 동일 프롬프트 재사용 시 API 호출 0
+  - 비용 절감 (캐시 히트 시 무료)
+  - 응답 속도 향상 (네트워크 지연 없음)
+  - 디버깅 용이 (응답 재현 가능)
 
-# BaseAgent에서 사용
-class BaseAgent:
-    def __init__(self, enable_cache: bool = True):
-        self.cache = ResponseCache('./cache') if enable_cache else None
-    
-    async def call_ai(self, prompt: str) -> str:
-        # 캐시 확인
-        if self.cache:
-            cached = self.cache.get(prompt, "claude-sonnet-4-20250514")
-            if cached:
-                return cached
-        
-        # API 호출
-        response = await self._raw_api_call(prompt)
-        
-        # 캐시 저장
-        if self.cache:
-            self.cache.set(prompt, "claude-sonnet-4-20250514", response)
-        
-        return response
+주의사항:
+  - 캐시 만료 시간 설정 고려
+  - 민감한 데이터는 캐싱 비활성화
+  - 디스크 용량 관리
 ```
 
 **2. 배치 처리**:
-```python
-class BatchProcessor:
-    """여러 요청을 배치로 처리"""
+```yaml
+배치_프로세서:
+  BatchProcessor:
+    목적: 여러 요청을 모아서 효율적으로 처리
     
-    def __init__(self, batch_size: int = 5):
-        self.batch_size = batch_size
-        self.queue = []
+    초기화:
+      - batch_size: 배치 크기 (기본: 5)
+      - queue: 대기 중인 요청 목록
     
-    async def add(self, prompt: str) -> str:
-        """요청 추가"""
-        self.queue.append(prompt)
-        
-        # 배치 크기에 도달하면 처리
-        if len(self.queue) >= self.batch_size:
-            return await self.flush()
+    add(prompt):
+      동작:
+        1. queue에 prompt 추가
+        2. queue 크기 확인
+        3. batch_size 도달 시:
+           - flush() 호출
+           - 배치 처리 실행
     
-    async def flush(self) -> List[str]:
-        """대기 중인 모든 요청 처리"""
-        if not self.queue:
-            return []
-        
-        # 한 번에 처리
-        results = await self._process_batch(self.queue)
-        self.queue = []
-        
-        return results
-    
-    async def _process_batch(self, prompts: List[str]) -> List[str]:
-        """배치 처리"""
-        # 병렬 처리
-        tasks = [self._call_api(p) for p in prompts]
-        return await asyncio.gather(*tasks)
+    flush():
+      동작:
+        1. queue가 비어있으면 즉시 반환
+        2. 모든 요청을 한꺼번에 처리
+        3. 병렬 처리 (asyncio.gather)
+        4. queue 초기화
+        5. 결과 목록 반환
+
+효과:
+  - 네트워크 오버헤드 감소
+  - 처리 속도 향상
+  - 자원 활용 효율화
+
+사용_시나리오:
+  - 여러 아이디어 동시 평가
+  - 대량 문서 분석
+  - 일괄 번역 작업
 ```
 
 ### 비용 추적
 
-```python
-class CostTracker:
-    """API 비용 추적"""
+```yaml
+비용_추적기:
+  CostTracker:
+    목적: API 비용 실시간 추적
     
-    # 토큰당 비용 (예시)
-    COST_PER_1K_INPUT_TOKENS = 0.003
-    COST_PER_1K_OUTPUT_TOKENS = 0.015
+    비용_설정:
+      COST_PER_1K_INPUT_TOKENS: 0.003  # $0.003 per 1K input tokens
+      COST_PER_1K_OUTPUT_TOKENS: 0.015  # $0.015 per 1K output tokens
     
-    def __init__(self):
-        self.total_input_tokens = 0
-        self.total_output_tokens = 0
+    초기화:
+      - total_input_tokens: 0
+      - total_output_tokens: 0
+      - call_count: 0
     
-    def track(self, input_tokens: int, output_tokens: int):
-        """토큰 사용 기록"""
-        self.total_input_tokens += input_tokens
-        self.total_output_tokens += output_tokens
+    track(input_tokens, output_tokens):
+      동작:
+        - 입력 토큰 누적
+        - 출력 토큰 누적
+        - 호출 횟수 증가
     
-    def get_total_cost(self) -> float:
-        """총 비용 계산"""
-        input_cost = (self.total_input_tokens / 1000) * self.COST_PER_1K_INPUT_TOKENS
-        output_cost = (self.total_output_tokens / 1000) * self.COST_PER_1K_OUTPUT_TOKENS
-        
-        return input_cost + output_cost
+    get_total_cost():
+      계산:
+        - input_cost = (total_input_tokens / 1000) × COST_PER_1K_INPUT
+        - output_cost = (total_output_tokens / 1000) × COST_PER_1K_OUTPUT
+        - total_cost = input_cost + output_cost
     
-    def get_summary(self) -> Dict:
-        """비용 요약"""
-        return {
-            'total_input_tokens': self.total_input_tokens,
-            'total_output_tokens': self.total_output_tokens,
-            'total_cost_usd': self.get_total_cost(),
-            'average_cost_per_call': self.get_total_cost() / max(1, self.call_count)
-        }
+    get_summary():
+      반환:
+        - total_input_tokens: 총 입력 토큰
+        - total_output_tokens: 총 출력 토큰
+        - total_cost_usd: 총 비용 (USD)
+        - average_cost_per_call: 호출당 평균 비용
 
+BaseAgent_통합:
+  call_ai(prompt):
+    동작:
+      1. API 호출
+      2. 토큰_계산:
+         - input_tokens = len(prompt) / 4 (대략)
+         - output_tokens = len(response) / 4 (대략)
+      3. 비용_추적:
+         - cost_tracker.track(input_tokens, output_tokens)
+      4. 응답 반환
+  
+  get_cost_summary():
+    - 현재까지의 비용 요약 반환
+    - 로그에 기록
+    - 예산 초과 확인
 
-# BaseAgent에서 사용
-class BaseAgent:
-    def __init__(self):
-        self.cost_tracker = CostTracker()
-    
-    async def call_ai(self, prompt: str) -> str:
-        response = await self._raw_api_call(prompt)
-        
-        # 비용 추적
-        input_tokens = len(prompt) // 4  # 대략 추정
-        output_tokens = len(response) // 4
-        self.cost_tracker.track(input_tokens, output_tokens)
-        
-        return response
-    
-    def get_cost_summary(self):
-        return self.cost_tracker.get_summary()
+활용_방안:
+  실시간_모니터링:
+    - 작업 진행 중 비용 확인
+    - 예산 초과 전 경고
+    - 비용 효율성 분석
+  
+  최적화_기준:
+    - 어떤 Stage가 비용이 많이 드는가?
+    - 프롬프트 최적화 필요성
+    - 캐싱 효과 측정
+
+예산_관리:
+  설정:
+    - budget: 1000.0  # $1000
+    - alert_threshold: 0.8  # 80%
+  
+  확인:
+    - 매 API 호출 후 비용 체크
+    - current_cost > budget × 0.8 시 경고
+    - current_cost > budget 시 작업 중단
 ```
 
 ---

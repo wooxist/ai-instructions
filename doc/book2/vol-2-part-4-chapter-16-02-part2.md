@@ -1,406 +1,398 @@
 # 16.2.3 계층적 에이전트 시스템 (14.3 기반) - 계속
 
-```python
-    async def _integrate_all_results(self):
-        """모든 에이전트 결과를 통합"""
-        
-        prompt = f"""
-당신은 전략 통합 전문가입니다.
+### Meta-Coordinator 핵심 메서드
 
-목표: {self.goal}
-
-각 에이전트 결과:
-
-1. 시장 조사 (MarketResearchAgent):
-{json.dumps(self.agent_results['market_research'], indent=2, ensure_ascii=False)}
-
-2. 제품 포지셔닝 (PositioningAgent):
-{json.dumps(self.agent_results['positioning'], indent=2, ensure_ascii=False)}
-
-3. 마케팅 전략 (MarketingStrategyAgent):
-{json.dumps(self.agent_results['marketing_strategy'], indent=2, ensure_ascii=False)}
-
-4. 런칭 실행 계획 (LaunchPlanAgent):
-{json.dumps(self.agent_results['launch_plan'], indent=2, ensure_ascii=False)}
-
-이 4가지 결과를 통합하여 완전한 신제품 런칭 계획을 작성하세요.
-
-통합 계획 구조:
-1. Executive Summary (전체 요약)
-2. Market Insights (시장 조사 핵심)
-3. Product Positioning (포지셔닝 전략)
-4. Marketing Strategy (마케팅 전략)
-5. Launch Plan (실행 계획)
-6. Success Metrics (성공 지표)
-7. Risk Management (리스크 관리)
-8. Timeline (전체 타임라인)
-
-각 섹션은 서로 일관되어야 하며, 전체 목표를 달성하는 데 기여해야 합니다.
-"""
-        
-        response = await call_ai(prompt, max_tokens=4000, temperature=0.3)
-        integrated_plan = json.loads(response)
-        
-        return integrated_plan
+```yaml
+통합_메서드:
+  _integrate_all_results():
+    목적: 모든 에이전트 결과를 하나의 완전한 계획으로 통합
     
-    async def _final_validation(self, integrated_plan):
-        """최종 통합 계획 검증"""
-        
-        prompt = f"""
-당신은 런칭 전략 최종 검증자입니다.
-
-목표: {self.goal}
-핵심 가치: {json.dumps(self.core_values, ensure_ascii=False)}
-제약조건: {json.dumps(self.constraints, ensure_ascii=False)}
-
-통합 런칭 계획:
-{json.dumps(integrated_plan, indent=2, ensure_ascii=False)}
-
-최종 검증:
-1. 완전성: 모든 필수 요소가 포함되었는가?
-2. 일관성: 각 섹션이 서로 모순되지 않는가?
-3. 실행 가능성: 현실적으로 실행 가능한가?
-4. 성공 가능성: 목표 달성 가능성이 높은가?
-5. 리스크 대비: 주요 리스크에 대한 대응책이 있는가?
-
-응답 형식:
-{{
-  "passed": true/false,
-  "overall_score": 0-10,
-  "completeness": 0-10,
-  "consistency": 0-10,
-  "feasibility": 0-10,
-  "success_likelihood": 0-10,
-  "risk_preparedness": 0-10,
-  "critical_issues": ["치명적 문제 (있다면)"],
-  "recommendations": ["개선 권장 사항"],
-  "approval_status": "approved" | "needs_revision" | "needs_human_review"
-}}
-"""
-        
-        response = await call_ai(prompt, temperature=0.2)
-        validation = json.loads(response)
-        
-        return validation
+    입력:
+      - market_research: 시장 조사 결과
+      - positioning: 포지셔닝 전략
+      - marketing_strategy: 마케팅 전략
+      - launch_plan: 실행 계획
     
-    def _save_final_plan(self, integrated_plan):
-        """최종 계획 저장"""
-        
-        # JSON 형식
-        file_manager = FileManager(self.base_dir)
-        file_manager.save_json('outputs/launch_plan.json', integrated_plan)
-        
-        # Markdown 형식 (사람이 읽기 좋게)
-        markdown = self._format_plan_as_markdown(integrated_plan)
-        file_manager.save_markdown('outputs/launch_plan.md', markdown)
-        
-        # 메타 조율 로그
-        file_manager.save_json('meta/coordination.json', {
-            'coordination_log': self.coordination_log,
-            'validation_history': self.validation_history,
-            'agent_results': self.agent_results
-        })
+    처리:
+      - AI에 통합 프롬프트 전송
+      - 각 에이전트 결과 포함
+      - 일관성 있는 단일 계획 요청
     
-    def _log_coordination(self, message):
-        """조율 로그 기록"""
-        entry = {
-            'timestamp': datetime.now().isoformat(),
-            'message': message
-        }
-        self.coordination_log.append(entry)
-        print(f"[Meta] {message}")
+    통합_계획_구조:
+      1. Executive Summary: 전체 요약
+      2. Market Insights: 시장 조사 핵심
+      3. Product Positioning: 포지셔닝 전략
+      4. Marketing Strategy: 마케팅 전략
+      5. Launch Plan: 실행 계획
+      6. Success Metrics: 성공 지표
+      7. Risk Management: 리스크 관리
+      8. Timeline: 전체 타임라인
     
-    async def _request_human_intervention(self, agent_id, validation):
-        """인간 개입 요청"""
-        
-        notification = {
-            'type': 'human_intervention_required',
-            'task_id': self.task_id,
-            'agent_id': agent_id,
-            'validation': validation,
-            'context': self.agent_results,
-            'message': f"{agent_id} 검증 실패 - 인간 검토 필요"
-        }
-        
-        await self.config['notifier'].send(notification)
+    출력: 통합된 런칭 계획 (JSON)
+
+  _final_validation():
+    목적: 최종 통합 계획의 완전성과 실행 가능성 검증
+    
+    검증_기준:
+      - 완전성: 모든 필수 요소 포함 여부
+      - 일관성: 섹션 간 모순 없음
+      - 실행_가능성: 현실적으로 실행 가능한가
+      - 성공_가능성: 목표 달성 가능성
+      - 리스크_대비: 주요 리스크 대응책 존재
+    
+    응답_형식:
+      passed: true/false
+      overall_score: 0-10
+      completeness: 0-10
+      consistency: 0-10
+      feasibility: 0-10
+      success_likelihood: 0-10
+      risk_preparedness: 0-10
+      critical_issues: []
+      recommendations: []
+      approval_status: "approved" | "needs_revision" | "needs_human_review"
+    
+    출력: 검증 결과
+
+  _save_final_plan():
+    목적: 최종 계획을 다양한 형식으로 저장
+    
+    저장_파일:
+      - outputs/launch_plan.json: 구조화된 데이터
+      - outputs/launch_plan.md: 사람이 읽기 좋은 형식
+      - meta/coordination.json: 조율 로그 및 검증 히스토리
+
+  _log_coordination():
+    목적: 조율 과정 기록
+    
+    로그_항목:
+      - timestamp: 시간
+      - message: 메시지
+    
+    효과: 전체 조율 과정 추적 가능
+
+  _request_human_intervention():
+    목적: 검증 실패 시 인간 개입 요청
+    
+    알림_내용:
+      - type: "human_intervention_required"
+      - task_id: 작업 ID
+      - agent_id: 실패한 에이전트
+      - validation: 검증 결과
+      - context: 전체 컨텍스트
+      - message: 상황 설명
 ```
 
 ### 실행 에이전트 구현
 
-```python
-# 1. MarketResearchAgent
-class MarketResearchAgent(BaseAgent):
-    """시장 조사 에이전트"""
+```yaml
+MarketResearchAgent:
+  목적: 시장 조사 에이전트
+  
+  실행_단계:
+    Stage_1_시장_규모_분석:
+      분석_항목:
+        - TAM: Total Addressable Market
+        - SAM: Serviceable Available Market
+        - SOM: Serviceable Obtainable Market
+        - 시장_성장률: 연간 성장률
+        - 시장_성숙도: 성장/성숙/쇠퇴 단계
     
-    async def run(self, context):
-        """시장 조사 실행"""
-        
-        # Stage 1: 시장 규모 분석
-        market_size = await self._analyze_market_size(context)
-        
-        # Stage 2: 경쟁사 분석
-        competitors = await self._analyze_competitors(context)
-        
-        # Stage 3: 고객 니즈 분석
-        customer_needs = await self._analyze_customer_needs(context)
-        
-        # Stage 4: 트렌드 분석
-        trends = await self._analyze_trends(context)
-        
-        # 결과 통합
-        result = {
-            'market_size': market_size,
-            'competitors': competitors,
-            'customer_needs': customer_needs,
-            'trends': trends,
-            'summary': await self._summarize_findings({
-                'market_size': market_size,
-                'competitors': competitors,
-                'customer_needs': customer_needs,
-                'trends': trends
-            })
-        }
-        
-        # 파일 저장
-        self.file_manager.save_json('thinking/tc-m1/market_research.json', result)
-        
-        return result
+    Stage_2_경쟁사_분석:
+      분석_항목:
+        - 주요_경쟁사: 상위 5개
+        - 시장_점유율: 각 경쟁사별
+        - 강점_약점: SWOT 분석
+        - 차별화_포인트: 우리와의 차이
     
-    async def _analyze_market_size(self, context):
-        """시장 규모 분석"""
-        
-        prompt = f"""
-신제품 런칭을 위한 시장 규모 분석:
-
-제품: {context['constraints'].get('product_type', 'SaaS 제품')}
-타겟 시장: {context['constraints'].get('target_market', '북미')}
-
-다음을 분석하세요:
-1. TAM (Total Addressable Market)
-2. SAM (Serviceable Available Market)
-3. SOM (Serviceable Obtainable Market)
-4. 시장 성장률 (연간)
-5. 시장 성숙도
-
-응답 형식: JSON
-"""
-        
-        response = await self.call_ai(prompt)
-        return json.loads(response)
-
-
-# 2. PositioningAgent
-class PositioningAgent(BaseAgent):
-    """제품 포지셔닝 에이전트"""
+    Stage_3_고객_니즈_분석:
+      분석_항목:
+        - 고객_페인_포인트: 주요 불만사항
+        - 미충족_니즈: 시장의 공백
+        - 구매_동기: 의사결정 요인
+        - 선호도: 기능/가격/브랜드
     
-    async def run(self, context):
-        """포지셔닝 전략 수립"""
-        
-        # 시장 조사 결과 참조
-        market_research = context['dependencies']['market_research']
-        
-        # Stage 1: 타겟 고객 정의
-        target_customer = await self._define_target_customer(market_research)
-        
-        # Stage 2: 가치 제안 (Value Proposition)
-        value_proposition = await self._create_value_proposition(
-            target_customer, 
-            market_research
-        )
-        
-        # Stage 3: 차별화 전략
-        differentiation = await self._define_differentiation(
-            value_proposition,
-            market_research['competitors']
-        )
-        
-        # Stage 4: 포지셔닝 스테이트먼트
-        positioning_statement = await self._create_positioning_statement(
-            target_customer,
-            value_proposition,
-            differentiation
-        )
-        
-        result = {
-            'target_customer': target_customer,
-            'value_proposition': value_proposition,
-            'differentiation': differentiation,
-            'positioning_statement': positioning_statement
-        }
-        
-        self.file_manager.save_json('thinking/tc-m2/positioning.json', result)
-        
-        return result
+    Stage_4_트렌드_분석:
+      분석_항목:
+        - 기술_트렌드: 관련 기술 동향
+        - 소비자_트렌드: 행동 패턴 변화
+        - 규제_트렌드: 법규 변화
+        - 경쟁_트렌드: 시장 역학 변화
+  
+  출력:
+    파일: thinking/tc-m1/market_research.json
+    내용:
+      - market_size: 시장 규모 정보
+      - competitors: 경쟁사 정보
+      - customer_needs: 고객 니즈
+      - trends: 트렌드 분석
+      - summary: 핵심 발견사항 요약
 
-
-# 3. MarketingStrategyAgent
-class MarketingStrategyAgent(BaseAgent):
-    """마케팅 전략 에이전트"""
+PositioningAgent:
+  목적: 제품 포지셔닝 에이전트
+  
+  의존성:
+    - MarketResearchAgent의 결과 필요
+  
+  실행_단계:
+    Stage_1_타겟_고객_정의:
+      정의_항목:
+        - 인구통계: 나이, 성별, 소득
+        - 직업_역할: 업무, 책임
+        - 행동_특성: 구매 패턴
+        - 목표_과제: 달성하려는 것
+        - 페인_포인트: 겪는 어려움
     
-    async def run(self, context):
-        """마케팅 전략 수립"""
-        
-        # 의존성 참조
-        market_research = context['dependencies']['market_research']
-        positioning = context['dependencies']['positioning']
-        
-        # Stage 1: 마케팅 목표 설정
-        marketing_goals = await self._set_marketing_goals(context['goal'])
-        
-        # Stage 2: 채널 전략
-        channel_strategy = await self._define_channel_strategy(
-            positioning['target_customer'],
-            market_research['trends']
-        )
-        
-        # Stage 3: 메시징 전략
-        messaging = await self._create_messaging_strategy(
-            positioning['value_proposition']
-        )
-        
-        # Stage 4: 캠페인 계획
-        campaigns = await self._plan_campaigns(
-            channel_strategy,
-            messaging,
-            context['constraints']
-        )
-        
-        result = {
-            'marketing_goals': marketing_goals,
-            'channel_strategy': channel_strategy,
-            'messaging': messaging,
-            'campaigns': campaigns,
-            'budget_allocation': await self._allocate_budget(
-                campaigns,
-                context['constraints'].get('budget', 100000)
-            )
-        }
-        
-        self.file_manager.save_json('thinking/tc-m3/marketing_strategy.json', result)
-        
-        return result
-
-
-# 4. LaunchPlanAgent
-class LaunchPlanAgent(BaseAgent):
-    """런칭 실행 계획 에이전트"""
+    Stage_2_가치_제안:
+      구성_요소:
+        - 핵심_혜택: 고객이 얻는 것
+        - 차별화_요소: 경쟁사와 다른 점
+        - 증거: 혜택을 뒷받침하는 근거
     
-    async def run(self, context):
-        """런칭 실행 계획 수립"""
-        
-        # 의존성 참조
-        positioning = context['dependencies']['positioning']
-        marketing_strategy = context['dependencies']['marketing_strategy']
-        
-        # Stage 1: 런칭 단계 정의
-        launch_phases = await self._define_launch_phases()
-        
-        # Stage 2: 타임라인 수립
-        timeline = await self._create_timeline(
-            launch_phases,
-            context['constraints'].get('launch_date', 'Q4 2025')
-        )
-        
-        # Stage 3: 책임 할당
-        responsibilities = await self._assign_responsibilities(
-            launch_phases,
-            context['constraints'].get('team_structure', {})
-        )
-        
-        # Stage 4: 성공 지표 정의
-        success_metrics = await self._define_success_metrics(
-            marketing_strategy['marketing_goals']
-        )
-        
-        # Stage 5: 리스크 관리 계획
-        risk_management = await self._create_risk_management_plan(
-            launch_phases
-        )
-        
-        result = {
-            'launch_phases': launch_phases,
-            'timeline': timeline,
-            'responsibilities': responsibilities,
-            'success_metrics': success_metrics,
-            'risk_management': risk_management
-        }
-        
-        self.file_manager.save_json('thinking/tc-m4/launch_plan.json', result)
-        
-        return result
+    Stage_3_차별화_전략:
+      전략_요소:
+        - 기능_차별화: 독특한 기능
+        - 경험_차별화: 사용자 경험
+        - 가격_차별화: 가치 대비 가격
+        - 브랜드_차별화: 브랜드 이미지
+    
+    Stage_4_포지셔닝_스테이트먼트:
+      형식: "[타겟 고객]을 위한 [제품 카테고리]로서, [핵심 혜택]을 제공합니다. [경쟁사]와 달리, [차별화 포인트]를 가지고 있습니다."
+  
+  출력:
+    파일: thinking/tc-m2/positioning.json
+    내용:
+      - target_customer: 타겟 고객 정의
+      - value_proposition: 가치 제안
+      - differentiation: 차별화 전략
+      - positioning_statement: 포지셔닝 문구
+
+MarketingStrategyAgent:
+  목적: 마케팅 전략 에이전트
+  
+  의존성:
+    - MarketResearchAgent의 결과
+    - PositioningAgent의 결과
+  
+  실행_단계:
+    Stage_1_마케팅_목표_설정:
+      목표_유형:
+        - 인지도: 브랜드 인지도 X% 달성
+        - 리드: 월 X개 리드 확보
+        - 전환율: X% 전환율 달성
+        - 매출: 첫 분기 $X 매출
+    
+    Stage_2_채널_전략:
+      채널_선택:
+        - 온라인: SEO, SEM, 소셜미디어, 콘텐츠
+        - 오프라인: 이벤트, PR, 파트너십
+        - 직접: 영업팀, 웨비나
+      
+      채널별_전략:
+        - 각 채널의 역할
+        - 예산 배분
+        - KPI 설정
+    
+    Stage_3_메시징_전략:
+      메시지_구조:
+        - 핵심_메시지: 한 문장 요약
+        - 보조_메시지: 3-5개 서브 메시지
+        - 증거_포인트: 각 메시지 뒷받침
+        - 톤앤매너: 브랜드 보이스
+    
+    Stage_4_캠페인_계획:
+      캠페인_요소:
+        - 캠페인명: 식별 가능한 이름
+        - 목표: 구체적 목표
+        - 타겟: 대상 고객
+        - 채널: 사용 채널
+        - 메시지: 전달 메시지
+        - 기간: 시작-종료일
+        - 예산: 소요 예산
+        - KPI: 측정 지표
+  
+  출력:
+    파일: thinking/tc-m3/marketing_strategy.json
+    내용:
+      - marketing_goals: 마케팅 목표
+      - channel_strategy: 채널 전략
+      - messaging: 메시징 전략
+      - campaigns: 캠페인 계획
+      - budget_allocation: 예산 배분
+
+LaunchPlanAgent:
+  목적: 런칭 실행 계획 에이전트
+  
+  의존성:
+    - PositioningAgent의 결과
+    - MarketingStrategyAgent의 결과
+  
+  실행_단계:
+    Stage_1_런칭_단계_정의:
+      단계:
+        - Pre-Launch: 런칭 3개월 전
+        - Soft Launch: 베타/얼리어답터
+        - Official Launch: 공식 런칭
+        - Post-Launch: 런칭 후 최적화
+    
+    Stage_2_타임라인_수립:
+      각_단계별:
+        - 시작일: YYYY-MM-DD
+        - 종료일: YYYY-MM-DD
+        - 주요_활동: 핵심 할 일
+        - 마일스톤: 체크포인트
+    
+    Stage_3_책임_할당:
+      역할별:
+        - 제품팀: 제품 준비
+        - 마케팅팀: 캠페인 실행
+        - 영업팀: 고객 확보
+        - 고객지원팀: 온보딩
+    
+    Stage_4_성공_지표_정의:
+      지표_유형:
+        - 선행지표: 런칭 전 (리드, 대기자)
+        - 동행지표: 런칭 중 (가입, 활성)
+        - 후행지표: 런칭 후 (매출, 유지)
+    
+    Stage_5_리스크_관리_계획:
+      리스크_식별:
+        - 기술적: 버그, 성능
+        - 시장: 경쟁, 수요
+        - 운영: 인력, 프로세스
+      
+      대응_계획:
+        - 예방: 사전 조치
+        - 완화: 영향 최소화
+        - 전가: 보험, 파트너
+        - 수용: 감수
+  
+  출력:
+    파일: thinking/tc-m4/launch_plan.json
+    내용:
+      - launch_phases: 런칭 단계
+      - timeline: 타임라인
+      - responsibilities: 책임 할당
+      - success_metrics: 성공 지표
+      - risk_management: 리스크 계획
 ```
 
-### 사용 예시
+### 사용 시나리오
 
-```python
-async def main():
-    # 설정
-    config = {
-        'goal': 'Q4 신제품 런칭 성공 (목표 매출 $1M)',
-        'core_values': [
-            {'name': '고객 중심', 'description': '고객 가치를 최우선으로'},
-            {'name': '혁신', 'description': '차별화된 솔루션 제공'},
-            {'name': '품질', 'description': '높은 품질 기준 유지'}
-        ],
-        'constraints': {
-            'budget': 500000,
-            'launch_date': '2025-10-01',
-            'team_size': 15,
-            'product_type': 'AI 생산성 도구'
-        },
-        'dependencies': {
-            'market_research': {
-                'depends_on': [],
-                'outputs': ['thinking/tc-m1/market_research.json']
-            },
-            'positioning': {
-                'depends_on': ['market_research'],
-                'requires': ['thinking/tc-m1/market_research.json'],
-                'outputs': ['thinking/tc-m2/positioning.json']
-            },
-            'marketing_strategy': {
-                'depends_on': ['market_research', 'positioning'],
-                'requires': [
-                    'thinking/tc-m1/market_research.json',
-                    'thinking/tc-m2/positioning.json'
-                ],
-                'outputs': ['thinking/tc-m3/marketing_strategy.json']
-            },
-            'launch_plan': {
-                'depends_on': ['positioning', 'marketing_strategy'],
-                'requires': [
-                    'thinking/tc-m2/positioning.json',
-                    'thinking/tc-m3/marketing_strategy.json'
-                ],
-                'outputs': ['thinking/tc-m4/launch_plan.json']
-            }
-        },
-        'market_config': {...},
-        'positioning_config': {...},
-        'marketing_config': {...},
-        'launch_config': {...},
-        'notifier': SlackNotifier(channel='#launch-review')
-    }
+```yaml
+전체_시나리오:
+  설정:
+    goal: "Q4 신제품 런칭 성공 (목표 매출 $1M)"
     
-    # 시스템 생성 및 실행
-    system = LaunchAgentSystem(task_id='launch-q4-2025', config=config)
+    core_values:
+      - name: "고객 중심"
+        description: "고객 가치를 최우선으로"
+      - name: "혁신"
+        description: "차별화된 솔루션 제공"
+      - name: "품질"
+        description: "높은 품질 기준 유지"
     
-    try:
-        result = await system.run()
-        
-        print("\n✅ 런칭 계획 완료!")
-        print(f"상태: {result['status']}")
-        print(f"검증 점수: {result['validation']['overall_score']}/10")
-        print(f"결과 파일: {result['output_files']}")
-        
-    except ValidationFailure as e:
-        print(f"\n❌ 검증 실패: {e}")
-    except DependencyError as e:
-        print(f"\n❌ 의존성 오류: {e}")
+    constraints:
+      budget: 500000
+      launch_date: "2025-10-01"
+      team_size: 15
+      product_type: "AI 생산성 도구"
+    
+    dependencies:
+      market_research:
+        depends_on: []
+        outputs: ["thinking/tc-m1/market_research.json"]
+      
+      positioning:
+        depends_on: ["market_research"]
+        requires: ["thinking/tc-m1/market_research.json"]
+        outputs: ["thinking/tc-m2/positioning.json"]
+      
+      marketing_strategy:
+        depends_on: ["market_research", "positioning"]
+        requires:
+          - "thinking/tc-m1/market_research.json"
+          - "thinking/tc-m2/positioning.json"
+        outputs: ["thinking/tc-m3/marketing_strategy.json"]
+      
+      launch_plan:
+        depends_on: ["positioning", "marketing_strategy"]
+        requires:
+          - "thinking/tc-m2/positioning.json"
+          - "thinking/tc-m3/marketing_strategy.json"
+        outputs: ["thinking/tc-m4/launch_plan.json"]
+  
+  실행_흐름:
+    1. 시스템_초기화:
+       - LaunchAgentSystem 생성
+       - task_id: "launch-q4-2025"
+       - 설정 로드
+    
+    2. MarketResearchAgent_실행:
+       - 상태: "실행 중"
+       - 진행: "시장 조사 중..."
+       - 완료: thinking/tc-m1/market_research.json 생성
+       - 검증: 메타 조율자가 결과 검증
+       - 통과: 다음 에이전트로
+    
+    3. PositioningAgent_실행:
+       - 컨텍스트: market_research 결과 전달
+       - 상태: "실행 중"
+       - 진행: "포지셔닝 전략 수립 중..."
+       - 완료: thinking/tc-m2/positioning.json 생성
+       - 검증: 메타 조율자가 검증
+       - 통과: 다음 에이전트로
+    
+    4. MarketingStrategyAgent_실행:
+       - 컨텍스트: market_research + positioning 결과
+       - 상태: "실행 중"
+       - 진행: "마케팅 전략 수립 중..."
+       - 완료: thinking/tc-m3/marketing_strategy.json 생성
+       - 검증: 메타 조율자가 검증
+       - 통과: 다음 에이전트로
+    
+    5. LaunchPlanAgent_실행:
+       - 컨텍스트: positioning + marketing_strategy 결과
+       - 상태: "실행 중"
+       - 진행: "실행 계획 수립 중..."
+       - 완료: thinking/tc-m4/launch_plan.json 생성
+       - 검증: 메타 조율자가 검증
+       - 통과: 통합 단계로
+    
+    6. 결과_통합:
+       - 메타 조율자가 4개 결과 통합
+       - 완전한 런칭 계획 생성
+       - outputs/launch_plan.json 저장
+       - outputs/launch_plan.md 저장
+    
+    7. 최종_검증:
+       - 통합 계획 검증
+       - overall_score >= 7.5 확인
+       - 승인 상태 결정
+    
+    8. 완료:
+       - 상태: "completed"
+       - 검증_점수: 8.5/10
+       - 결과_파일:
+         - outputs/launch_plan.json
+         - outputs/launch_plan.md
+         - meta/coordination.json
 
-
-# 실행
-asyncio.run(main())
+  오류_시나리오:
+    검증_실패:
+      - PositioningAgent의 결과 검증 실패
+      - overall_score: 6.2 (기준 7.5 미만)
+      - 액션: 피드백과 함께 재실행
+      - 피드백: "시장 조사와 연결이 약함"
+      - 재실행: 피드백 반영하여 재작성
+      - 재검증: 통과 시 다음 단계로
+    
+    인간_개입:
+      - 재시도 후에도 검증 실패
+      - 메타 조율자가 인간 개입 요청
+      - 알림: Slack/이메일로 전송
+      - 대기: 인간 검토 및 수정
+      - 재개: 수정 후 다음 에이전트부터
 ```
 
 ### 계층적 에이전트 패턴 요약
@@ -467,28 +459,32 @@ asyncio.run(main())
 - 실시간 통신 어려움
 - 파일 I/O 오버헤드
 
-**구현**:
-```python
-# Agent A: 데이터 생성
-class AgentA:
-    async def run(self):
-        result = await self.process()
-        
-        # 파일로 저장
-        self.file_manager.save_json('outputs/data.json', result)
-        
-        return result
+**구현 개념**:
+```yaml
+Agent_A_데이터_생성:
+  역할: 데이터 생성자
+  
+  처리_흐름:
+    1. 데이터 처리 및 생성
+    2. 결과를 JSON 파일로 저장
+    3. 저장 경로: outputs/data.json
+  
+  출력:
+    파일: outputs/data.json
+    내용: 처리된 데이터
 
-# Agent B: 데이터 읽기
-class AgentB:
-    async def run(self):
-        # Agent A의 출력 파일 읽기
-        data = self.file_manager.load_json('outputs/data.json')
-        
-        # 처리
-        result = await self.process(data)
-        
-        return result
+Agent_B_데이터_읽기:
+  역할: 데이터 소비자
+  
+  처리_흐름:
+    1. Agent A의 출력 파일 확인
+    2. outputs/data.json 읽기
+    3. 데이터 처리
+    4. 자신의 결과 저장
+  
+  입력:
+    파일: outputs/data.json
+    대기: 파일 존재할 때까지
 ```
 
 **적용**: 16.2.2 병렬 에이전트, 16.2.3 계층적 에이전트
@@ -506,68 +502,46 @@ class AgentB:
 - 인프라 필요 (Redis, RabbitMQ 등)
 - 복잡도 증가
 
-**구현**:
-```python
-import asyncio
-from aioredis import Redis
+**구현 개념**:
+```yaml
+MessageQueue_시스템:
+  구성요소:
+    - Redis 또는 RabbitMQ 서버
+    - Publisher (메시지 발행자)
+    - Subscriber (메시지 구독자)
+  
+  메시지_흐름:
+    1. Agent A가 작업 완료
+    2. 메시지를 큐에 발행
+       채널: "agent_a_completed"
+       내용:
+         agent: "agent_a"
+         status: "completed"
+         result: {...}
+    
+    3. Agent B가 채널 구독
+    4. 메시지 수신 시 핸들러 실행
+    5. Agent B가 작업 시작
 
-class MessageQueue:
-    def __init__(self, redis_url):
-        self.redis = Redis.from_url(redis_url)
-    
-    async def publish(self, channel, message):
-        """메시지 발행"""
-        await self.redis.publish(channel, json.dumps(message))
-    
-    async def subscribe(self, channel, handler):
-        """메시지 구독"""
-        pubsub = self.redis.pubsub()
-        await pubsub.subscribe(channel)
-        
-        async for message in pubsub.listen():
-            if message['type'] == 'message':
-                data = json.loads(message['data'])
-                await handler(data)
+Agent_A_발행:
+  역할: 메시지 발행자
+  
+  작업_완료_시:
+    - 결과를 메시지로 구성
+    - 메시지 큐에 발행
+    - 채널: "agent_a_completed"
 
-# Agent A: 메시지 발행
-class AgentA:
-    def __init__(self, message_queue):
-        self.mq = message_queue
-    
-    async def run(self):
-        result = await self.process()
-        
-        # 메시지 발행
-        await self.mq.publish('agent_a_completed', {
-            'agent': 'agent_a',
-            'status': 'completed',
-            'result': result
-        })
-        
-        return result
-
-# Agent B: 메시지 구독
-class AgentB:
-    def __init__(self, message_queue):
-        self.mq = message_queue
-        self.agent_a_result = None
-    
-    async def run(self):
-        # Agent A 완료 대기
-        await self.mq.subscribe('agent_a_completed', self._handle_agent_a)
-        
-        # Agent A 결과가 올 때까지 대기
-        while self.agent_a_result is None:
-            await asyncio.sleep(0.1)
-        
-        # 처리
-        result = await self.process(self.agent_a_result)
-        
-        return result
-    
-    async def _handle_agent_a(self, message):
-        """Agent A 완료 처리"""
-        self.agent_a_result = message['result']
+Agent_B_구독:
+  역할: 메시지 구독자
+  
+  초기화:
+    - 채널 "agent_a_completed" 구독
+    - 핸들러 등록
+  
+  메시지_수신:
+    - 핸들러 자동 호출
+    - Agent A 결과 저장
+    - 자신의 작업 시작
 ```
 
 ### 패턴 3: 공유 상태 (Shared State)
@@ -582,65 +556,44 @@ class AgentB:
 - 동시성 문제 (락 필요)
 - 재현성 낮음
 
-**구현**:
-```python
-import asyncio
-from typing import Dict, Any
-
-class SharedState:
-    """에이전트 간 공유 상태"""
+**구현 개념**:
+```yaml
+SharedState_객체:
+  저장소: 메모리 기반 딕셔너리
+  
+  동시성_제어:
+    - 각 키마다 독립적인 락
+    - 읽기/쓰기 시 락 획득
+    - 작업 완료 후 락 해제
+  
+  주요_메서드:
+    set(key, value):
+      - 락 획득
+      - 값 저장
+      - 락 해제
     
-    def __init__(self):
-        self._state: Dict[str, Any] = {}
-        self._locks: Dict[str, asyncio.Lock] = {}
-    
-    async def set(self, key: str, value: Any):
-        """값 설정 (락 사용)"""
-        if key not in self._locks:
-            self._locks[key] = asyncio.Lock()
-        
-        async with self._locks[key]:
-            self._state[key] = value
-    
-    async def get(self, key: str, wait=True, timeout=60):
-        """값 가져오기 (대기 가능)"""
-        if key in self._state:
-            return self._state[key]
-        
-        if not wait:
-            return None
-        
-        # 값이 설정될 때까지 대기
-        start_time = asyncio.get_event_loop().time()
-        while key not in self._state:
-            if asyncio.get_event_loop().time() - start_time > timeout:
-                raise TimeoutError(f"Timeout waiting for {key}")
-            
-            await asyncio.sleep(0.1)
-        
-        return self._state[key]
+    get(key, wait=True, timeout=60):
+      - 값이 있으면 즉시 반환
+      - 없고 wait=True면 대기
+      - 타임아웃 시 오류
 
-# 사용 예시
-shared_state = SharedState()
+Agent_A_저장:
+  역할: 상태 저장자
+  
+  작업_완료_시:
+    - 결과를 공유 상태에 저장
+    - 키: "agent_a_result"
+    - 값: 처리 결과
 
-class AgentA:
-    async def run(self):
-        result = await self.process()
-        
-        # 공유 상태에 저장
-        await shared_state.set('agent_a_result', result)
-        
-        return result
-
-class AgentB:
-    async def run(self):
-        # Agent A 결과 대기
-        agent_a_result = await shared_state.get('agent_a_result', wait=True)
-        
-        # 처리
-        result = await self.process(agent_a_result)
-        
-        return result
+Agent_B_읽기:
+  역할: 상태 읽기자
+  
+  작업_시작_시:
+    - 공유 상태에서 읽기
+    - 키: "agent_a_result"
+    - wait=True로 대기
+    - 값이 설정될 때까지 대기
+    - 값 수신 후 작업 진행
 ```
 
 ### 패턴 4: 이벤트 기반 (Event-Driven)
@@ -655,73 +608,50 @@ class AgentB:
 - 디버깅 어려움
 - 순서 보장 필요 시 복잡
 
-**구현**:
-```python
-from typing import Callable, List
-import asyncio
+**구현 개념**:
+```yaml
+EventBus_시스템:
+  구성요소:
+    - 이벤트 핸들러 저장소 (딕셔너리)
+    - 이벤트 타입별 핸들러 목록
+  
+  주요_메서드:
+    subscribe(event_type, handler):
+      - 이벤트 타입에 핸들러 등록
+      - 여러 핸들러 등록 가능
+    
+    publish(event_type, data):
+      - 해당 이벤트 타입의 모든 핸들러 호출
+      - 비동기로 병렬 실행
 
-class EventBus:
-    """이벤트 버스"""
-    
-    def __init__(self):
-        self._handlers: Dict[str, List[Callable]] = {}
-    
-    def subscribe(self, event_type: str, handler: Callable):
-        """이벤트 구독"""
-        if event_type not in self._handlers:
-            self._handlers[event_type] = []
-        
-        self._handlers[event_type].append(handler)
-    
-    async def publish(self, event_type: str, data: Any):
-        """이벤트 발행"""
-        if event_type in self._handlers:
-            # 모든 핸들러 호출
-            await asyncio.gather(*[
-                handler(data)
-                for handler in self._handlers[event_type]
-            ])
+Agent_A_발행:
+  역할: 이벤트 발행자
+  
+  초기화:
+    - EventBus 참조
+  
+  작업_완료_시:
+    - 이벤트 발행
+    - 타입: "agent_a_completed"
+    - 데이터:
+        result: {...}
+        timestamp: "..."
 
-# 사용 예시
-event_bus = EventBus()
-
-class AgentA:
-    def __init__(self, event_bus):
-        self.event_bus = event_bus
-    
-    async def run(self):
-        result = await self.process()
-        
-        # 이벤트 발행
-        await self.event_bus.publish('agent_a_completed', {
-            'result': result,
-            'timestamp': datetime.now().isoformat()
-        })
-        
-        return result
-
-class AgentB:
-    def __init__(self, event_bus):
-        self.event_bus = event_bus
-        self.agent_a_result = None
-        
-        # 이벤트 구독
-        self.event_bus.subscribe('agent_a_completed', self._on_agent_a_completed)
-    
-    async def _on_agent_a_completed(self, data):
-        """Agent A 완료 이벤트 핸들러"""
-        self.agent_a_result = data['result']
-        print("Agent A 완료!")
-    
-    async def run(self):
-        # Agent A 결과 대기
-        while self.agent_a_result is None:
-            await asyncio.sleep(0.1)
-        
-        # 처리
-        result = await self.process(self.agent_a_result)
-        
-        return result
+Agent_B_구독:
+  역할: 이벤트 구독자
+  
+  초기화:
+    - EventBus에 구독 등록
+    - 이벤트: "agent_a_completed"
+    - 핸들러: _on_agent_a_completed
+  
+  이벤트_수신:
+    - 핸들러 자동 호출
+    - Agent A 결과 저장
+  
+  작업_실행:
+    - Agent A 결과 대기
+    - 결과 수신 후 작업 시작
 ```
 
 ### 통신 패턴 선택 가이드

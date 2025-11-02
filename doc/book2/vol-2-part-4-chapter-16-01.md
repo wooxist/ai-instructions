@@ -48,15 +48,16 @@ AI 에이전트 연구에서 정의하는 에이전트의 핵심 특성은 다�
   개입: 중요한 의사결정 지점에서만 인간 개입
 ```
 
-**예시**: ContentAgent
-```python
-# 수동: 각 Stage마다 인간 개입
-stage1_result = human_prompt("아이디어 생성")
-stage2_result = human_prompt(f"아이디어 평가: {stage1_result}")
+**예시**:
+```text
+수동 방식:
+  - 각 Stage마다 인간이 개입
+  - Stage 1 실행 → 인간 검토 → Stage 2 실행 → 인간 검토 → ...
 
-# 자율: 에이전트가 전체 흐름 실행
-agent = ContentAgent(goal="블로그 포스트 작성")
-result = await agent.run()  # 전체 4 Stage 자율 실행
+자율 방식:
+  - 인간은 초기에 목표만 설정
+  - 에이전트가 전체 4 Stage를 자율 실행
+  - 문제 발생 시에만 인간에게 알림
 ```
 
 #### 2. 반응성 (Reactivity)
@@ -77,25 +78,19 @@ result = await agent.run()  # 전체 4 Stage 자율 실행
   - 제약 위반 → 조정 또는 중단
 ```
 
-**예시**: 품질 검증 실패 시 반응
-```python
-class ContentAgent:
-    async def reflecting_stage(self, draft):
-        quality = await self.verify_quality(draft)
-        
-        if quality.score < self.min_quality:
-            # 반응 1: 재시도 가능한가?
-            if self.retry_count < self.max_retries:
-                self.retry_count += 1
-                return await self.experimenting_stage()  # 재생성
-            
-            # 반응 2: 인간에게 알림
-            else:
-                await self.notify_human(
-                    "품질 기준 미달",
-                    f"점수: {quality.score}, 기준: {self.min_quality}"
-                )
-                raise QualityFailure()
+**예시 시나리오**:
+```text
+상황: 품질 검증에서 기준 미달 발견
+
+에이전트의 반응:
+1. 재시도 횟수 확인
+   - 재시도 가능 → 초안 다시 작성
+   - 재시도 불가 → 인간에게 알림
+   
+2. 인간 알림 내용:
+   - "품질 기준 미달"
+   - "현재 점수: 6.5, 기준: 8.0"
+   - "문제점: 명확성 부족, 예시 없음"
 ```
 
 #### 3. 사회성 (Social Ability)
@@ -110,44 +105,39 @@ class ContentAgent:
   계층적: "MetaCoordinator → Worker Agents (조율)"
 ```
 
-**예시**: 에이전트 간 통신
-```python
-# 병렬 에이전트 팀
-class AnalysisAgentTeam:
-    def __init__(self):
-        self.data_agent = DataCollectionAgent()
-        self.analysis_agent = AnalysisAgent()
-        self.insight_agent = InsightAgent()
-    
-    async def run(self):
-        # Agent A: 데이터 수집
-        data = await self.data_agent.run()
-        
-        # Agent B: 분석 (A의 결과 필요)
-        analysis = await self.analysis_agent.run(data)
-        
-        # Agent C: 인사이트 (B의 결과 필요)
-        insights = await self.insight_agent.run(analysis)
-        
-        return insights
+**예시 - 병렬 에이전트 팀**:
+```text
+AnalysisAgentTeam 구조:
+
+1. DataCollectionAgent
+   - 역할: 데이터 수집
+   - 출력: data.csv
+
+2. AnalysisAgent
+   - 역할: 데이터 분석
+   - 입력: data.csv (Agent 1의 결과 필요)
+   - 출력: analysis.json
+
+3. InsightAgent
+   - 역할: 인사이트 도출
+   - 입력: analysis.json (Agent 2의 결과 필요)
+   - 출력: insights.md
+
+의존성: Agent 1 → Agent 2 → Agent 3 순서대로 실행
 ```
 
-**예시**: 인간과의 협력 (Human-in-the-Loop)
-```python
-class ContentAgent:
-    async def reasoning_stage(self, ideas):
-        # 자동 평가
-        auto_evaluation = self.evaluate_by_values(ideas)
-        
-        # 인간 승인 필요
-        if self.require_human_approval:
-            approved = await self.request_approval(
-                "아이디어 선택",
-                auto_evaluation
-            )
-            return approved
-        
-        return auto_evaluation['best_idea']
+**예시 - 인간과의 협력**:
+```text
+ContentAgent의 Human-in-the-Loop:
+
+1. 에이전트가 아이디어 자동 평가
+   - 10개 아이디어를 핵심 가치 기준으로 평가
+   - 최선의 아이디어 추천
+
+2. 인간 승인 요청
+   - 에이전트의 추천 제시
+   - 인간이 최종 선택
+   - 승인 후 다음 단계 진행
 ```
 
 #### 4. 목표 지향성 (Goal-Oriented)
@@ -166,32 +156,31 @@ class ContentAgent:
     Stage 4: "품질 기준을 충족하는지 검증"
 ```
 
-**예시**: 목표 기반 의사결정
-```python
-class ContentAgent:
-    def __init__(self, goal, core_values, constraints):
-        self.goal = goal  # "고품질 콘텐츠 생성"
-        self.core_values = core_values
-        self.constraints = constraints
-    
-    async def run(self):
-        """최상위 목표 달성"""
-        # 각 Stage는 하위 목표를 달성
-        ideas = await self.planning_stage()  # 목표: 아이디어
-        
-        if not self.check_goal_progress(ideas):
-            # 목표 달성 가능성 평가
-            await self.adjust_strategy()
-        
-        selected = await self.reasoning_stage(ideas)  # 목표: 선택
-        draft = await self.experimenting_stage(selected)  # 목표: 초안
-        final = await self.reflecting_stage(draft)  # 목표: 검증
-        
-        # 최종 목표 달성 확인
-        if self.goal_achieved(final):
-            return final
-        else:
-            await self.notify_human("목표 미달성")
+**예시 - 목표 기반 의사결정**:
+```text
+ContentAgent 실행 흐름:
+
+초기 설정:
+  - 최상위 목표: "고품질 콘텐츠 생성"
+  - 핵심 가치: 명확성, 실용성, 친근함
+  - 제약 조건: 1500-2000자, 친근한 톤
+
+실행:
+1. Planning Stage 실행 → 아이디어 생성
+   
+2. 목표 진척 확인:
+   - 아이디어 품질이 충분한가?
+   - 진행 불가 시 → 전략 조정
+
+3. Reasoning Stage → 최적 아이디어 선택
+   
+4. Experimenting Stage → 초안 작성
+   
+5. Reflecting Stage → 품질 검증
+   
+6. 최종 목표 달성 확인:
+   - 달성: 결과 반환
+   - 미달성: 인간에게 알림 및 재시도 요청
 ```
 
 ### 에이전트 vs 단순 자동화
@@ -209,40 +198,38 @@ class ContentAgent:
 
 **비교 예시**:
 
-```python
-# ❌ 단순 자동화: 고정된 로직
-def auto_generate_content():
-    ideas = call_ai("아이디어 10개")
-    selected = ideas[0]  # 항상 첫 번째
-    draft = call_ai(f"초안: {selected}")
-    return draft  # 품질 검증 없음
+```text
+❌ 단순 자동화:
+  1. AI에게 "아이디어 10개" 요청
+  2. 항상 첫 번째 아이디어 선택
+  3. 해당 아이디어로 "초안 작성" 요청
+  4. 결과 반환 (품질 검증 없음)
 
-# ✅ 에이전트: 목표 지향적, 적응적
-class ContentAgent:
-    async def run(self):
-        # 1. 과거 데이터 참고
-        past_performance = self.load_history()
-        
-        # 2. 전략 조정
-        if past_performance['quality_issues']:
-            self.increase_quality_checks()
-        
-        # 3. 목표 기반 실행
-        ideas = await self.planning_stage()
-        selected = await self.reasoning_stage(ideas)  # 핵심 가치 평가
-        draft = await self.experimenting_stage(selected)
-        
-        # 4. 품질 검증
-        quality = await self.reflecting_stage(draft)
-        
-        # 5. 적응적 대응
-        if not quality.passed:
-            if self.can_retry():
-                return await self.run()  # 재시도
-            else:
-                await self.notify_human()  # 인간 개입
-        
-        return draft
+특징:
+  - 고정된 순서
+  - 조건 판단 없음
+  - 항상 같은 방식
+
+✅ 에이전트:
+  1. 과거 데이터 참고 (이전 품질 문제 확인)
+  
+  2. 전략 조정 (품질 문제 있었다면 검증 강화)
+  
+  3. 목표 기반 실행:
+     - Planning: 아이디어 발산
+     - Reasoning: 핵심 가치 기준으로 평가 및 선택
+     - Experimenting: 초안 작성
+     - Reflecting: 품질 검증
+  
+  4. 적응적 대응:
+     - 품질 통과 → 완료
+     - 품질 미달 + 재시도 가능 → 재실행
+     - 품질 미달 + 재시도 불가 → 인간 개입
+
+특징:
+  - 상황에 맞게 조정
+  - 목표 달성 중심
+  - 과거 학습 반영
 ```
 
 ---
@@ -281,50 +268,29 @@ class ContentAgent:
 ```
 
 **CoordinatorAgent (16장)**:
-```python
-class CoordinatorAgent:
-    """사고 조율자를 에이전트로 구현"""
-    
-    def __init__(self, stages, config):
-        self.stages = stages  # [planning, reasoning, experimenting, reflecting]
-        self.current_stage = 0
-        self.config = config
-        self.memory = AgentMemory()
-        self.state = StateMachine(stages)
-    
-    async def run(self):
-        """전체 워크플로우를 자율적으로 조율"""
-        results = {}
-        
-        for stage in self.stages:
-            # 1. Stage 실행
-            self.state.transition_to(stage)
-            result = await self.execute_stage(stage, results)
-            
-            # 2. 결과 저장 (thinking_record 역할)
-            self.memory.save(stage, result)
-            results[stage] = result
-            
-            # 3. 다음 Stage 진행 가능 여부 판단
-            if not self.can_proceed(result):
-                await self.handle_failure(stage, result)
-                break
-        
-        return results
-    
-    async def execute_stage(self, stage, previous_results):
-        """각 Stage를 실행 (사고 조율자의 핵심 역할)"""
-        if stage == "planning":
-            return await self.planning_stage()
-        elif stage == "reasoning":
-            return await self.reasoning_stage(previous_results['planning'])
-        # ... 이하 생략
-```
+```text
+역할:
+  - 사고 조율자의 자동화 버전
+  - 전체 워크플로우를 자율적으로 조율
 
-**차이점**:
-- 인간 조율 → 에이전트 자동 조율
-- 수동 Stage 전환 → 상태 머신으로 자동 전환
-- 수동 결과 전달 → 메모리를 통한 자동 전달
+핵심 기능:
+  1. Stage 실행 관리
+     - 각 Stage를 순서대로 실행
+     - 이전 Stage 결과를 다음 Stage에 전달
+  
+  2. 결과 저장
+     - 각 Stage 결과를 메모리에 저장
+     - thinking_record.json 자동 업데이트
+  
+  3. 진행 가능 여부 판단
+     - 각 Stage 완료 후 다음 진행 가능성 확인
+     - 실패 시 오류 처리 또는 인간 알림
+
+자동화의 가치:
+  - 인간 조율 → 에이전트 자동 조율
+  - 수동 Stage 전환 → 상태 머신으로 자동 전환
+  - 수동 결과 전달 → 메모리를 통한 자동 전달
+```
 
 #### 2. 사고 실행 워커 → WorkerAgent / Tool
 
@@ -341,27 +307,29 @@ class CoordinatorAgent:
 ```
 
 **WorkerAgent / Tool (16장)**:
-```python
-# 옵션 1: WorkerAgent (복잡한 작업)
-class IdeaGenerationWorker:
-    """아이디어 생성 워커를 에이전트로"""
-    
-    async def generate(self, context):
-        prompt = self.build_prompt(context)
-        ideas = await call_ai(prompt)
-        return self.parse_ideas(ideas)
+```text
+두 가지 구현 옵션:
 
-# 옵션 2: Tool (단순 작업)
-async def save_file_tool(path, content):
-    """파일 저장 툴"""
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    with open(path, 'w') as f:
-        f.write(content)
+옵션 1: WorkerAgent (복잡한 작업)
+  - 상태를 가진 에이전트
+  - 예: IdeaGenerationWorker
+  - 역할:
+    * 컨텍스트 기반 프롬프트 생성
+    * AI 호출
+    * 결과 파싱 및 구조화
+
+옵션 2: Tool (단순 작업)
+  - 상태가 없는 유틸리티 함수
+  - 예: save_file_tool
+  - 역할:
+    * 파일 저장
+    * 디렉토리 생성
+    * 단순 데이터 변환
+
+선택 기준:
+  - 상태 필요 + 복잡한 로직 → WorkerAgent
+  - 상태 불필요 + 단순 작업 → Tool
 ```
-
-**선택 기준**:
-- **WorkerAgent**: 상태가 있고, 복잡한 로직이 필요한 경우
-- **Tool**: 상태가 없고, 단순한 유틸리티 함수인 경우
 
 #### 3. thinking_record → Agent Memory
 
@@ -377,47 +345,29 @@ async def save_file_tool(path, content):
 ```
 
 **Agent Memory (16장)**:
-```python
-class AgentMemory:
-    """thinking_record를 메모리로 관리"""
-    
-    def __init__(self, task_dir):
-        self.task_dir = task_dir
-        self.records = {}
-    
-    def save(self, stage, record):
-        """Stage별 기록 저장"""
-        self.records[stage] = record
-        
-        # 파일에도 저장 (영속성)
-        path = f"{self.task_dir}/thinking/{stage}/thinking_record.json"
-        save_json(path, record)
-    
-    def get(self, stage):
-        """과거 기록 조회"""
-        if stage in self.records:
-            return self.records[stage]
-        
-        # 파일에서 로드
-        path = f"{self.task_dir}/thinking/{stage}/thinking_record.json"
-        return load_json(path)
-    
-    def get_all(self):
-        """전체 사고 과정 조회"""
-        return self.records
-```
+```text
+역할:
+  - thinking_record를 메모리 시스템으로 관리
+  - 과거 기록 참조 및 학습 지원
 
-**활용 예시**:
-```python
-class ContentAgent:
-    async def reasoning_stage(self, ideas):
-        # 과거 기록 참조 (학습)
-        past_records = self.memory.get_all()
-        
-        if 'planning' in past_records:
-            # 이전 Planning에서 어떤 기준을 사용했는지 참고
-            past_criteria = past_records['planning']['criteria']
-            # 일관성 유지
+핵심 기능:
+  1. Stage별 기록 저장
+     - 메모리에 저장 (빠른 접근)
+     - 파일에도 저장 (영속성)
+  
+  2. 과거 기록 조회
+     - 특정 Stage 기록 조회
+     - 전체 사고 과정 조회
+  
+  3. 학습 지원
+     - 이전 Planning에서 사용한 기준 참조
+     - 일관성 유지
+     - 과거 실패/성공 패턴 학습
+
+자동화의 가치:
+  - 수동 파일 관리 → 자동 저장/로드
+  - 산발적 기록 → 체계적 메모리 시스템
+  - 단순 보관 → 학습 및 개선 지원
 ```
 
 #### 4. thinking_state → State Machine
@@ -436,55 +386,31 @@ class ContentAgent:
 ```
 
 **State Machine (16장)**:
-```python
-class StateMachine:
-    """thinking_state를 상태 머신으로 구현"""
-    
-    def __init__(self, stages):
-        self.stages = stages
-        self.current_stage_index = 0
-        self.state = {
-            'current_stage': stages[0],
-            'status': 'initialized',
-            'history': []
-        }
-    
-    def transition_to(self, next_stage):
-        """Stage 전환"""
-        if next_stage not in self.stages:
-            raise InvalidStageError(next_stage)
-        
-        # 현재 Stage 완료 기록
-        self.state['history'].append({
-            'stage': self.state['current_stage'],
-            'completed_at': datetime.now().isoformat()
-        })
-        
-        # 새 Stage로 전환
-        self.state['current_stage'] = next_stage
-        self.state['status'] = 'in_progress'
-        
-        # thinking_state.json 자동 업데이트
-        self.save_to_file()
-    
-    def get_current(self):
-        """현재 Stage 반환"""
-        return self.state['current_stage']
-    
-    def is_completed(self):
-        """전체 워크플로우 완료 여부"""
-        return self.current_stage_index >= len(self.stages) - 1
-    
-    def save_to_file(self):
-        """thinking_state.json 자동 저장"""
-        path = f"{self.task_dir}/thinking_state.json"
-        save_json(path, self.state)
-```
+```text
+역할:
+  - thinking_state를 상태 머신으로 구현
+  - 자동 상태 전환 및 추적
 
-**자동화의 가치**:
-- 수동 업데이트 → 자동 업데이트
-- 상태 불일치 위험 제거
-- 재개 (Resume) 가능
+핵심 기능:
+  1. Stage 전환 관리
+     - 유효성 검증 (존재하는 Stage인가?)
+     - 현재 Stage 완료 기록
+     - 새 Stage로 전환
+     - thinking_state.json 자동 업데이트
+  
+  2. 현재 상태 조회
+     - 어느 Stage에 있는가?
+     - 전체 워크플로우 완료 여부
+  
+  3. 재개 지원
+     - 중단된 지점 파악
+     - 해당 지점부터 재개 가능
+
+자동화의 가치:
+  - 수동 업데이트 → 자동 업데이트
+  - 상태 불일치 위험 제거
+  - 중단 후 재개 가능
+```
 
 #### 5. Human-in-the-Loop → Approval Gate
 
@@ -499,64 +425,31 @@ class StateMachine:
 ```
 
 **Approval Gate (16장)**:
-```python
-class ApprovalGate:
-    """Human-in-the-Loop를 자동화"""
-    
-    def __init__(self, notifier):
-        self.notifier = notifier  # Slack, Email 등
-    
-    async def require_approval(self, decision_point, context):
-        """승인 요청"""
-        # 1. 인간에게 알림
-        notification = {
-            'type': 'approval_required',
-            'decision_point': decision_point,
-            'context': context,
-            'options': context.get('options', [])
-        }
-        
-        await self.notifier.send(notification)
-        
-        # 2. 승인 대기
-        response = await self.wait_for_approval(timeout=3600)  # 1시간
-        
-        # 3. 응답 처리
-        if response.approved:
-            return response.data
-        else:
-            raise ApprovalDenied(response.reason)
-    
-    async def wait_for_approval(self, timeout):
-        """승인 대기 (웹훅, API 등으로 수신)"""
-        # 구현 방법:
-        # - 웹 인터페이스에서 승인 버튼
-        # - Slack 버튼 클릭
-        # - API 호출로 승인
-        ...
-```
+```text
+역할:
+  - Human-in-the-Loop를 자동화된 승인 시스템으로 구현
 
-**적용 예시**:
-```python
-class ContentAgent:
-    async def reasoning_stage(self, ideas):
-        # 자동 평가
-        evaluation = self.evaluate_by_values(ideas)
-        
-        # 중요 결정 → 인간 승인 필요
-        if self.config['require_human_approval']:
-            approved_idea = await self.approval_gate.require_approval(
-                decision_point="아이디어 선택",
-                context={
-                    'ideas': ideas,
-                    'auto_evaluation': evaluation,
-                    'recommendation': evaluation['best_idea']
-                }
-            )
-            return approved_idea
-        
-        # 승인 불필요 → 자동 진행
-        return evaluation['best_idea']
+핵심 기능:
+  1. 승인 요청
+     - 인간에게 알림 전송 (Slack, Email 등)
+     - 의사결정 컨텍스트 제공
+     - 선택 옵션 제시
+  
+  2. 승인 대기
+     - 웹 인터페이스, Slack 버튼 등으로 응답 대기
+     - 타임아웃 설정 (예: 1시간)
+  
+  3. 응답 처리
+     - 승인: 선택된 옵션 반환 및 진행
+     - 거부: 작업 중단 또는 대체 전략
+
+사용 예시:
+  아이디어 선택 시점:
+    1. 에이전트가 10개 아이디어 자동 평가
+    2. 최선의 아이디어 추천
+    3. 인간에게 승인 요청
+    4. 인간 선택 대기
+    5. 승인 받은 아이디어로 진행
 ```
 
 #### 6. 의존성 관리 → Dependency Manager
@@ -574,61 +467,37 @@ dependencies.json:
 ```
 
 **Dependency Manager (16장)**:
-```python
-class DependencyManager:
-    """에이전트 간 의존성 관리"""
-    
-    def __init__(self, dependencies):
-        self.dependencies = dependencies
-        self.completed = set()
-    
-    def can_run(self, agent_id):
-        """에이전트 실행 가능 여부 확인"""
-        deps = self.dependencies.get(agent_id, {})
-        
-        # 1. 선행 에이전트 완료 확인
-        for dep_id in deps.get('depends_on', []):
-            if dep_id not in self.completed:
-                return False, f"Waiting for {dep_id}"
-        
-        # 2. 필요한 파일 존재 확인
-        for file_path in deps.get('required_files', []):
-            if not Path(file_path).exists():
-                return False, f"Missing file: {file_path}"
-        
-        return True, "Ready"
-    
-    def mark_completed(self, agent_id):
-        """에이전트 완료 표시"""
-        self.completed.add(agent_id)
-    
-    def get_execution_order(self):
-        """실행 순서 결정 (위상 정렬)"""
-        # 의존성 그래프에서 위상 정렬
-        return topological_sort(self.dependencies)
-```
+```text
+역할:
+  - 에이전트 간 의존성 자동 관리
+  - 실행 순서 조율
 
-**적용 예시**:
-```python
-class AnalysisAgentTeam:
-    async def run(self):
-        # 실행 순서 결정
-        order = self.dependency_manager.get_execution_order()
-        # ['data_agent', 'analysis_agent', 'insight_agent']
-        
-        for agent_id in order:
-            # 의존성 확인
-            can_run, reason = self.dependency_manager.can_run(agent_id)
-            
-            if not can_run:
-                raise DependencyError(f"{agent_id}: {reason}")
-            
-            # 실행
-            agent = self.agents[agent_id]
-            await agent.run()
-            
-            # 완료 표시
-            self.dependency_manager.mark_completed(agent_id)
+핵심 기능:
+  1. 실행 가능 여부 확인
+     - 선행 에이전트 완료 확인
+     - 필요한 파일 존재 확인
+     - 실행 가능 여부 판단
+  
+  2. 실행 순서 결정
+     - 의존성 그래프 분석
+     - 위상 정렬로 순서 도출
+     - 예: [data_agent, analysis_agent, insight_agent]
+  
+  3. 완료 상태 추적
+     - 각 에이전트 완료 표시
+     - 다음 에이전트 실행 가능 확인
+
+사용 예시:
+  AnalysisAgentTeam:
+    1. 실행 순서 결정
+       - data_agent → analysis_agent → insight_agent
+    
+    2. 순서대로 실행:
+       - data_agent 실행
+       - 완료 표시
+       - analysis_agent 실행 가능 확인
+       - analysis_agent 실행
+       - (반복)
 ```
 
 ### 매핑 다이어그램
@@ -702,66 +571,52 @@ graph LR
 - 수정의 영향 범위 최소화
 
 **나쁜 예시** ❌:
-```python
-class SuperAgent:
-    """모든 것을 하는 에이전트 (안티패턴)"""
-    
-    async def run(self):
-        # 데이터 수집
-        data = await self.collect_data()
-        
-        # 데이터 분석
-        analysis = await self.analyze(data)
-        
-        # 인사이트 도출
-        insights = await self.generate_insights(analysis)
-        
-        # 리포트 작성
-        report = await self.write_report(insights)
-        
-        # 이메일 발송
-        await self.send_email(report)
-        
-        return report
-```
+```text
+SuperAgent (모든 것을 하는 에이전트 - 안티패턴)
 
-**문제점**:
-- 너무 많은 책임 (5가지)
-- 각 부분을 독립적으로 테스트하기 어려움
-- 데이터 분석 로직 변경 시 전체 에이전트 수정 필요
+책임:
+  1. 데이터 수집
+  2. 데이터 분석
+  3. 인사이트 도출
+  4. 리포트 작성
+  5. 이메일 발송
+
+문제점:
+  - 너무 많은 책임 (5가지)
+  - 각 부분을 독립적으로 테스트하기 어려움
+  - 데이터 분석 로직만 변경해도 전체 에이전트 수정 필요
+  - 버그 발생 시 원인 파악 어려움
+```
 
 **좋은 예시** ✅:
-```python
-# 각 에이전트는 하나의 명확한 책임
-class DataCollectionAgent:
-    """책임: 데이터 수집만"""
-    async def run(self):
-        return await self.collect_data()
+```text
+책임 분리된 에이전트 팀:
 
-class AnalysisAgent:
-    """책임: 데이터 분석만"""
-    async def run(self, data):
-        return await self.analyze(data)
+DataCollectionAgent:
+  책임: 데이터 수집만
+  입력: 데이터 소스 정보
+  출력: 수집된 데이터
 
-class InsightAgent:
-    """책임: 인사이트 도출만"""
-    async def run(self, analysis):
-        return await self.generate_insights(analysis)
+AnalysisAgent:
+  책임: 데이터 분석만
+  입력: 수집된 데이터
+  출력: 분석 결과
 
-# 조율자가 흐름 관리
-class AnalysisCoordinator:
-    """책임: 에이전트 간 흐름 조율"""
-    async def run(self):
-        data = await self.data_agent.run()
-        analysis = await self.analysis_agent.run(data)
-        insights = await self.insight_agent.run(analysis)
-        return insights
+InsightAgent:
+  책임: 인사이트 도출만
+  입력: 분석 결과
+  출력: 인사이트
+
+AnalysisCoordinator:
+  책임: 에이전트 간 흐름 조율
+  역할: 위 3개 에이전트를 순서대로 실행
+
+장점:
+  - 각 에이전트를 독립적으로 개발/테스트
+  - AnalysisAgent만 다른 프로젝트에서 재사용 가능
+  - 버그 발생 시 원인 에이전트 즉시 파악
+  - 한 에이전트 수정이 다른 에이전트에 영향 없음
 ```
-
-**장점**:
-- 각 에이전트를 독립적으로 개발/테스트
-- AnalysisAgent만 다른 프로젝트에서 재사용 가능
-- 버그 발생 시 원인 에이전트 즉시 파악
 
 ### 원칙 2: 실패 안전 (Fail-Safe)
 
@@ -774,79 +629,97 @@ class AnalysisCoordinator:
 
 **필수 실패 안전 메커니즘**:
 
-1. **재시도 (Retry)**:
-```python
-class ContentAgent:
-    async def call_ai_with_retry(self, prompt, max_retries=3):
-        """API 호출 재시도"""
-        for attempt in range(max_retries):
-            try:
-                return await call_ai(prompt)
-            except APIError as e:
-                if attempt == max_retries - 1:
-                    raise  # 최종 실패
-                
-                # 지수 백오프
-                wait_time = 2 ** attempt
-                await asyncio.sleep(wait_time)
+**1. 재시도 (Retry)**:
+```text
+API 호출 재시도 전략:
+
+시도 1: 즉시 실행
+  실패 시 → 2초 대기 후 재시도
+
+시도 2: 2초 대기 후 실행
+  실패 시 → 4초 대기 후 재시도
+
+시도 3: 4초 대기 후 실행
+  실패 시 → 최종 실패 처리
+
+지수 백오프 패턴:
+  - 재시도마다 대기 시간 2배 증가
+  - 서버 부하 분산
+  - 일시적 오류 대응
 ```
 
-2. **체크포인트 (Checkpoint)**:
-```python
-class ContentAgent:
-    async def run(self):
-        # Stage별 체크포인트 저장
-        ideas = await self.planning_stage()
-        self.save_checkpoint('planning', ideas)  # ✅
-        
-        selected = await self.reasoning_stage(ideas)
-        self.save_checkpoint('reasoning', selected)  # ✅
-        
-        # 실패 시 체크포인트에서 재개
-        try:
-            draft = await self.experimenting_stage(selected)
-        except Exception as e:
-            # 마지막 체크포인트에서 재개
-            selected = self.load_checkpoint('reasoning')
-            draft = await self.experimenting_stage(selected)
+**2. 체크포인트 (Checkpoint)**:
+```text
+Stage별 체크포인트 저장:
+
+Planning Stage 완료:
+  ✅ ideas.json 저장 (체크포인트)
+
+Reasoning Stage 완료:
+  ✅ selected.json 저장 (체크포인트)
+
+Experimenting Stage 실패:
+  ⚠️ 오류 발생
+  📂 마지막 체크포인트(selected.json)에서 재개
+  🔄 Experimenting Stage 재실행
+
+가치:
+  - 실패해도 처음부터 다시 안 해도 됨
+  - 시간과 비용 절약
+  - 중단 후 재개 가능
 ```
 
-3. **우아한 저하 (Graceful Degradation)**:
-```python
-class ContentAgent:
-    async def experimenting_stage(self, idea):
-        """실패 시 대체 전략"""
-        try:
-            # 최선: 프리미엄 모델 사용
-            return await self.generate_with_premium_model(idea)
-        
-        except QuotaExceeded:
-            # 차선: 표준 모델 사용
-            logger.warning("Premium model quota exceeded, using standard")
-            return await self.generate_with_standard_model(idea)
-        
-        except APIError:
-            # 최후: 템플릿 사용
-            logger.error("AI unavailable, using template")
-            return self.generate_from_template(idea)
+**3. 우아한 저하 (Graceful Degradation)**:
+```text
+프리미엄 모델 → 표준 모델 → 템플릿 전략:
+
+시도 1: 프리미엄 모델 (최선)
+  - GPT-4 등 고성능 모델
+  - 실패 원인: 할당량 초과
+  - 대응: 표준 모델로 전환
+
+시도 2: 표준 모델 (차선)
+  - GPT-3.5 등 표준 모델
+  - 실패 원인: API 오류
+  - 대응: 템플릿 사용
+
+시도 3: 템플릿 (최후)
+  - 미리 정의된 템플릿 사용
+  - 품질은 낮지만 작업 완료 가능
+
+원칙:
+  - 100% 품질 불가능 시 → 80% 품질이라도 제공
+  - 완전 실패보다는 부분 성공
 ```
 
-4. **명확한 오류 메시지**:
-```python
-class ContentAgent:
-    async def reflecting_stage(self, draft):
-        quality = await self.verify_quality(draft)
-        
-        if not quality.passed:
-            # ❌ 나쁜 메시지
-            raise Exception("Quality check failed")
-            
-            # ✅ 좋은 메시지
-            raise QualityFailure(
-                f"Quality score {quality.score} below threshold {self.min_quality}. "
-                f"Issues: {', '.join(quality.issues)}. "
-                f"Suggestion: {quality.suggestion}"
-            )
+**4. 명확한 오류 메시지**:
+```text
+❌ 나쁜 오류 메시지:
+  "Quality check failed"
+
+문제점:
+  - 무엇이 문제인지 불명확
+  - 어떻게 해결해야 할지 모름
+  - 디버깅 어려움
+
+✅ 좋은 오류 메시지:
+  "품질 검증 실패
+   
+   현재 점수: 6.5/10
+   최소 기준: 8.0/10
+   
+   발견된 문제:
+   - 명확성 부족: 핵심 메시지가 불분명함
+   - 예시 부족: 추상적 설명만 있고 구체적 예시 없음
+   
+   제안:
+   - 핵심 메시지를 첫 문단에 명확히 제시
+   - 각 개념마다 구체적 예시 추가"
+
+장점:
+  - 문제 원인 명확
+  - 해결 방향 제시
+  - 빠른 디버깅 가능
 ```
 
 ### 원칙 3: 관찰 가능성 (Observability)
@@ -860,105 +733,73 @@ class ContentAgent:
 
 **구현 방법**:
 
-1. **상세한 로깅**:
-```python
-import logging
+**1. 상세한 로깅**:
+```text
+로그 레벨별 정보:
 
-class ContentAgent:
-    def __init__(self):
-        self.logger = logging.getLogger(f"ContentAgent-{self.task_id}")
-    
-    async def run(self):
-        self.logger.info("Starting content generation workflow")
-        
-        try:
-            ideas = await self.planning_stage()
-            self.logger.info(f"Generated {len(ideas)} ideas")
-            
-            selected = await self.reasoning_stage(ideas)
-            self.logger.info(f"Selected idea: {selected['title']}")
-            
-            draft = await self.experimenting_stage(selected)
-            self.logger.info(f"Draft generated: {len(draft)} characters")
-            
-        except Exception as e:
-            self.logger.error(f"Workflow failed at {self.state.current_stage}: {e}")
-            raise
+INFO: 진행 상황
+  - "Starting content generation workflow"
+  - "Generated 10 ideas"
+  - "Selected idea: AI의 미래"
+  - "Draft generated: 1847 characters"
+
+ERROR: 오류 정보
+  - "Workflow failed at reasoning stage: API timeout"
+  - "Retry attempt 2/3 failed: Rate limit exceeded"
+
+가치:
+  - 실시간 진행 상황 파악
+  - 문제 발생 시 즉시 감지
+  - 사후 분석 가능
 ```
 
-2. **진행 상황 보고**:
-```python
-class ContentAgent:
-    async def run(self):
-        self.emit_progress(stage="planning", percent=0)
-        ideas = await self.planning_stage()
-        
-        self.emit_progress(stage="reasoning", percent=25)
-        selected = await self.reasoning_stage(ideas)
-        
-        self.emit_progress(stage="experimenting", percent=50)
-        draft = await self.experimenting_stage(selected)
-        
-        self.emit_progress(stage="reflecting", percent=75)
-        final = await self.reflecting_stage(draft)
-        
-        self.emit_progress(stage="completed", percent=100)
-        return final
-    
-    def emit_progress(self, stage, percent):
-        """진행 상황을 외부에 전달"""
-        event = {
-            'task_id': self.task_id,
-            'stage': stage,
-            'percent': percent,
-            'timestamp': datetime.now().isoformat()
-        }
-        self.event_bus.publish('agent.progress', event)
+**2. 진행 상황 보고**:
+```text
+사용자에게 보이는 진행 표시:
+
+Planning (0%): 아이디어 생성 중...
+  ⏳ 진행 중
+
+Reasoning (25%): 아이디어 평가 중...
+  ⏳ 진행 중
+
+Experimenting (50%): 초안 작성 중...
+  ⏳ 진행 중
+
+Reflecting (75%): 품질 검증 중...
+  ⏳ 진행 중
+
+Completed (100%): 완료!
+  ✅ 완료
+
+가치:
+  - 사용자 불안감 해소
+  - 예상 소요 시간 파악
+  - 중단 여부 판단 가능
 ```
 
-3. **메트릭 수집**:
-```python
-class ContentAgent:
-    def __init__(self):
-        self.metrics = {
-            'api_calls': 0,
-            'total_tokens': 0,
-            'stage_durations': {},
-            'quality_scores': []
-        }
-    
-    async def planning_stage(self):
-        start_time = time.time()
-        
-        result = await call_ai(prompt)
-        
-        # 메트릭 기록
-        self.metrics['api_calls'] += 1
-        self.metrics['total_tokens'] += result['usage']['total_tokens']
-        self.metrics['stage_durations']['planning'] = time.time() - start_time
-        
-        return result['content']
-    
-    def get_metrics(self):
-        """메트릭 조회"""
-        return self.metrics
-```
+**3. 메트릭 수집**:
+```text
+수집하는 메트릭:
 
-4. **상태 추적 가시화**:
-```python
-class ContentAgent:
-    def get_status(self):
-        """현재 상태를 JSON으로 반환"""
-        return {
-            'task_id': self.task_id,
-            'current_stage': self.state.get_current(),
-            'status': self.state.status,
-            'progress': self.calculate_progress(),
-            'started_at': self.started_at,
-            'elapsed_time': (datetime.now() - self.started_at).seconds,
-            'metrics': self.metrics,
-            'last_error': self.last_error
-        }
+성능 메트릭:
+  - API 호출 횟수: 12회
+  - 총 토큰 사용량: 8,450 tokens
+  - Stage별 소요 시간:
+    * Planning: 15초
+    * Reasoning: 8초
+    * Experimenting: 42초
+    * Reflecting: 6초
+
+품질 메트릭:
+  - 품질 점수: 8.5/10
+  - 재시도 횟수: 1회
+  - 오류 발생 횟수: 0회
+
+가치:
+  - 성능 병목 지점 파악
+  - 비용 예측 및 최적화
+  - 품질 추이 모니터링
 ```
 
 ### 원칙 4: 점진적 자동화 (Progressive Automation)
@@ -972,96 +813,84 @@ class ContentAgent:
 
 **4단계 점진적 자동화**:
 
-**Phase 1: 관찰 (Observe)**
-```python
-# 완전 수동 + 로깅
-class ContentAgent:
-    async def run(self):
-        # 인간이 각 Stage 직접 실행
-        ideas = human_execute_planning()
-        self.log("Planning completed manually", ideas)
-        
-        selected = human_execute_reasoning(ideas)
-        self.log("Reasoning completed manually", selected)
-        
-        # 데이터만 수집, 아직 자동화 안 함
+**Phase 1: 관찰 (Observe)** - 주 1-2
+```text
+목표: 데이터 수집 및 패턴 파악
+
+방식:
+  - 완전 수동 실행
+  - 각 단계마다 로깅
+  - 어떤 부분이 반복적인지 파악
+
+예시:
+  - 인간이 직접 Planning Stage 실행 → 로그 기록
+  - 인간이 직접 Reasoning Stage 실행 → 로그 기록
+  - 패턴 분석: "Reasoning은 항상 같은 기준 사용"
+
+결과:
+  - 자동화 가능 영역 파악
+  - 자동화 우선순위 결정
 ```
 
-**Phase 2: 제안 (Suggest)**
-```python
-# AI가 제안하지만 인간이 최종 결정
-class ContentAgent:
-    async def run(self):
-        # AI가 아이디어 생성 (자동화 시작)
-        ideas = await self.planning_stage()
-        
-        # AI가 평가하지만 인간이 선택 (반자동)
-        evaluation = self.evaluate_by_values(ideas)
-        selected = await self.request_human_selection(evaluation)
-        
-        # 인간이 초안 작성 (수동 유지)
-        draft = human_write_draft(selected)
+**Phase 2: 제안 (Suggest)** - 주 3-4
+```text
+목표: AI 제안 도입, 인간이 최종 결정
+
+방식:
+  - Planning: 자동화 시작 (AI가 아이디어 생성)
+  - Reasoning: 반자동 (AI 제안 + 인간 선택)
+  - Experimenting: 수동 유지 (인간이 초안 작성)
+
+예시:
+  - AI가 10개 아이디어 자동 생성
+  - AI가 핵심 가치 기준으로 평가 및 추천
+  - 인간이 최종 선택
+  - 인간이 초안 직접 작성
+
+결과:
+  - AI 제안 정확도 확인
+  - 인간 선택 패턴 학습
 ```
 
-**Phase 3: 자동 + 검증 (Automate with Verification)**
-```python
-# 자동 실행하지만 품질 검증 필수
-class ContentAgent:
-    async def run(self):
-        # 자동 실행
-        ideas = await self.planning_stage()
-        selected = await self.reasoning_stage(ideas)
-        draft = await self.experimenting_stage(selected)
-        
-        # 검증 + 인간 승인 (안전장치)
-        quality = await self.reflecting_stage(draft)
-        
-        if quality.score < self.high_confidence_threshold:
-            # 낮은 신뢰도 → 인간 검토 필요
-            await self.request_human_review(draft, quality)
-        
-        return draft
-```
+**Phase 3: 자동 + 검증 (Automate with Verification)** - 주 5-8
+```text
+목표: 자동 실행, 품질 검증 의무화
 
-**Phase 4: 완전 자동 (Full Automation)**
-```python
-# 높은 신뢰도 → 완전 자동, 예외만 인간 개입
-class ContentAgent:
-    async def run(self):
-        # 완전 자동 실행
-        ideas = await self.planning_stage()
-        selected = await self.reasoning_stage(ideas)
-        draft = await self.experimenting_stage(selected)
-        quality = await self.reflecting_stage(draft)
-        
-        # 예외 상황에서만 인간 개입
-        if quality.has_critical_issues():
-            await self.notify_human(quality.issues)
-            raise QualityFailure()
-        
-        # 신뢰도 높음 → 바로 발행
-        return draft
-```
-
-**점진적 확대 전략**:
-```yaml
-Week 1-2: Phase 1 (관찰)
-  - 수동 실행 + 로깅
-  - 데이터 수집 및 분석
-  
-Week 3-4: Phase 2 (제안)
-  - Planning Stage 자동화
-  - AI 제안 + 인간 최종 결정
-  
-Week 5-8: Phase 3 (자동 + 검증)
-  - Reasoning, Experimenting Stage 자동화
-  - 품질 검증 의무화
+방식:
+  - Planning, Reasoning, Experimenting: 자동화
+  - Reflecting: 품질 검증 필수
   - 낮은 신뢰도 → 인간 개입
-  
-Week 9+: Phase 4 (완전 자동)
-  - 높은 신뢰도 작업만 완전 자동
-  - 예외 상황 인간 개입
+
+예시:
+  - 에이전트가 Planning, Reasoning, Experimenting 자율 실행
+  - 품질 점수 계산:
+    * 8.0 이상 → 자동 승인
+    * 6.0-8.0 → 인간 검토 필요
+    * 6.0 미만 → 재생성
+
+결과:
+  - 80% 작업 자동화
+  - 20% 인간 개입
+```
+
+**Phase 4: 완전 자동 (Full Automation)** - 주 9+
+```text
+목표: 높은 신뢰도 작업 완전 자동화
+
+방식:
+  - 전체 자동 실행
+  - 예외 상황에서만 인간 개입
   - 지속적 모니터링
+
+예시:
+  - 에이전트가 전체 4 Stage 자율 실행
+  - 품질 점수 8.5 이상 → 자동 완료
+  - 치명적 문제 발견 시만 → 인간 알림
+
+결과:
+  - 95% 작업 자동화
+  - 5% 예외 상황 인간 개입
+  - 시간 절약 70%
 ```
 
 ---
@@ -1107,49 +936,83 @@ Week 9+: Phase 4 (완전 자동)
 
 **✅ 에이전트 적합**:
 
-1. **주간 콘텐츠 생성**
-   - 빈도: 주 5회
-   - 명확성: 4 Stage 프로세스 정의됨
-   - 자율성: Planning, Experimenting 자동화 가능
-   - 안전성: 품질 검증 + 최종 승인
-   - 가치: 시간 60% 절약
+**1. 주간 콘텐츠 생성**
+```text
+평가:
+  ✅ 빈도: 주 5회 (높음)
+  ✅ 명확성: 4 Stage 프로세스 명확히 정의됨
+  ✅ 자율성: Planning, Experimenting 자동화 가능
+  ✅ 안전성: 품질 검증 + 최종 승인 단계 있음
+  ✅ 가치: 시간 60% 절약 가능
 
-2. **월간 데이터 리포트**
-   - 빈도: 월 1회 (하지만 매달 반복)
-   - 명확성: 데이터 수집 → 분석 → 인사이트 → 리포트
-   - 자율성: 전체 자동화 가능
-   - 안전성: 데이터 검증 단계 있음
-   - 가치: 일관된 포맷, 오류 감소
+결론: 에이전트 강력 추천
+구현: ContentAgent로 자동화
+```
 
-3. **고객 세그먼트 분석**
-   - 빈도: 주 1회
-   - 명확성: 알고리즘 정의됨
-   - 자율성: 완전 자동화 가능
-   - 안전성: 통계적 검증
-   - 가치: 실시간 분석 가능
+**2. 월간 데이터 리포트**
+```text
+평가:
+  ✅ 빈도: 월 1회 (매달 반복)
+  ✅ 명확성: 데이터 수집 → 분석 → 인사이트 → 리포트
+  ✅ 자율성: 전체 자동화 가능
+  ✅ 안전성: 데이터 검증 단계 있음
+  ✅ 가치: 일관된 포맷, 오류 감소
+
+결론: 에이전트 적합
+구현: ReportAgent로 자동화
+```
+
+**3. 고객 세그먼트 분석**
+```text
+평가:
+  ✅ 빈도: 주 1회
+  ✅ 명확성: 알고리즘 정의됨
+  ✅ 자율성: 완전 자동화 가능
+  ✅ 안전성: 통계적 검증 가능
+  ✅ 가치: 실시간 분석 가능
+
+결론: 에이전트 적합
+구현: SegmentationAgent로 자동화
+```
 
 ### 부적합한 사례
 
 **❌ 에이전트 부적합**:
 
-1. **신규 전략 수립**
-   - 빈도: 분기 1회 (낮음)
-   - 명확성: 프로세스 유동적
-   - 자율성: 창의적 판단이 핵심
-   - 위험: 잘못된 전략은 큰 손실
-   - → **수동 사고 유지**, AI는 보조 도구로만
+**1. 신규 전략 수립**
+```text
+평가:
+  ❌ 빈도: 분기 1회 (낮음)
+  ❌ 명확성: 프로세스가 유동적
+  ❌ 자율성: 창의적 판단이 핵심
+  ❌ 위험: 잘못된 전략은 큰 손실
 
-2. **위기 대응**
-   - 빈도: 불규칙
-   - 명확성: 상황마다 다름
-   - 자율성: 맥락 이해 필수
-   - 위험: 실패 시 치명적
-   - → **인간 주도**, AI는 정보 제공만
+결론: 수동 사고 유지
+방식: 인간 주도, AI는 보조 도구로만
+```
 
-3. **복잡한 협상**
-   - 자율성: 감정, 관계 고려 필수
-   - 위험: 관계 손상 가능
-   - → **인간 주도**
+**2. 위기 대응**
+```text
+평가:
+  ❌ 빈도: 불규칙
+  ❌ 명확성: 상황마다 다름
+  ❌ 자율성: 맥락 이해 필수
+  ❌ 위험: 실패 시 치명적
+
+결론: 수동 사고 유지
+방식: 인간 주도, AI는 정보 제공만
+```
+
+**3. 복잡한 협상**
+```text
+평가:
+  ❌ 자율성: 감정, 관계 고려 필수
+  ❌ 위험: 관계 손상 가능
+  ❌ 명확성: 상황마다 다른 전략 필요
+
+결론: 수동 사고 유지
+방식: 인간 주도
+```
 
 ### 하이브리드 접근
 
@@ -1164,6 +1027,11 @@ Week 9+: Phase 4 (완전 자동)
 장점:
   - 시간 절약 (70%)
   - 품질 보장 (인간 검토)
+
+적용 사례:
+  - 블로그 포스트 작성
+  - 리포트 생성
+  - 이메일 초안 작성
 ```
 
 **패턴 2: 자동화 + 예외 처리**
@@ -1176,6 +1044,15 @@ Week 9+: Phase 4 (완전 자동)
   - 품질 점수 > 8.0 → 자동 발행 (80%)
   - 품질 점수 6.0-8.0 → 인간 검토 (15%)
   - 품질 점수 < 6.0 → 재생성 또는 폐기 (5%)
+
+장점:
+  - 대부분 자동 (80%)
+  - 중요한 결정만 인간 개입
+
+적용 사례:
+  - 뉴스레터 발송
+  - 소셜 미디어 포스팅
+  - 정기 리포트
 ```
 
 **패턴 3: 자동화 + 학습**
@@ -1189,6 +1066,15 @@ Week 9+: Phase 4 (완전 자동)
   - Week 1: 정확도 60% → 40% 인간 개입
   - Week 4: 정확도 80% → 20% 인간 개입
   - Week 8: 정확도 95% → 5% 인간 개입
+
+장점:
+  - 시간이 갈수록 자동화 비율 증가
+  - 인간 선택 패턴 학습
+
+적용 사례:
+  - 콘텐츠 추천
+  - 제목 생성
+  - 태그 분류
 ```
 
 ---
@@ -1221,7 +1107,7 @@ Week 9+: Phase 4 (완전 자동)
   - 둘 다 필요: 전략은 인간, 실행은 에이전트
 ```
 
-**다음 섹션 (16.2)**에서는 이 개념을 구체화합니다. 14장의 3가지 실전 사례(콘텐츠 생성, 데이터 분석, 신제품 런칭)를 실제 에이전트 코드로 구현하는 방법을 상세히 다룹니다.
+**다음 섹션 (16.2)**에서는 이 개념을 구체화합니다. 14장의 3가지 실전 사례(콘텐츠 생성, 데이터 분석, 신제품 런칭)를 실제 에이전트로 설계하는 방법을 상세히 다룹니다.
 
 ---
 
