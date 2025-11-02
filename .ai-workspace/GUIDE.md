@@ -19,8 +19,15 @@ AI 지침:
 ## 구조 개요
 
 ```
-Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Workflow → Task
+Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Workflow → Task (단위작업)
 ```
+
+**작업 규모:**
+- **Task**: 단위 작업 (시간~반나절)
+- **Story**: 1일 작업 (여러 Task 포함)
+- **Sprint**: 1주 작업 (5개 내외의 Story)
+- **Phase**: 1개월 작업 (5개 내외의 Sprint)
+- **Quarter**: 3개월 작업 (5개 내외의 Phase)
 
 **실행 단위:**
 - **Story**: 목표, 배경, 기대효과, Workflow 포함
@@ -45,18 +52,13 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - 기대효과: 어떤 개선이 기대되는가?
 
 **3단계: Task 실행**
-→ `story.md`의 Workflow 섹션에서 Task 설명 확인
-```markdown
-### Task 2: 문서 작성
-분석 결과를 바탕으로 개선된 문서를 작성합니다.
-- 입력: 분석 보고서
-- 출력: 개선된 문서
-- 완료 기준: 모든 개선 사항 반영
-```
-
-→ Task 실행
-- 설명대로 작업 수행
+→ `story.md`의 Workflow 섹션에서 Task 파일 경로 확인
+→ 해당 Task 파일 (`tasks/task-XX.md`) 열어서 상세 내용 확인
+→ Task 파일의 지침대로 작업 수행
+- 입력물 확인
+- 실행 방법 따라 작업
 - 산출물 생성
+- 완료 기준 충족 확인
 
 **4단계: 마무리**
 1. PROGRESS.md 업데이트
@@ -76,48 +78,70 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - 간략하고 명확하게 작성
 
 **2단계: Phase 목표 분해** → `00XXX-Q/index.md`
-- Quarter 목표를 3개의 Phase로 분해
+- Quarter 목표를 5개 내외의 Phase로 분해 (보통 3-5개)
 - 각 Phase는 1개월 단위
 
 **3단계: Sprint 목표 구체화** → `phase-XX/index.md`
-- Phase 목표를 4개의 Sprint로 구체화
+- Phase 목표를 5개 내외의 Sprint로 구체화 (보통 4-5개)
 - 각 Sprint는 1주 단위
 
 **4단계: Story 도출** → `sprint-XX/index.md`
 - Sprint 목표를 달성하기 위한 Story 나열
-- 권장 5개 이하, 실제 작업량에 맞게 조정 가능
+- **5개 내외로 제한** (최대 7개 초과 금지)
+- 각 Story는 1일 작업량으로 설계
+- Story가 너무 많으면 Sprint를 분할 고려
 
 **5단계: Story 작성** → `sprint-XX/story-XX/story.md`
 - Story 디렉토리 생성 (번호는 01부터 순차적으로)
 - `story.md` 파일 생성:
   - 목표: 이 Story로 달성할 것
   - 배경: 왜 이 작업이 필요한가
-  - Workflow: Task 목록과 각 Task 설명
+  - Workflow: Task 목록과 참조
 
 **6단계: Workflow 설계**
-- **기본**: `story.md` 내 Workflow 섹션에 포함
+- `story.md` 내 Workflow 섹션에 Task 목록과 흐름 정의
 - **재사용 필요 시**:
   - Sprint 내 공유: `sprint-XX/workflows/`에 생성
   - 여러 Sprint 공유: `library/workflows/`에 생성
 
-**7단계: Task 정의**
-- **기본 (99%)**: `story.md` 내 Workflow 섹션에 설명으로 충분
+**7단계: Task 파일 생성**
+- 각 Task는 별도 파일로 생성: `story-XX/tasks/task-XX.md`
+- Task 번호는 01부터 순차적으로
+- 각 Task는 단위 작업 (몇 시간~반나절)
+- Story당 보통 3-5개의 Task
+- `story.md`의 Workflow 섹션에서 Task 파일 참조
   ```markdown
   ## Workflow
   
   ### Task 1: 분석
-  현재 상태를 분석하고 문제점을 파악합니다.
-  - 입력: 기존 문서
-  - 출력: 분석 보고서
+  → `tasks/task-01.md`
   
   ### Task 2: 개선
-  분석 결과를 바탕으로 개선안을 작성합니다.
-  ...
+  → `tasks/task-02.md`
   ```
 
-- **예외 (1%)**: 매우 복잡한 Task만 별도 파일 생성
-  - 위치: `story-XX/tasks/task-XX.md`
-  - 조건: 10단계 이상 복잡한 절차, 상세 기술 문서 필요한 경우
+- Task 파일 내용:
+  ```markdown
+  # Task 1: 분석
+  
+  ## 목적
+  현재 상태를 분석하고 문제점을 파악합니다.
+  
+  ## 입력
+  - 기존 문서
+  
+  ## 출력
+  - 분석 보고서
+  
+  ## 실행 방법
+  1. 문서 구조 분석
+  2. 문제점 식별
+  3. 개선 방안 도출
+  
+  ## 완료 기준
+  - 모든 섹션 분석 완료
+  - 문제점 목록 작성
+  ```
 
 ---
 
@@ -125,7 +149,9 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 
 **Story 단위 조정** (가장 유연)
 - Story 추가/삭제/재배치 가능
-- Sprint 목표 범위 내에서 자유롭게 조정
+- Sprint 목표 범위 내에서 조정
+- **Sprint당 5개 내외 유지 필수**
+- 초과 시 다음 Sprint로 이동 또는 Story 분할
 
 **Sprint/Phase 조정** (목표 유지)
 - 목표는 그대로 두되 Story 재배치로 대응
@@ -158,7 +184,9 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
             ├── index.md     # Sprint 목표와 Story 목록
             ├── story-XX/    # Story 디렉토리 (필수)
             │   ├── story.md # Story 정의 (필수)
-            │   └── tasks/   # 복잡한 Task 파일 (선택적)
+            │   └── tasks/   # Task 파일들 (필수)
+            │       ├── task-01.md
+            │       └── task-02.md
             └── workflows/   # Sprint 내 공유 Workflow (선택적)
 ```
 
@@ -169,9 +197,10 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - 각 Story 디렉토리에 `story.md` 필수
 - 번호는 01부터 순차적으로
 
-**Task 파일 (선택적)**
-- 99%: `story.md` 내 Workflow 섹션에 설명으로 충분
-- 1%: 매우 복잡한 경우만 `story-XX/tasks/` 디렉토리에 생성
+**Task 파일 (필수)**
+- 모든 Task는 별도 파일로 생성: `story-XX/tasks/task-XX.md`
+- 번호는 01부터 순차적으로
+- `story.md`에서는 Task 파일 참조만
 
 **Workflow 파일 (재사용 시)**
 - Sprint 내 재사용: `sprint-XX/workflows/`
@@ -211,3 +240,12 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 - 각 Quarter/index.md에 상세 계획
 - 진행률은 PROGRESS.md에서만 관리
 - Quarter 시작 시 Phase/Sprint/Story 구조 생성
+
+### 작업량 가이드라인
+- **Quarter**: 5개 내외의 Phase (3-5개월 작업)
+- **Phase**: 5개 내외의 Sprint (1개월 작업)
+- **Sprint**: 5개 내외의 Story (1주 작업)
+- **Story**: 3-5개의 Task (1일 작업)
+- **Task**: 단위 작업 (시간~반나절)
+
+⚠️ **주의**: Sprint에 Story를 무한정 추가 금지! 5개 내외 유지 필수
