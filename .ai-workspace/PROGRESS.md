@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-- **Current Story**: `.ai-workspace/00002-Q/phase-01/sprint-02/story-01/`
-- **Current Task**: `Task 3: 본문 내용 수정 (4가지 제약 조건)`
+- **Current Story**: `.ai-workspace/00002-Q/phase-01/sprint-02/story-02/`
+- **Current Task**: `Task 1: Chapter 6 검토`
