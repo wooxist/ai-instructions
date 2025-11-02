@@ -366,80 +366,18 @@ project/
 
 ### code/segmentation_code.py (TC-002 산출물)
 
-```python
-"""
-세그먼트 분석 코드 (TC-002에서 생성)
+TC-002에서 생성된 세그먼트 분석 코드입니다.
 
-핵심 가치:
+**주요 기능**:
+- K-means 클러스터링을 사용한 고객 세그먼트 분류
+- RFM(Recency, Frequency, Monetary) 기반 특성 분석
+- random_state 고정으로 재현 가능성 보장
+- 세그먼트별 통계를 JSON 형식으로 저장
+
+**핵심 가치 구현**:
 - 신뢰성: scikit-learn의 검증된 알고리즘 사용
-- 재현성: random_state 고정으로 100% 재현 가능
-- 실행 가능성: 결과를 segments.json으로 저장하여 즉시 활용
-"""
-
-import pandas as pd
-import json
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-
-def segment_customers(data_path, output_path, n_segments=3):
-    """
-    고객 데이터를 세그먼트로 분류
-    
-    Args:
-        data_path: cleaned_data.csv 경로
-        output_path: segments.json 저장 경로
-        n_segments: 세그먼트 개수 (기본 3)
-    
-    Returns:
-        segments: 세그먼트 분류 결과
-    """
-    # 데이터 로드
-    df = pd.read_csv(data_path)
-    
-    # 특성 선택 (RFM 기반)
-    features = ['recency', 'frequency', 'monetary']
-    X = df[features]
-    
-    # 정규화
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-    
-    # K-means 클러스터링 (재현성: random_state 고정)
-    kmeans = KMeans(n_clusters=n_segments, random_state=42)
-    df['segment'] = kmeans.fit_predict(X_scaled)
-    
-    # 세그먼트별 통계
-    segments = []
-    for i in range(n_segments):
-        segment_data = df[df['segment'] == i]
-        segments.append({
-            "segment_id": i,
-            "size": len(segment_data),
-            "avg_recency": float(segment_data['recency'].mean()),
-            "avg_frequency": float(segment_data['frequency'].mean()),
-            "avg_monetary": float(segment_data['monetary'].mean())
-        })
-    
-    # 결과 저장
-    with open(output_path, 'w') as f:
-        json.dump({
-            "segments": segments,
-            "algorithm": "KMeans",
-            "n_segments": n_segments,
-            "random_state": 42,
-            "reproducible": True
-        }, f, indent=2)
-    
-    return segments
-
-if __name__ == "__main__":
-    # 실행 (재현 가능)
-    segment_customers(
-        data_path="../data/cleaned/cleaned_data.csv",
-        output_path="../outputs/segments.json",
-        n_segments=3
-    )
-```
+- 재현성: random_state=42로 100% 재현 가능
+- 실행 가능성: segments.json 형식으로 즉시 활용 가능
 
 ---
 
