@@ -73,31 +73,40 @@ workspaces/blog-post-001/
 **3. 에이전트 구현**
 
 기본 구조:
-```python
-class BlogPostAgent:
-    """블로그 포스트 생성 에이전트"""
-    
-    def __init__(self, task_id: str, topic: str):
-        self.task_id = task_id
-        self.topic = topic
-        
-        # 필수 컴포넌트 초기화
-        self.file_manager = FileManager(f'./workspaces/{task_id}')
-        self.state_machine = AgentStateMachine([...])
-        self.logger = AgentLogger(task_id)
-        self.checkpoint_manager = CheckpointManager('./', task_id)
-    
-    async def run(self, resume=True):
-        """에이전트 실행"""
-        # TODO: 구현
-        pass
-    
-    async def planning(self, context):
-        """Planning Stage"""
-        # TODO: 구현
-        pass
-    
-    # ... 나머지 Stage들
+```yaml
+BlogPostAgent:
+  초기화:
+    - task_id: 작업 식별자
+    - topic: 블로그 주제
+    - 필수_컴포넌트:
+      * FileManager: 파일 관리
+      * AgentStateMachine: Stage 관리
+      * AgentLogger: 로깅
+      * CheckpointManager: 체크포인트
+  
+  run(resume=True):
+    목적: 에이전트 실행
+    흐름: 16.3.2의 패턴 1 (상태 머신) 참조
+  
+  planning(context):
+    목적: 블로그 구조 기획
+    입력: topic, core_values
+    출력: 제목, 개요, 섹션 구조
+  
+  reasoning(context):
+    목적: 각 섹션 내용 분석
+    입력: planning 결과
+    출력: 섹션별 핵심 포인트
+  
+  experimenting(context):
+    목적: 초안 작성
+    입력: reasoning 결과
+    출력: 블로그 포스트 초안
+  
+  reflecting(context):
+    목적: 품질 검증 및 개선
+    입력: experimenting 결과
+    출력: 최종 블로그 포스트
 ```
 
 **구현해야 할 것들**:
@@ -111,18 +120,17 @@ class BlogPostAgent:
 ### 선택 기능
 
 **Human-in-the-Loop** (선택):
-```python
-# Experimenting Stage 완료 후 승인 받기
-if self.approval_gate:
-    response = await self.approval_gate.require_approval(
-        approval_id=f"{self.task_id}-draft",
-        context={'draft': draft},
-        explanation="블로그 포스트 초안을 검토해주세요."
-    )
-    
-    if not response.is_approved:
-        # 피드백 반영하여 재작성
-        draft = await self.revise_draft(draft, response.feedback)
+```yaml
+Experimenting_Stage_완료_후:
+  1. 초안을 approval_gate에 제출
+  2. 승인_요청:
+     - approval_id: "{task_id}-draft"
+     - context: draft 내용
+     - explanation: "블로그 포스트 초안을 검토해주세요"
+  
+  3. 응답_처리:
+     - is_approved = true: 다음 Stage로
+     - is_approved = false: 피드백 반영하여 재작성
 ```
 
 ### 예상 소요 시간
@@ -171,46 +179,48 @@ if self.approval_gate:
 ### 힌트
 
 **힌트 1: 프롬프트 설계**
-```python
-# Planning Stage 프롬프트 예시
-def _create_planning_prompt(self):
-    return f"""
-당신은 기술 블로그 작가입니다.
-
-주제: {self.topic}
-
-1단계: 블로그 포스트 구조 기획
-다음을 포함하세요:
-- 제목 (매력적이고 SEO 친화적)
-- 개요 (3-5줄)
-- 주요 섹션 (5-7개)
-- 각 섹션의 핵심 내용
-
-응답 형식: JSON
-{{
-  "title": "...",
-  "overview": "...",
-  "sections": [
-    {{"name": "...", "content": "..."}},
-    ...
-  ]
-}}
-"""
+```yaml
+Planning_Stage_프롬프트:
+  역할: "당신은 기술 블로그 작가입니다"
+  
+  입력:
+    - 주제: {topic}
+  
+  요청:
+    - 제목 (매력적이고 SEO 친화적)
+    - 개요 (3-5줄)
+    - 주요 섹션 (5-7개)
+    - 각 섹션의 핵심 내용
+  
+  응답_형식: JSON
+    title: "..."
+    overview: "..."
+    sections:
+      - name: "..."
+        content: "..."
 ```
 
 **힌트 2: 재시도 추가**
-```python
-@retry(RetryConfig(max_retries=3))
-async def call_ai(self, prompt: str) -> str:
-    # API 호출
-    return await self._raw_api_call(prompt)
+```yaml
+call_ai_메서드:
+  목적: API 호출 with 재시도
+  
+  구현_개념:
+    - 16.3.2 패턴 3 (재시도 로직) 참조
+    - RetryConfig 사용
+    - max_retries: 3
+    - exponential_backoff: true
 ```
 
 **힌트 3: 진행 상황 출력**
-```python
-def update_state(self, stage: str):
-    progress = self.state_machine.get_progress()
-    print(f"[{progress['progress_percent']:.0f}%] {stage} 진행 중...")
+```yaml
+update_state_메서드:
+  목적: 진행 상황 표시
+  
+  구현:
+    - state_machine.get_progress() 호출
+    - progress_percent 계산
+    - 화면에 출력: "[75%] reasoning 진행 중..."
 ```
 
 ### 참고 자료
@@ -289,37 +299,26 @@ workspaces/weekly-report-001/
 
 **3. 조율자 구현**
 
-```python
-class WeeklyReportTeam:
-    """주간 리포트 생성 팀"""
-    
-    def __init__(self, task_id: str, week_number: int):
-        self.task_id = task_id
-        self.week_number = week_number
-        
-        # 에이전트 생성
-        self.agents = {
-            'data_collection': DataCollectionAgent(task_id, week_number),
-            'analysis': AnalysisAgent(task_id),
-            'report': ReportAgent(task_id)
-        }
-        
-        # 의존성 정의
-        self.dependencies = {
-            'data_collection': [],
-            'analysis': ['data_collection'],
-            'report': ['analysis']
-        }
-    
-    async def run(self):
-        """팀 실행"""
-        # TODO: 의존성 순서대로 에이전트 실행
-        pass
-    
-    def _get_execution_order(self):
-        """실행 순서 결정 (위상 정렬)"""
-        # TODO: 구현
-        pass
+```yaml
+WeeklyReportTeam:
+  초기화:
+    - task_id: 작업 식별자
+    - week_number: 주차 번호
+    - agents: 3개 에이전트 딕셔너리
+    - dependencies: 의존성 맵
+  
+  run():
+    목적: 팀 실행
+    흐름:
+      1. 실행 순서 결정 (위상 정렬)
+      2. 순서대로 에이전트 실행
+      3. 각 에이전트 결과를 파일로 저장
+      4. 다음 에이전트가 파일 읽어서 사용
+  
+  _get_execution_order():
+    목적: 의존성 기반 실행 순서 결정
+    방법: 위상 정렬 (Topological Sort)
+    결과: ["data_collection", "analysis", "report"]
 ```
 
 **구현해야 할 것들**:
@@ -377,53 +376,54 @@ class WeeklyReportTeam:
 ### 힌트
 
 **힌트 1: 의존성 해결 (위상 정렬)**
-```python
-def _get_execution_order(self):
-    """위상 정렬로 실행 순서 결정"""
-    visited = set()
-    order = []
+```yaml
+_get_execution_order_개념:
+  목적: 의존성을 고려한 실행 순서 결정
+  
+  알고리즘:
+    1. 방문_집합 초기화 (visited = set)
+    2. 순서_목록 초기화 (order = [])
     
-    def visit(agent_id):
-        if agent_id in visited:
-            return
-        
-        visited.add(agent_id)
-        
-        # 의존성 먼저 방문
-        for dep in self.dependencies[agent_id]:
-            visit(dep)
-        
-        order.append(agent_id)
+    3. 각_에이전트_방문:
+       - 이미 방문했으면 스킵
+       - 방문 표시
+       - 의존하는 에이전트 먼저 재귀 방문
+       - 현재 에이전트를 order에 추가
     
-    for agent_id in self.agents.keys():
-        visit(agent_id)
-    
-    return order
+    4. order 반환
+  
+  결과:
+    - data_collection (의존성 없음)
+    - analysis (data_collection 의존)
+    - report (analysis 의존)
 ```
 
 **힌트 2: 파일 기반 통신**
-```python
-# Agent A: 데이터 저장
-self.file_manager.save_json('outputs/data_collection.json', result)
+```yaml
+에이전트_A_데이터_저장:
+  - file_manager.save_json('outputs/data_collection.json', result)
+  - 다음 에이전트가 사용할 데이터 저장
 
-# Agent B: 데이터 읽기
-data = self.file_manager.load_json('outputs/data_collection.json')
+에이전트_B_데이터_읽기:
+  - data = file_manager.load_json('outputs/data_collection.json')
+  - 이전 에이전트 결과 로드
+  - 자신의 처리 수행
 ```
 
 **힌트 3: 팀 진행 상황**
-```python
-def get_team_progress(self):
-    """팀 전체 진행 상황"""
-    completed = sum(
-        1 for agent in self.agents.values()
-        if agent.is_completed()
-    )
-    
-    return {
-        'completed_agents': completed,
-        'total_agents': len(self.agents),
-        'progress_percent': (completed / len(self.agents)) * 100
-    }
+```yaml
+get_team_progress:
+  목적: 팀 전체 진행 상황 확인
+  
+  계산:
+    - completed = 완료된 에이전트 수
+    - total = 전체 에이전트 수
+    - progress_percent = (completed / total) × 100
+  
+  반환:
+    completed_agents: 2
+    total_agents: 3
+    progress_percent: 66.7
 ```
 
 ### 참고 자료
@@ -523,40 +523,46 @@ workspaces/product-planning-001/
 
 **4. 메타 조율자 구현**
 
-```python
-class MetaCoordinator:
-    """메타 조율자"""
-    
-    def __init__(self, task_id: str, product_idea: str, core_values: list):
-        self.task_id = task_id
-        self.product_idea = product_idea
-        self.core_values = core_values
-        
-        # 실행 에이전트들
-        self.agents = {
-            'market_research': MarketResearchAgent(...),
-            'positioning': PositioningAgent(...),
-            'pricing': PricingAgent(...),
-            'gtm': GTMAgent(...)
-        }
-        
-        # 검증 이력
-        self.validation_history = []
-    
-    async def run(self):
-        """시스템 실행"""
-        # TODO: 구현
-        pass
-    
-    async def _validate_result(self, agent_id: str, result: dict):
-        """에이전트 결과 검증"""
-        # TODO: 핵심 가치 부합성, 일관성 검증
-        pass
-    
-    async def _integrate_all_results(self):
-        """모든 결과 통합"""
-        # TODO: 최종 기획서 생성
-        pass
+```yaml
+MetaCoordinator:
+  초기화:
+    - task_id: 작업 식별자
+    - product_idea: 제품 아이디어
+    - core_values: 핵심 가치 목록
+    - agents: 4개 실행 에이전트 딕셔너리
+    - validation_history: 검증 이력
+  
+  run():
+    목적: 시스템 실행
+    흐름:
+      1. 실행 순서 결정
+      2. 각 에이전트 순차 실행:
+         - 에이전트 실행
+         - 결과 검증
+         - 통과하면 다음, 실패하면 재실행
+      3. 모든 결과 통합
+      4. 최종 검증
+      5. 기획서 생성
+  
+  _validate_result(agent_id, result):
+    목적: 에이전트 결과 검증
+    검증_항목:
+      - 핵심 가치 부합성
+      - 완전성
+      - 실행 가능성
+      - 이전 결과와 일관성
+    반환:
+      passed: true/false
+      score: 0-10
+      issues: []
+      feedback: "..."
+  
+  _integrate_all_results():
+    목적: 모든 결과 통합
+    방법:
+      - 4개 에이전트 결과 수집
+      - AI로 통합 기획서 작성
+      - 구조화된 문서 생성
 ```
 
 **구현해야 할 것들**:
@@ -616,85 +622,86 @@ class MetaCoordinator:
 ### 힌트
 
 **힌트 1: 검증 로직**
-```python
-async def _validate_result(self, agent_id: str, result: dict):
-    """결과 검증"""
+```yaml
+_validate_result_개념:
+  목적: 에이전트 결과 검증
+  
+  프롬프트_구조:
+    역할: "제품 기획 검증 전문가"
+    입력:
+      - 핵심 가치
+      - 에이전트 ID
+      - 결과 데이터
     
-    prompt = f"""
-당신은 제품 기획 검증 전문가입니다.
-
-핵심 가치: {self.core_values}
-에이전트: {agent_id}
-결과: {json.dumps(result, ensure_ascii=False)}
-
-검증 항목:
-1. 핵심 가치 부합성: 결과가 핵심 가치와 일치하는가?
-2. 완전성: 필요한 모든 정보가 포함되었는가?
-3. 실행 가능성: 실제로 실행 가능한 계획인가?
-
-응답 형식: JSON
-{{
-  "passed": true/false,
-  "score": 0-10,
-  "issues": ["문제점들"],
-  "feedback": "개선 방향"
-}}
-"""
+    검증_항목:
+      1. 핵심_가치_부합성: 결과가 핵심 가치와 일치하는가?
+      2. 완전성: 필요한 모든 정보가 포함되었는가?
+      3. 실행_가능성: 실제로 실행 가능한 계획인가?
     
-    validation = await self.call_ai(prompt)
-    return json.loads(validation)
+    응답_형식: JSON
+      passed: true/false
+      score: 0-10
+      issues: ["문제점들"]
+      feedback: "개선 방향"
 ```
 
 **힌트 2: 재실행 with 피드백**
-```python
-async def _run_agent_with_validation(self, agent_id: str, max_attempts=3):
-    """검증 포함 에이전트 실행"""
+```yaml
+_run_agent_with_validation_개념:
+  목적: 검증 포함 에이전트 실행
+  
+  흐름:
+    max_attempts: 3
     
     for attempt in range(max_attempts):
-        # 실행
-        result = await self.agents[agent_id].run(context)
-        
-        # 검증
-        validation = await self._validate_result(agent_id, result)
-        
-        if validation['passed']:
-            return result
-        
-        # 피드백 추가하여 재실행
-        context['feedback'] = validation['feedback']
-        print(f"⚠️  {agent_id} 재실행 ({attempt + 1}/{max_attempts})")
+      1. 에이전트_실행:
+         - agents[agent_id].run(context)
+      
+      2. 결과_검증:
+         - _validate_result(agent_id, result)
+      
+      3. 검증_통과:
+         - validation['passed'] == true
+         - 결과 반환
+      
+      4. 검증_실패:
+         - context에 feedback 추가
+         - 재시도 메시지 출력
+         - 다음 attempt
     
-    raise ValidationFailed(f"{agent_id} 검증 실패")
+    최종_실패:
+      - ValidationFailed 예외 발생
 ```
 
 **힌트 3: 최종 통합**
-```python
-async def _integrate_all_results(self):
-    """모든 결과를 하나의 기획서로 통합"""
+```yaml
+_integrate_all_results_개념:
+  목적: 모든 결과를 하나의 기획서로 통합
+  
+  프롬프트_구조:
+    역할: "제품 기획 통합 전문가"
     
-    prompt = f"""
-당신은 제품 기획 통합 전문가입니다.
-
-4개 에이전트 결과:
-1. 시장 조사: {self.results['market_research']}
-2. 포지셔닝: {self.results['positioning']}
-3. 가격 전략: {self.results['pricing']}
-4. Go-to-Market: {self.results['gtm']}
-
-이 결과들을 통합하여 완전한 제품 기획서를 작성하세요.
-
-기획서 구조:
-1. Executive Summary
-2. Market Analysis
-3. Product Positioning
-4. Pricing Strategy
-5. Go-to-Market Plan
-6. Success Metrics
-7. Risks and Mitigation
-"""
+    입력:
+      - 시장 조사 결과
+      - 포지셔닝 결과
+      - 가격 전략 결과
+      - Go-to-Market 결과
     
-    integrated_plan = await self.call_ai(prompt)
-    return integrated_plan
+    요청:
+      "이 결과들을 통합하여 완전한 제품 기획서를 작성하세요"
+    
+    기획서_구조:
+      1. Executive Summary
+      2. Market Analysis
+      3. Product Positioning
+      4. Pricing Strategy
+      5. Go-to-Market Plan
+      6. Success Metrics
+      7. Risks and Mitigation
+  
+  출력:
+    - 구조화된 기획서 (마크다운)
+    - product_plan.md 파일로 저장
 ```
 
 ### 참고 자료

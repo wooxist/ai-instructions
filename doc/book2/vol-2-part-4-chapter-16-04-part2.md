@@ -380,128 +380,108 @@ workspace/
     └── task-{id}.json
 ```
 
-### 필수 클래스
-```python
-# 1. 상태 머신
-AgentStateMachine(stages)
+### 필수 컴포넌트 목록
 
-# 2. 파일 관리
-FileManager(base_dir)
+```yaml
+상태_관리:
+  - AgentStateMachine: Stage 진행 관리
+  - Checkpoint: 실패 지점 저장
+  - CheckpointManager: 체크포인트 저장/로드
 
-# 3. 재시도 로직
-with_retry(func, config)
+파일_처리:
+  - FileManager: 파일 I/O 자동화
+  - thinking_record 저장/로드
+  - thinking_state 업데이트
 
-# 4. Human-in-the-Loop
-ApprovalGate(notifier)
+오류_처리:
+  - RetryConfig: 재시도 설정
+  - with_retry: 재시도 로직
+  - 지수 백오프
 
-# 5. 체크포인트
-CheckpointManager(base_dir, task_id)
+승인_시스템:
+  - ApprovalGate: Human-in-the-Loop
+  - ApprovalResponse: 승인 응답
+  - Notifier: 알림 발송
 
-# 6. 로깅
-AgentLogger(task_id, log_file)
+모니터링:
+  - AgentLogger: 로깅
+  - AlertManager: 알림 관리
+  - 진행 상황 추적
 
-# 7. 비용 추적
-CostTracker()
-
-# 8. 캐싱
-ResponseCache(cache_dir)
+최적화:
+  - CostTracker: 비용 추적
+  - ResponseCache: 응답 캐싱
+  - BatchProcessor: 배치 처리
 ```
 
 ### 빠른 시작 템플릿
-```python
-import asyncio
-from typing import Dict, Any
 
-class MyFirstAgent:
-    """나의 첫 에이전트"""
+```yaml
+MyFirstAgent_구조:
+  초기화:
+    - task_id: 작업 식별자
+    - goal: 목표
+    - 필수_컴포넌트:
+      * FileManager: 파일 관리
+      * AgentStateMachine: Stage 관리
+      * AgentLogger: 로깅
+      * CheckpointManager: 체크포인트
+  
+  run(resume=True):
+    흐름:
+      1. 체크포인트_확인:
+         - resume=True이면 로드
+         - 마지막 완료 Stage 다음부터 시작
+      
+      2. Stage_실행_루프:
+         - current_stage가 있는 동안:
+           * logger.stage_start()
+           * execute_current_stage()
+           * checkpoint 저장
+           * logger.stage_complete()
+           * move_next()
+      
+      3. 완료_처리:
+         - checkpoint 삭제
+         - 최종 결과 반환
+  
+  Stage_핸들러:
+    planning(context):
+      - 목표: 구조 기획
+      - 입력: goal, core_values
+      - 출력: plan 딕셔너리
     
-    def __init__(self, task_id: str, goal: str):
-        self.task_id = task_id
-        self.goal = goal
-        
-        # 필수 컴포넌트
-        self.file_manager = FileManager(f'./workspaces/{task_id}')
-        self.state_machine = AgentStateMachine([
-            Stage('planning', self.planning),
-            Stage('reasoning', self.reasoning),
-            Stage('experimenting', self.experimenting),
-            Stage('reflecting', self.reflecting)
-        ])
-        self.logger = AgentLogger(task_id)
-        self.checkpoint_manager = CheckpointManager('./', task_id)
+    reasoning(context):
+      - 목표: 논리 분석
+      - 입력: planning 결과
+      - 출력: analysis 딕셔너리
     
-    async def run(self, resume=True):
-        """실행"""
-        # 체크포인트 확인
-        if resume:
-            checkpoint = self.checkpoint_manager.load_checkpoint()
-            if checkpoint:
-                self.state_machine.current_index = checkpoint.stage_index + 1
-        
-        # Stage 실행
-        context = {'goal': self.goal}
-        
-        while self.state_machine.get_current_stage():
-            stage = self.state_machine.get_current_stage()
-            
-            self.logger.stage_start(stage.name)
-            
-            try:
-                result = await self.state_machine.execute_current_stage(context)
-                context[stage.name] = result
-                
-                # 체크포인트 저장
-                self.checkpoint_manager.save_checkpoint(
-                    stage_name=stage.name,
-                    stage_index=self.state_machine.current_index,
-                    result=result
-                )
-                
-                self.logger.stage_complete(stage.name, 0)
-                
-            except Exception as e:
-                self.logger.stage_failed(stage.name, e)
-                raise
-            
-            if not self.state_machine.move_next():
-                break
-        
-        # 완료
-        self.checkpoint_manager.clear_checkpoint()
-        return context
+    experimenting(context):
+      - 목표: 초안 작성
+      - 입력: reasoning 결과
+      - 출력: draft 딕셔너리
     
-    async def planning(self, context: Dict[str, Any]):
-        """Planning Stage"""
-        # TODO: 구현
-        return {'plan': '...'}
-    
-    async def reasoning(self, context: Dict[str, Any]):
-        """Reasoning Stage"""
-        # TODO: 구현
-        return {'analysis': '...'}
-    
-    async def experimenting(self, context: Dict[str, Any]):
-        """Experimenting Stage"""
-        # TODO: 구현
-        return {'draft': '...'}
-    
-    async def reflecting(self, context: Dict[str, Any]):
-        """Reflecting Stage"""
-        # TODO: 구현
-        return {'final': '...'}
+    reflecting(context):
+      - 목표: 품질 검증
+      - 입력: experimenting 결과
+      - 출력: final 딕셔너리
 
+실행_방법:
+  첫_실행:
+    - agent = MyFirstAgent(task_id='...', goal='...')
+    - result = await agent.run()
+  
+  재개:
+    - agent = MyFirstAgent(task_id='...', goal='...')
+    - result = await agent.run(resume=True)
+    - 체크포인트부터 자동 재개
 
-# 실행
-async def main():
-    agent = MyFirstAgent(
-        task_id='my-first-agent',
-        goal='첫 에이전트 만들기'
-    )
-    
-    result = await agent.run()
-    print(result)
-
-asyncio.run(main())
+핵심_패턴:
+  - 각 Stage는 독립적 함수
+  - context로 이전 결과 전달
+  - 모든 Stage 완료 시 체크포인트 저장
+  - 오류 발생 시 자동 로깅
+  - 재개 시 중복 작업 방지
 ```
 
 이제 Part 4가 완전히 끝났어요! 실전에서 성공하길 바랍니다! 🎉
