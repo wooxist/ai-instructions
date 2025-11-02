@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-**Story**: 없음  
-**Task**: Quarter 2 Phase 1 Sprint 1 완료
+- **Current Story**: `.ai-workspace/00002-Q/phase-01/sprint-02/story-01/`
+- **Current Task**: `Task 1: 목차 및 구조 개편`
