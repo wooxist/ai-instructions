@@ -7,5 +7,4 @@ AI 지침:
 
 # PROGRESS
 
-- **Current Story**: `(None)`
-- **Current Task**: `(None)`
+- **Current Task**: `Task 5: Git Staging 및 커밋`
