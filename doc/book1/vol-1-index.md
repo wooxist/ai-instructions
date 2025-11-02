@@ -97,23 +97,23 @@ AI 에이전트 작업 지침:
 
 **난이도**: ★★☆ | **학습 목표**: 인스트럭션 설계 원칙과 에이전트 구조화 방법 습득
 
-* [4장. 인스트럭션 시스템 설계 원칙](vol-1-part-2-chapter-04.md) **★★☆**
-  * [4.1 구조적 원칙](vol-1-part-2-chapter-04.md#41-구조적-원칙-설계의-뼈대-세우기)
-  * [4.2 실행 원칙](vol-1-part-2-chapter-04.md#42-실행-원칙-ai와-함께-일하는-방식-정의하기)
-  * [4.3 검증 및 책임 원칙](vol-1-part-2-chapter-04.md#43-검증-및-책임-원칙-신뢰와-안전성-확보하기)
-  * [4.4 시스템 설계 원칙 요약표](vol-1-part-2-chapter-04.md#44-시스템-설계-원칙-요약표)
-  * [4.5 상황별 원칙 적용 가이드](vol-1-part-2-chapter-04.md#45-상황별-원칙-적용-가이드)
+* [4장. AI 협업의 4가지 제약 조건과 해결 원칙](vol-1-part-2-chapter-04.md) **★★☆**
+  * [4.1 AI 협업의 4가지 제약 조건](vol-1-part-2-chapter-04.md#41-ai-협업의-4가지-제약-조건)
+    * [4.1.1 제약 1: Context Window 한계와 Lost in the Middle](vol-1-part-2-chapter-04.md#411-제약-1-context-window-한계와-lost-in-the-middle)
+    * [4.1.2 제약 2: 할루시네이션 (Hallucination)](vol-1-part-2-chapter-04.md#412-제약-2-할루시네이션-hallucination)
+    * [4.1.3 제약 3: 비일관성 (Inconsistency)](vol-1-part-2-chapter-04.md#413-제약-3-비일관성-inconsistency)
+    * [4.1.4 제약 4: 유지보수 어려움 (Maintenance Difficulty)](vol-1-part-2-chapter-04.md#414-제약-4-유지보수-어려움-maintenance-difficulty)
+  * [4.2 제약을 기회로: 체계적인 업무 자동화](vol-1-part-2-chapter-04.md#42-제약을-기회로-체계적인-업무-자동화)
+    * [4.2.1 업무를 작은 단위로 나누기](vol-1-part-2-chapter-04.md#421-업무를-작은-단위로-나누기)
+    * [4.2.2 표준화된 프로세스 구축](vol-1-part-2-chapter-04.md#422-표준화된-프로세스-구축)
+    * [4.2.3 명확한 책임 분배](vol-1-part-2-chapter-04.md#423-명확한-책임-분배)
   * [실습 체크리스트](vol-1-part-2-chapter-04.md#실습-체크리스트)
-* [5장. AI 협업의 4가지 제약 조건과 해결 원칙](vol-1-part-2-chapter-05.md) **★★☆**
-  * [5.1 AI 협업의 4가지 제약 조건](vol-1-part-2-chapter-05.md#51-ai-협업의-4가지-제약-조건)
-    * [5.1.1 제약 1: Context Window 한계와 Lost in the Middle](vol-1-part-2-chapter-05.md#511-제약-1-context-window-한계와-lost-in-the-middle)
-    * [5.1.2 제약 2: 할루시네이션 (Hallucination)](vol-1-part-2-chapter-05.md#512-제약-2-할루시네이션-hallucination)
-    * [5.1.3 제약 3: 비일관성 (Inconsistency)](vol-1-part-2-chapter-05.md#513-제약-3-비일관성-inconsistency)
-    * [5.1.4 제약 4: 유지보수 어려움 (Maintenance Difficulty)](vol-1-part-2-chapter-05.md#514-제약-4-유지보수-어려움-maintenance-difficulty)
-  * [5.2 제약을 기회로: 체계적인 업무 자동화](vol-1-part-2-chapter-05.md#52-제약을-기회로-체계적인-업무-자동화)
-    * [5.2.1 업무를 작은 단위로 나누기](vol-1-part-2-chapter-05.md#521-업무를-작은-단위로-나누기)
-    * [5.2.2 표준화된 프로세스 구축](vol-1-part-2-chapter-05.md#522-표준화된-프로세스-구축)
-    * [5.2.3 명확한 책임 분배](vol-1-part-2-chapter-05.md#523-명확한-책임-분배)
+* [5장. 인스트럭션 시스템 설계 원칙](vol-1-part-2-chapter-05.md) **★★☆**
+  * [5.1 구조적 원칙](vol-1-part-2-chapter-05.md#51-구조적-원칙-설계의-뼈대-세우기)
+  * [5.2 실행 원칙](vol-1-part-2-chapter-05.md#52-실행-원칙-ai와-함께-일하는-방식-정의하기)
+  * [5.3 검증 및 책임 원칙](vol-1-part-2-chapter-05.md#53-검증-및-책임-원칙-신뢰와-안전성-확보하기)
+  * [5.4 시스템 설계 원칙 요약표](vol-1-part-2-chapter-05.md#54-시스템-설계-원칙-요약표)
+  * [5.5 상황별 원칙 적용 가이드](vol-1-part-2-chapter-05.md#55-상황별-원칙-적용-가이드)
   * [실습 체크리스트](vol-1-part-2-chapter-05.md#실습-체크리스트)
 * [6장. 입력과 출력 설계](vol-1-part-2-chapter-06.md) **★★☆**
   * [6.1 왜 입력과 출력 설계가 중요한가?](vol-1-part-2-chapter-06.md#61-왜-입력과-출력-설계가-중요한가)
