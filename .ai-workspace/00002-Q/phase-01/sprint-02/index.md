@@ -5,5 +5,5 @@ Book 1, Part 2 (Chapter 4, 5, 6) 원고의 내용적 효용성과 완성도를 �
 
 ## Sprint Stories
 - `story-01`: Chapter 5 개편 - AI 제약 조건의 실용적 관리
-- `story-02`: (미정)
+- `story-02`: 8장, 9장 삭제 및 Book1 목차 재구성
 - `story-03`: (미정)

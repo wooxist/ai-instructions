@@ -126,11 +126,13 @@ AI 에이전트 작업 지침:
 
 **난이도**: ★★☆ | **학습 목표**: 워크플로우 패턴, 성능 최적화, 평가 방법 습득
 
-* [7장. 기본 워크플로우 패턴과 처리](vol-1-part-3-chapter-07.md) **★★☆**
-  * [7.1 파이프라인(Pipeline) 패턴](vol-1-part-3-chapter-07.md#71-파이프라인pipeline-패턴)
-  * [7.2 생성-검증(Generate-and-Verify) 패턴](vol-1-part-3-chapter-07.md#72-생성-검증generate-and-verify-패턴)
-  * [7.3 라우팅 패턴](vol-1-part-3-chapter-07.md#73-라우팅-패턴)
-  * [7.4 워크플로우 정의 (`workflow.yaml`)](vol-1-part-3-chapter-07.md#74-워크플로우-정의-workflowyaml)
+* [7장. 단일 에이전트 설계](vol-1-part-3-chapter-07.md) **★★☆**
+  * [7.1 에이전트란 무엇인가?](vol-1-part-3-chapter-07.md#71-에이전트란-무엇인가)
+  * [7.2 에이전트의 핵심 구성 요소: 정체성, 지식, 도구](vol-1-part-3-chapter-07.md#72-에이전트의-핵심-구성-요소-정체성-지식-도구)
+  * [7.3 정체성(Identity) 부여하기](vol-1-part-3-chapter-07.md#73-정체성identity-부여하기)
+  * [7.4 지식(Knowledge) 제공하기](vol-1-part-3-chapter-07.md#74-지식knowledge-제공하기)
+  * [7.5 도구(Tools) 활용하기](vol-1-part-3-chapter-07.md#75-도구tools-활용하기)
+  * [7.6 에이전트 설계 템플릿](vol-1-part-3-chapter-07.md#76-에이전트-설계-템플릿)
   * [실습 체크리스트](vol-1-part-3-chapter-07.md#실습-체크리스트)
 * [8장. 성능 최적화: 품질, 비용, 속도의 균형 맞추기](vol-1-part-3-chapter-08.md) **★★☆**
   * [8.1 왜 성능 최적화가 필요한가?](vol-1-part-3-chapter-08.md#81-왜-성능-최적화가-필요한가)
