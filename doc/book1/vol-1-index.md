@@ -124,18 +124,12 @@ AI 에이전트 작업 지침:
   * [7.2 [사례 2] 표준/전문: 마케팅 문구 생성](vol-1-part-2-chapter-07.md#72-사례-2-표준전문-마케팅-문구-생성)
   * [7.3 [사례 3] 복잡/중요: 회의록 기반 할 일 추출](vol-1-part-2-chapter-07.md#73-사례-3-복잡중요-회의록-기반-할-일-추출)
   * [실습 체크리스트](vol-1-part-2-chapter-07.md#실습-체크리스트)
-
----
-### Part 3: 에이전트 시스템 구축
-
-**난이도**: ★★☆ | **학습 목표**: 여러 에이전트를 협업시키는 워크플로우 설계 및 관리
-
-* [8장. 워크플로우 설계: 에이전트 협업 시스템 구축](vol-1-part-3-chapter-08.md) **★★☆**
-  * [8.1 파이프라인(Pipeline) 패턴](vol-1-part-3-chapter-08.md#81-파이프라인pipeline-패턴)
-  * [8.2 생성-검증(Generate-and-Verify) 패턴](vol-1-part-3-chapter-08.md#82-생성-검증generate-and-verify-패턴)
-  * [8.3 라우팅 패턴](vol-1-part-3-chapter-08.md#83-라우팅-패턴)
-  * [8.4 워크플로우 정의 (`workflow.yaml`)](vol-1-part-3-chapter-08.md#84-워크플로우-정의-workflowyaml)
-  * [실습 체크리스트](vol-1-part-3-chapter-08.md#실습-체크리스트)
+* [8장. 워크플로우 설계: 에이전트 협업 시스템 구축](vol-1-part-2-chapter-08.md) **★★☆**
+  * [8.1 파이프라인(Pipeline) 패턴](vol-1-part-2-chapter-08.md#81-파이프라인pipeline-패턴)
+  * [8.2 생성-검증(Generate-and-Verify) 패턴](vol-1-part-2-chapter-08.md#82-생성-검증generate-and-verify-패턴)
+  * [8.3 라우팅 패턴](vol-1-part-2-chapter-08.md#83-라우팅-패턴)
+  * [8.4 워크플로우 정의 (`workflow.yaml`)](vol-1-part-2-chapter-08.md#84-워크플로우-정의-workflowyaml)
+  * [실습 체크리스트](vol-1-part-2-chapter-08.md#실습-체크리스트)
 
 ---
 
