@@ -8,4 +8,4 @@ AI 지침:
 # PROGRESS
 
 - **Current Story**: `.ai-workspace/00002-Q/phase-01/sprint-02/story-01/`
-- **Current Task**: `Task 1: 목차 및 구조 개편`
+- **Current Task**: `Task 3: 본문 내용 수정 (4가지 제약 조건)`
