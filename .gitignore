@@ -1,1 +1,5 @@
 .obsidian
+.idea
+.cache
+.trash
+.work_backup/
