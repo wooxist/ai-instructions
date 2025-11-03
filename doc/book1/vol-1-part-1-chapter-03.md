@@ -353,6 +353,3 @@
 - Yates, J., & Orlikowski, W. (1992). Genres of organizational communication: A structurational approach to studying communication and media. *Academy of management review*.
 
 ---
-
-**Part 1을 모두 완료하셨나요?**  
-👉 [Part 1 완료 및 다음 단계 안내](vol-1-part-1-complete.md)
