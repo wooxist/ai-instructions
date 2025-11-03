@@ -7,5 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-- **Current Story**: `.ai-workspace/00002-Q/phase-01/sprint-04/story-04/`
+- **Current Story**: `.ai-workspace/00002-Q/phase-01/sprint-04/story-05/`
 - **Current Task**: `Task 3: Git Staging 및 커밋`
