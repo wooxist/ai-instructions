@@ -39,3 +39,46 @@ AI와 명확하게 소통하기 위한 기본기를 다룹니다. 좋은 질문�
 * [1장. 프롬프트와 인스트럭션 이해하기](doc/book1/vol-1-part-1-chapter-01.md) **★☆☆**
 * [2장. 질문 설계하기](doc/book1/vol-1-part-1-chapter-02.md) **★☆☆**
 * [3장. 효과적인 지시 작성의 기본 원칙](doc/book1/vol-1-part-1-chapter-03.md) **★★☆**
+
+---
+
+## 🔧 프로젝트 템플릿 사용하기
+
+이 프로젝트의 작업 관리 시스템을 다른 프로젝트에도 적용할 수 있습니다.
+
+### 템플릿 폴더 복사하기
+
+```bash
+# project-template 폴더를 새 프로젝트에 복사
+cp -r project-template/. /path/to/new-project/
+
+# 또는 특정 부분만 복사
+cp -r project-template/.ai-workspace /path/to/new-project/
+cp project-template/.instructions.md /path/to/new-project/
+```
+
+### 템플릿에 포함된 내용
+
+**작업 관리 시스템** (`.ai-workspace/`)
+- `GUIDE.md` - 작업 가이드 및 원칙
+- `PROGRESS.md` - 현재 작업 위치 추적
+- `ROADMAP.md` - 전체 분기 계획
+- `ARCHIVE.md` - 완료된 분기 기록
+- `COMMIT-RULES.md` - 커밋 메시지 규칙
+- `library/` - 재사용 가능한 Workflow/Task 템플릿
+
+**Quarter 템플릿** (`00001-Q/`, `00002-Q/`)
+- Phase/Sprint/Story 구조 예시
+- 각 레벨의 index.md 템플릿
+
+**프로젝트 설정**
+- `.instructions.md` - AI 작업 지침 템플릿
+- `.github/` - GitHub Copilot 설정 (선택사항)
+
+### 사용 시 수정 필요 사항
+
+1. **`.instructions.md`** - 프로젝트에 맞게 작업 규칙 수정
+2. **`ROADMAP.md`** - 실제 Quarter 계획으로 교체
+3. **Quarter 디렉토리** - 필요에 따라 구조 조정
+
+자세한 사용 방법은 `project-template/.ai-workspace/GUIDE.md`를 참조하세요.
