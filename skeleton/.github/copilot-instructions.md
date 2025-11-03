@@ -1,0 +1,7 @@
+# GitHub Copilot 지침
+
+**Copilot은 아래 링크의 지침을 참조하세요:**
+
+👉 [../.instructions.md](../.instructions.md)
+
+위 파일에 모든 집필 지침이 통합되어 있습니다.

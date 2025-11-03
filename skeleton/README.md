@@ -24,10 +24,6 @@ project/
 ├── doc/                    # 문서
 ├── src/                    # 소스 코드
 └── .ai-workspace/          # 작업 진행 관리
-    ├── PROGRESS.md         # 현재 작업 위치
-    ├── GUIDE.md            # 작업 가이드
-    ├── COMMIT-RULES.md     # 커밋 규칙
-    └── ARCHIVE.md          # 완료 기록
 ```
 
 ## 🚀 시작하기
