@@ -235,11 +235,43 @@ Quarter (3개월) → Phase (1개월) → Sprint (1주) → Story (1일) → Wor
 
 ## Quarter 관리
 
+### Quarter 시작
 - 여러 Quarter 미리 생성 가능
 - ROADMAP.md에 전체 분기 계획 나열
 - 각 Quarter/index.md에 상세 계획
 - 진행률은 PROGRESS.md에서만 관리
 - Quarter 시작 시 Phase/Sprint/Story 구조 생성
+
+### Quarter 완료 시
+
+**절차:**
+
+1. **ROADMAP.md에서 해당 Quarter 제거**
+   - 완료된 Quarter는 ROADMAP에서 삭제
+   - ROADMAP은 항상 진행 중/예정 분기만 포함
+
+2. **ARCHIVE.md에 요약 기록**
+   - 아래 형식으로 완료 내역 추가
+   ```markdown
+   ## Q# (YYYY.MM - YYYY.MM): Quarter 제목
+   - **기간**: YYYY년 MM월 - MM월
+   - **목표**: Quarter의 주요 목표
+   - **주요 성과**: 
+     - 완료한 주요 작업 1
+     - 완료한 주요 작업 2
+     - 완료한 주요 작업 3
+   - **완료일**: YYYY-MM-DD
+   ```
+
+3. **Quarter 디렉토리 보관**
+   - `.ai-workspace/00XXX-Q/` 디렉토리는 그대로 유지
+   - 나중에 참고가 필요할 수 있으므로 삭제하지 않음
+
+**ARCHIVE 기록 원칙:**
+- ✅ 간단한 요약만 작성 (3-5개 항목)
+- ✅ 최신 Quarter가 위에 오도록 역순 정렬
+- ❌ 체크박스, 진행률, 상세 내역 금지
+- ❌ Phase/Sprint/Story 목록 나열 금지
 
 ### 작업량 가이드라인
 - **Quarter**: 5개 내외의 Phase (3-5개월 작업)
