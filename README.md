@@ -36,7 +36,7 @@ AI와 명확하게 소통하기 위한 기본기를 다룹니다. 좋은 질문�
 
 ### Part 1 목차
 
-* [1장. 프롬프트와 인스트럭션 이해하기](doc/book1/vol-1-part-1-chapter-01.md) **★☆☆**
+* [1장. 좋은 프롬프트의 원칙](doc/book1/vol-1-part-1-chapter-01.md) **★☆☆**
 * [2장. 질문 설계하기](doc/book1/vol-1-part-1-chapter-02.md) **★☆☆**
 * [3장. 효과적인 지시 작성의 기본 원칙](doc/book1/vol-1-part-1-chapter-03.md) **★★☆**
 

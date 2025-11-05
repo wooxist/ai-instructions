@@ -54,27 +54,25 @@ AI 에이전트 작업 지침:
 
 **난이도**: ★☆☆~★★☆ | **학습 목표**: AI와의 기본 대화부터 구조화된 인스트럭션까지
 
-* [1장. 프롬프트와 인스트럭션 이해하기](vol-1-part-1-chapter-01.md) **★☆☆**
+* [1장. 좋은 프롬프트의 원칙](vol-1-part-1-chapter-01.md) **★☆☆**
   * [1.1 프롬프트란?](vol-1-part-1-chapter-01.md#11-프롬프트란)
   * [1.2 프롬프트를 잘 사용하려면](vol-1-part-1-chapter-01.md#12-프롬프트를-잘-사용하려면)
-  * [1.3 프롬프트의 한계 및 인스트럭션의 필요성](vol-1-part-1-chapter-01.md#13-프롬프트의-한계-및-인스트럭션의-필요성)
+  * [참고: 주요 프롬프팅 기법들](vol-1-part-1-chapter-01.md#참고-주요-프롬프팅-기법들)
   * [실습 체크리스트](vol-1-part-1-chapter-01.md#실습-체크리스트)
 * [2장. 질문 설계하기](vol-1-part-1-chapter-02.md) **★☆☆**
   * [2.1 폐쇄형 질문](vol-1-part-1-chapter-02.md#21-폐쇄형-질문-closed-ended)
   * [2.2 개방형 질문](vol-1-part-1-chapter-02.md#22-개방형-질문-open-ended)
   * [2.3 탐색형 질문](vol-1-part-1-chapter-02.md#23-탐색형-질문-exploratory)
   * [2.4 비교형 질문](vol-1-part-1-chapter-02.md#24-비교형-질문-comparative)
-  * [2.5 맥락 의존형 질문](vol-1-part-1-chapter-02.md#25-맥락-의존형-질문-context-dependent)
-  * [2.6 메타 질문](vol-1-part-1-chapter-02.md#26-메타-질문-meta-questions)
+  * [2.5 제약 기반형 질문](vol-1-part-1-chapter-02.md#25-제약-기반형-질문-constraint-based)
+  * [2.6 메타 질문](vol-1-part-1-chapter-02.md#26-메타-질문---질문을-개선하는-질문-meta-questions)
   * [실습 체크리스트](vol-1-part-1-chapter-02.md#실습-체크리스트)
 * [3장. 효과적인 지시 작성의 기본 원칙](vol-1-part-1-chapter-03.md) **★★☆**
-  * [3.1 인스트럭션: 일회성 프롬프트를 넘어서](vol-1-part-1-chapter-03.md#31-인스트럭션-일회성-프롬프트를-넘어서)
-  * [3.2 명확성 (Clear)](vol-1-part-1-chapter-03.md#32-명확성-clear)
-  * [3.3 구체성 (Specific)](vol-1-part-1-chapter-03.md#33-구체성-specific)
-  * [3.4 단계성 (Step-wise)](vol-1-part-1-chapter-03.md#34-단계성-step-wise)
-  * [3.5 제약 조건(Constraints)과 한계 설정](vol-1-part-1-chapter-03.md#35-제약-조건constraints과-한계-설정)
-  * [3.6 실패하는 지시의 특징 (안티패턴)](vol-1-part-1-chapter-03.md#36-실패하는-지시의-특징-안티패턴)
-  * [3.7 표준 인스트럭션 템플릿: 8가지 핵심 구성 요소](vol-1-part-1-chapter-03.md#37-표준-인스트럭션-템플릿-8가지-핵심-구성-요소)
+  * [3.1 인스트럭션: 시스템의 5가지 핵심 속성](vol-1-part-1-chapter-03.md#31-인스트럭션-시스템의-5가지-핵심-속성)
+  * [3.2 시스템 속성을 만족하는 9가지 구성 요소](vol-1-part-1-chapter-03.md#32-시스템-속성을-만족하는-9가지-구성-요소)
+  * [3.3 표준 인스트럭션 템플릿](vol-1-part-1-chapter-03.md#33-표준-인스트럭션-템플릿)
+  * [3.4 실전 예시: 프롬프트를 시스템으로](vol-1-part-1-chapter-03.md#34-실전-예시-프롬프트를-시스템으로)
+  * [3.5 시스템 품질 평가 (5점 척도)](vol-1-part-1-chapter-03.md#35-시스템-품질-평가-5점-척도)
   * [실습 체크리스트](vol-1-part-1-chapter-03.md#실습-체크리스트)
 
 ---
