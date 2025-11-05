@@ -7,6 +7,5 @@ AI 지침:
 
 # PROGRESS
 
-- **Current Story**: `(None)`
-- **Current Task**: `(None)`
-- **Current Task**: `Task 1: 4장 내용 제시 및 검토 요청`
+- **Current Story**: `.ai-workspace/00002-Q/phase-01/sprint-05/story-02/`
+- **Current Task**: `Task 6: 전체 검토 및 통합`
